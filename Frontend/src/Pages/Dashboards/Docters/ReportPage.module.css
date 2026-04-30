@@ -1,0 +1,405 @@
+.container {
+    padding: 30px;
+    background-color: #f8f9fa;
+    margin-top: -30px;
+
+  }
+  
+  .chartSection {
+    height: 380px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-left:-30px ;
+  }
+  .polarChart{
+     width: 35%;
+     margin-top: -167px;
+
+  }
+  .sectionTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgb(95, 94, 94);
+    /* text-align: center; */
+
+  }
+  
+  .customLegend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+   
+  }
+  
+  .legendColor {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+  
+  .legendText {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .chartWrapper {
+    margin-top: -15px;
+    height: 70%;
+    /* background-color: #555; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /*  */
+  /* Button Row for category filters */
+  .patientList{
+    width: 100%;
+    height: 380px;
+    background: white;
+    
+    padding: 20px 30px;
+    border-radius: 12px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); */
+    margin-left: -30px;
+    /* margin-top: -380px; */
+  }
+
+  .slider {
+    position: absolute;
+    top: 5px;
+    left:30px;
+    width: 95px;
+    height: 40px;
+    background-color: rgba(255, 224, 228, 0.7);
+    border-radius: 9999px;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+
+  .filterButton {
+    position: relative;
+    border: none;
+    background: none;
+    color: rgba(124, 62, 71, 0.7);
+    padding: 10px 20px;
+    font-weight: bolder;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1;
+    min-width: 90px; /* Make sure all buttons have the same width */
+    text-align: center;
+  }
+  .filterButtons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 10px;
+  }
+  
+  
+ 
+ /* Patient Reports Section */
+.patientReports {
+    position: relative;
+    width: 35%;
+    padding: 20px;
+    margin-top: -180px;
+    /* top:20px; */
+    left: -30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* margin: 0 auto; Center the container */
+    overflow: hidden; /* Ensure that contents stay within the container bounds */
+  }
+  
+  /* Report List */
+  .reportList {
+    transition: all 0.3s ease;
+  }
+  
+  .listContainer {
+    max-height: 420px; /* Set the scrollable height */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    transition: all 0.3s ease;
+
+  }
+  
+  /* Optional: Custom scrollbar for listContainer */
+  .listContainer::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .listContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 182, 193, 0.7);
+    border-radius: 10px;
+  }
+  
+  .listContainer::-webkit-scrollbar-track {
+    background-color: #f4f7fb;
+  }
+  
+  
+  /* Individual Report Card */
+  .reportCard {
+    background-color: #ffffff;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideIn 0.5s forwards;
+  }
+  
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Report Item (e.g., Time, Diagnosis, etc.) */
+  .reportItem {
+    display: flex;
+    align-items: center;
+    /* justify-content:last baseline; */
+    ;padding-left: 20px;
+    margin: 8px 0;
+  }
+  
+
+  /* Text Styling for Report Items */
+  .reportItem span {
+    margin-left: 4px;
+    font-size: 14px;
+    color: #555;
+  }
+  .reportItem h3{
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(8, 6, 7, 0.7);
+  }
+  .clockIcon{
+    font-size: 20px;
+    margin-left: 30px;
+    color: rgba(177, 130, 137, 0.7);
+    /* background-color: #555; */
+  }
+  .diagnosis{
+    color: rgba(151, 99, 107, 0.7);
+
+  }
+  /* Icon Styling in Report Items */
+ 
+  /* Scrollable area for the list of patient reports */
+  .reportList::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .reportList::-webkit-scrollbar-thumb {
+    background-color: #ffb6c1b3;
+    border-radius: 10px;
+  }
+  
+  .reportList::-webkit-scrollbar-track {
+    background-color: #f4f7fb;
+  }
+  
+  /* Hover effect on report card */
+  .reportCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Loading state */
+  .loadingMessage {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    padding: 20px 0;
+  }
+
+  /*  */
+  .diagnosisChart{
+    /* margin-left: 330px;*/
+    margin-top: -180px; 
+    width: 63%;
+    height: 380px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-left:350px ;
+
+  } 
+.NameTime{
+    display: flex;
+    justify-content:flex-start;
+    /* gap: 25px; */
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+/* Lab Test Progress Styles */
+.labTestsContainer {
+  position: absolute;
+  width: 47%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 350px;
+  top: 700px;
+  /* margin-top: -360px; */
+  overflow-x: hidden;
+}
+
+
+.labTestsTitle {
+  margin-bottom: 50px;
+}
+
+.progressBarsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.progressBarItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.testInfo {
+  display: flex;
+  justify-content: space-between;
+ 
+  width: 100%;
+}
+
+.testName {
+  color: #282929;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.testPercentage {
+  font-weight: bold;
+  color: #636e72;
+}
+
+.progressBarBackground {
+  height: 10px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+    margin-bottom: 17px;
+
+
+}
+
+.progressBarFill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+  background: linear-gradient(to right, #ffb6c1b3, #44e9c8);
+}
+
+
+
+.testStatus {
+  font-size: 0.8rem;
+  color: #636e72;
+  text-align: right;
+}
+.colorCircle{
+  display: flex;
+}
+.color{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #ffb6c1b3, #44e9c8);
+
+  margin-top: 14px;
+}
+.colorCircle span{
+  display: flex;
+  margin-left: 250px;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+/*  */
+.summaryCirclesContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: -5px;
+  width: 60%;
+  margin-left: 350px;
+
+}
+
+.summaryCircle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+    padding: 40px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  /* background-color: #00b894; */
+}
+
+.circleChart {
+  position: relative;
+  width: 100px;
+  height: 60px; /* Half circle */
+  margin-bottom: 10px;
+}
+
+.circleValue {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+.circleLabel {
+  font-size: 14px;
+  color: #636e72;
+  text-align: center;
+}

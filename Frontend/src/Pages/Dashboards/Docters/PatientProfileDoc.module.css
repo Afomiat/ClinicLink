@@ -1,0 +1,484 @@
+/* Base Styles */
+.profileContainer {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: #2d3748;
+  background-color: #f7fafc;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Header Section */
+.header {
+  background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.patientHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.patientImageContainer {
+  position: relative;
+}
+
+.patientImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.patientStatus {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4299e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.statusIndicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #48bb78;
+}
+
+.patientMainInfo h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.patientMeta {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0;
+  font-size: 14px;
+  align-items: center;
+}
+
+.patientMeta svg {
+  margin-right: 4px;
+}
+
+.patientId {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.patientContacts {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.patientContacts div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.contactIcon {
+  font-size: 18px;
+}
+
+.chatButton {
+  background: white;
+  color: #3182ce;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chatButton:hover {
+  background: #ebf8ff;
+  transform: translateY(-1px);
+}
+
+/* Main Content Layout */
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.leftColumn, .rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.cardHeader h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  flex-grow: 1;
+}
+
+.cardIcon {
+  color: #4299e1;
+  font-size: 20px;
+}
+
+.viewAllButton, .addButton {
+  background: none;
+  border: none;
+  color: #4299e1;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.viewAllButton:hover, .addButton:hover {
+  background: #ebf8ff;
+}
+
+/* Medical Overview */
+.medicalGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.medicalItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.medicalLabel {
+  font-size: 12px;
+  color: #718096;
+  font-weight: 500;
+}
+
+.medicalValue {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.conditionTag {
+  background: #ebf8ff;
+  color: #3182ce;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.allergyTag {
+  background: #fff5f5;
+  color: #e53e3e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Test Results */
+.testResults {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.testResultItem {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f7fafc;
+  transition: all 0.2s ease;
+}
+
+.testResultItem:hover {
+  background: #ebf8ff;
+  transform: translateX(2px);
+}
+
+.testIcon {
+  background: #bee3f8;
+  color: #3182ce;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.testInfo {
+  flex-grow: 1;
+}
+
+.testName {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.testMeta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #718096;
+}
+
+.testType {
+  background: #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.viewButton {
+  background: none;
+  border: 1px solid #cbd5e0;
+  color: #3182ce;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.viewButton:hover {
+  background: #ebf8ff;
+  border-color: #3182ce;
+}
+
+/* Appointments */
+.appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appointment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f7fafc;
+}
+
+.dateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #ebf8ff;
+  color: #3182ce;
+  flex-shrink: 0;
+}
+
+.dateBox.today {
+  background: #3182ce;
+  color: white;
+}
+
+.weekday {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.day {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.appointmentInfo {
+  flex-grow: 1;
+}
+
+.appointmentTime {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.appointmentReason {
+  font-size: 12px;
+  color: #718096;
+}
+
+.appointmentAction {
+  background: none;
+  border: none;
+  color: #4299e1;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.appointmentAction:hover {
+  background: #ebf8ff;
+}
+
+.scrollControls {
+  display: flex;
+  gap: 4px;
+}
+
+.scrollControls button {
+  background: none;
+  border: 1px solid #cbd5e0;
+  color: #718096;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scrollControls button:hover {
+  background: #ebf8ff;
+  color: #3182ce;
+}
+
+.scrollControls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Prescriptions */
+.prescriptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prescriptionItem {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.prescriptionItem:hover {
+  background: #ebf8ff;
+  transform: translateX(2px);
+}
+
+.prescriptionMain {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.prescriptionName {
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.prescriptionDosage {
+  background: #bee3f8;
+  color: #3182ce;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.prescriptionDetails {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  font-size: 12px;
+}
+
+.prescriptionDetails div {
+  display: flex;
+  gap: 4px;
+}
+
+.detailLabel {
+  color: #718096;
+  font-weight: 500;
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: #718096;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+  
+  .medicalGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .prescriptionDetails {
+    grid-template-columns: 1fr;
+  }
+}

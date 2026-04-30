@@ -1,0 +1,298 @@
+/* UpdateOrderModal.module.css */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .updateModalContainer {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e0e6ed;
+    background-color: #f8fafc;
+    border-radius: 12px 12px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+  
+  .headerIcon {
+    color: #3b82f6;
+    font-size: 1.2em;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .closeButton:hover {
+    color: #ef4444;
+    background-color: #fee2e2;
+  }
+  
+  .updateForm {
+    padding: 25px;
+  }
+  
+  .formSection {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .formSection:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .formSection h3 {
+    margin: 0 0 20px 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .sectionIcon {
+    color: #3b82f6;
+    font-size: 1em;
+  }
+  
+  .formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .formGroup {
+    margin-bottom: 15px;
+  }
+  
+  .formLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .formControl {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  
+  .formControl:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+  
+  .selectControl {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+  }
+  
+  .textareaControl {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .testItem {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #3b82f6;
+  }
+  
+  .testActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .removeTestButton {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .removeTestButton:hover {
+    background-color: #fecaca;
+  }
+  
+  .addTestButton {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+  }
+  
+  .addTestButton:hover {
+    background-color: #bae6fd;
+  }
+  
+  .formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+  }
+  
+  .cancelButton {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .cancelButton:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .saveButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .saveButton:hover {
+    background-color: #2563eb;
+  }
+  
+  .statusBadge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    display: inline-block;
+  }
+  
+  .statusPending {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+  
+  .statusInProgress {
+    background-color: #dbeafe;
+    color: #2563eb;
+  }
+  
+  .statusCompleted {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
+  
+  .urgencyBadge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    display: inline-block;
+  }
+  
+  .urgencyRoutine {
+    background-color: #f1f5f9;
+    color: #64748b;
+  }
+  
+  .urgencyUrgent {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+  
+  .urgencyStat {
+    background-color: #fce7f3;
+    color: #9d174d;
+  }
+  
+  @media (max-width: 768px) {
+    .updateModalContainer {
+      width: 95%;
+      max-height: 85vh;
+    }
+    
+    .formGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .formActions {
+      flex-direction: column;
+    }
+    
+    .cancelButton,
+    .saveButton {
+      width: 100%;
+    }
+  }

@@ -1,0 +1,292 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContainer {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.headerIcon {
+  color: #4f46e5;
+  font-size: 1.2em;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.modalContent {
+  padding: 25px;
+}
+
+.section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sectionIcon {
+  color: #4f46e5;
+  font-size: 1em;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detailLabel {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.inlineIcon {
+  color: #94a3b8;
+  font-size: 0.9em;
+}
+
+.detailValue {
+  font-size: 0.95rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.statusCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusText {
+  font-size: 0.95rem;
+}
+
+.statusNormal {
+  color: #10b981;
+}
+
+.statusAbnormal {
+  color: #ef4444;
+}
+
+.statusPending {
+  color: #f59e0b;
+  animation: pulse 2s infinite;
+}
+
+.resultsContent {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.resultSummary {
+  margin-bottom: 15px;
+}
+
+.normalResult {
+  color: #10b981;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.abnormalResult {
+  color: #ef4444;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.resultDetails {
+  margin-top: 15px;
+}
+
+.resultDetails h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.resultList {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.resultList li {
+  margin-bottom: 5px;
+}
+
+.abnormalItem {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.printButton {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.printButton:hover {
+  background-color: #e0e7ff;
+}
+
+.closeModalButton {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.closeModalButton:hover {
+  background-color: #e2e8f0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .modalContainer {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+  }
+  
+  .printButton,
+  .closeModalButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

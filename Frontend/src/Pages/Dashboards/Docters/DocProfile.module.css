@@ -1,0 +1,242 @@
+/* Container for the entire profile */
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+/* Main content wrapper */
+.profileDetails {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Picture and name section */
+.picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.Namepic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Avatar circle */
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Rating styles */
+.ratingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.ratingText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingValue {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.ratingCount {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Camera upload button */
+.uploadPhotoButton {
+  background-color: #e2e8f0;
+  color: #333;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  position: absolute;
+  margin-left: 100px;
+  margin-top: -120px;
+}
+
+.uploadPhotoButton:hover {
+  background-color: #cbd5e1;
+}
+
+/* Section (info box) */
+.section {
+  margin-bottom: 30px;
+  margin-top: 80px;
+  padding: 24px 30px;
+  background-color: #f8f8f4;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border: 2px solid #e2e8f0;
+  display: flex;
+  gap: 20px;
+}
+
+.section h3,
+.section h4 {
+  margin-bottom: 15px;
+  color: #2d3748;
+}
+
+/* Info row */
+.section div {
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.section label {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  margin-bottom: 6px;
+  color: #393b3d;
+  gap: 10px;
+}
+
+/* Paragraph view mode */
+.section p {
+  margin: 0;
+  color: #0e0d0d;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* Input styling */
+.section input {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f7fafc;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.section input:focus {
+  border-color: #3182ce;
+  outline: none;
+}
+
+/* Buttons */
+.section button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #a0e5bb;
+  color: rgb(15, 15, 15);
+  transition: background 0.3s ease;
+  margin-left: 50px;
+  display: flex;
+}
+
+.section button:hover {
+  background-color: #d4d0cb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .picture {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .Namepic {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .uploadPhotoButton {
+    margin-top: 10px;
+  }
+}
+
+.name {
+  display: flex;
+  gap: 300px;
+}
+
+.bioSpeciality {
+  display: flex;
+  gap: 305px;
+}
+
+.phoneEmail {
+  display: flex;
+  gap: 189px;
+}
+
+.InfoInside label,
+.InfoInside input,
+.InfoInside p {
+  font-size: 15px;
+}
+
+.InfoInside h3 {
+  margin-bottom: 40px;
+}
+
+.bioInfo {
+  margin-top: -10px;
+  display: flex;
+
+}
+.ratingValue{
+  font-size: 30px;
+  color: #000000;
+}
+.stars{
+  font-size: 20px;
+}
+.ratingContainer{
+  margin-top: -20px;
+  margin-bottom: -40px;
+}
+.bioInfo p{
+ 
+  width: 500px;
+}

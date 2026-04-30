@@ -1,0 +1,233 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(110, 105, 105, 0.5);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 950px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.2s;
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+  
+  .closeButton:hover {
+    color: #4b5563;
+    background: #f3f4f6;
+  }
+  
+  .modalHeader {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .monthNavigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .navButton {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: #4b5563;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navButton:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .dayHeader {
+    text-align: center;
+    padding: 0.75rem 0;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+.calendarDay {
+  position: relative;
+  min-height: 120px;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.calendarDay:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+  
+  .otherMonth {
+    opacity: 0.4;
+    background-color: #f9fafb;
+  }
+  
+  .today {
+    background-color: #f0fdf4;
+    border-color: #86efac;
+  }
+  
+  .today .dayNumber {
+    color: #16a34a;
+    font-weight: 700;
+  }
+  
+  .hasAppointments {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+  }
+  
+  .dayNumber {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    align-self: flex-end;
+    font-size: 0.9rem;
+    color: #4b5563;
+  }
+  
+  .appointmentsContainer {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .appointmentEvent {
+    background: #e0e7ff;
+    border-left: 3px solid #6366f1;
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .appointmentEvent:hover {
+    background: #c7d2fe;
+    /* transform: translateX(2px); */
+  }
+  
+  .appointmentTime {
+    font-weight: 600;
+    color: #4f46e5;
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+  }
+  
+  .appointmentPatient {
+    font-weight: 500;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .appointmentDiagnosis {
+    color: #64748b;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .addButton{
+    margin-left: 720px;
+    background: #c48c38;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    /* font-weight: 600; */
+    transition: all 0.2s;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .modal {
+      width: 95%;
+      padding: 1rem;
+    }
+    
+    .calendarDay {
+      min-height: 80px;
+      padding: 0.25rem;
+    }
+    
+    .appointmentEvent {
+      padding: 0.2rem;
+    }
+    
+    .appointmentPatient, .appointmentDiagnosis {
+      display: none;
+    }
+    
+    .appointmentTime {
+      font-size: 0.6rem;
+    }
+  }

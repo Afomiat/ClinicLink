@@ -1,0 +1,568 @@
+/* ===== Color Variables ===== */
+:root {
+    --primary: #0d5f74;
+    --primary-light: #64748b;
+    --secondary: #10b981;
+    --tertiary: #17a5b8;
+    --quaternary: #f59e0b;
+    --dark: #1e293b;
+    --gray-dark: #64748b;
+    --gray-medium: #e2e8f0;
+    --gray-light: #f1f5f9;
+    --white: #ffffff;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+  
+  /* ===== Base Styles ===== */
+  .dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--dark);
+    background-color: var(--gray-light);
+  }
+  
+  /* ===== Header ===== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .userInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+  
+  .userInfo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .userInfo h1 span {
+    color: var(--primary);
+  }
+  
+  .lastLogin {
+    color: var(--gray-dark);
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0;
+  }
+  
+  .notification {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .bellIcon {
+    color: var(--gray-dark);
+    font-size: 1.25rem;
+  }
+  
+  .notificationBadge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger);
+    color: var(--white);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+  }
+  
+  /* ===== Stats Grid ===== */
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .statCard {
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--white);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .statCard.primary {
+    background: var(--primary);
+  }
+  
+  .statCard.secondary {
+    background: linear-gradient(135deg, var(--secondary), #34d399);
+  }
+  
+  .statCard.tertiary {
+    background: linear-gradient(135deg, var(--tertiary), #60a5fa);
+  }
+  
+  .statCard.quaternary {
+    background-color: #9e3834;
+  }
+  
+  .statIcon {
+    font-size: 1.5rem;
+  }
+  
+  .statCard h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+  
+  .statCard p {
+    font-size: 0.875rem;
+    margin: 0;
+    opacity: 0.9;
+  }
+  
+  /* ===== Sections ===== */
+  section {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sectionHeader h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .viewAll {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  
+  /* ===== Upcoming Appointment ===== */
+  .appointmentCard {
+    border: 1px solid var(--gray-medium);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  
+  .appointmentContent {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .doctorInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 250px;
+  }
+  
+  .doctorAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+  
+  .doctorInfo h3 {
+    font-size: 1rem;
+    margin: 0 0 0.25rem;
+  }
+  
+  .specialty {
+    color: var(--gray-dark);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .appointmentDetails {
+    flex: 1;
+  }
+  
+  .dateTime {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .date {
+    font-weight: 600;
+  }
+  
+  .time {
+    color: var(--gray-dark);
+  }
+  
+  .location {
+    color: var(--gray-dark);
+    margin: 0;
+    font-size: 0.875rem;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .primaryButton {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .primaryButton:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .secondaryButton {
+    background-color: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .secondaryButton:hover {
+    background-color: var(--gray-light);
+  }
+  
+  /* ===== Prescriptions ===== */
+  .searchWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .searchInput {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--gray-medium);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364768b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 1rem center;
+    background-size: 1rem;
+  }
+  
+  .addButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .addButton:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .prescriptionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .prescriptionCard {
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .prescriptionCard:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  
+  .prescriptionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .prescriptionHeader h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+  }
+  
+  .status.active {
+    background-color: #d1fae5;
+    color: var(--success);
+  }
+  
+  .status.inactive {
+    background-color: #fee2e2;
+    color: var(--danger);
+  }
+  
+  .prescriptionBody {
+    margin-bottom: 1.5rem;
+  }
+  
+  .dosage {
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+  }
+  
+  .doctor {
+    color: var(--gray-dark);
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem;
+  }
+  
+  .date {
+    color: var(--gray-dark);
+    font-size: 0.75rem;
+    margin: 0;
+  }
+  
+  .prescriptionFooter {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .viewButton {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  /* ===== Test Results ===== */
+  .resultsTable {
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tableHeader {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+    background-color: var(--gray-light);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-medium);
+    font-size: 0.875rem;
+    align-items: center;
+  }
+  
+  .tableRow:last-child {
+    border-bottom: none;
+  }
+  
+  .completed {
+    color: var(--success);
+    font-weight: 500;
+  }
+  
+  .pending {
+    color: var(--warning);
+    font-weight: 500;
+  }
+  
+  /* ===== Quick Actions ===== */
+  .quickActions h2 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .actionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .actionCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    background-color: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .actionCard:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .actionIcon {
+    font-size: 1.5rem;
+    color: var(--primary);
+  }
+  
+  .actionCard span {
+    font-weight: 500;
+  }
+  
+  .viewAllWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+
+  /* ===== Responsive Design ===== */
+  @media (max-width: 1200px) {
+    .statsGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .appointmentContent {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard {
+      padding: 1rem;
+    }
+    
+    .statsGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .sectionHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .searchWrapper {
+      width: 100%;
+    }
+    
+    .actions {
+      flex-direction: column;
+    }
+    
+    .tableHeader, .tableRow {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    
+    .col1, .col2, .col3, .col4, .col5 {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .col1::before {
+      content: "Test Name: ";
+      font-weight: 600;
+    }
+    
+    .col2::before {
+      content: "Date: ";
+      font-weight: 600;
+    }
+    
+    .col3::before {
+      content: "Status: ";
+      font-weight: 600;
+    }
+    
+    .col4::before {
+      content: "Lab: ";
+      font-weight: 600;
+    }
+    
+    .col5 {
+      justify-content: flex-end;
+    }
+  }

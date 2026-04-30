@@ -1,0 +1,433 @@
+.profileContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.profileContainer.darkMode {
+  background-color: #1a1a2e;
+  color: #f0f0f0;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e1e5eb;
+}
+
+.darkMode .profileHeader {
+  border-bottom-color: #2a2a3a;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a6cf7 0%, #2541b2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+}
+
+.avatarActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.avatarUploadBtn, .avatarRemoveBtn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.avatarUploadBtn {
+  background-color: #4a6cf7;
+  color: white;
+}
+
+.avatarRemoveBtn {
+  background-color: #f5f7fa;
+  color: #6c757d;
+}
+
+.darkMode .avatarRemoveBtn {
+  background-color: #2a2a3a;
+  color: #ccc;
+}
+
+.profileHeader h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.editBtn, .saveBtn, .cancelBtn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editBtn {
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+}
+
+.saveBtn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.cancelBtn {
+  background-color: #f5f7fa;
+  color: #6c757d;
+  border: 1px solid #e1e5eb;
+}
+
+.darkMode .cancelBtn {
+  background-color: #2a2a3a;
+  border-color: #3a3a4a;
+  color: #ccc;
+}
+
+.editBtn:hover, .saveBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* .profileContent {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+} */
+
+.profileSections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preferencesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profileSection {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.darkMode .profileSection {
+  background-color: #16213e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sectionHeader {
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e1e5eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.darkMode .sectionHeader {
+  background-color: #0f3460;
+  border-bottom-color: #2a2a3a;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.sectionBadge {
+  background-color: #4a6cf7;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.securityBadge {
+  background-color: #28a745;
+}
+
+.sectionContent {
+  padding: 1.5rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.infoLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.darkMode .infoLabel {
+  color: #aaa;
+}
+
+.infoValue {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+.inputField {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #e1e5eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.darkMode .inputField {
+  background-color: #1a1a2e;
+  border-color: #3a3a4a;
+  color: #f0f0f0;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.nameInputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nameInputs .inputField {
+  flex: 1;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4a6cf7;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.securityActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.securityBtn {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e1e5eb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.darkMode .securityBtn {
+  background-color: #0f3460;
+  border-color: #2a2a3a;
+  color: #f0f0f0;
+}
+
+.securityBtn:hover {
+  background-color: #e9ecef;
+}
+
+.darkMode .securityBtn:hover {
+  background-color: #1a1a2e;
+}
+/* Add these styles to your existing CSS */
+.avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploadProgress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease;
+}
+
+.avatarActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.avatarUploadBtn, .avatarRemoveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.avatarUploadBtn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.avatarRemoveBtn {
+  background-color: #f44336;
+  color: white;
+}
+
+.uploadError {
+  color: #f44336;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.darkMode .avatar {
+  background-color: #444;
+  color: #ddd;
+}
+
+@media (max-width: 992px) {
+  .profileContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .headerActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}

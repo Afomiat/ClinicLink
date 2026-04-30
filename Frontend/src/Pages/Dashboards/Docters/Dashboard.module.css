@@ -1,0 +1,1231 @@
+/* Dashboard.module.css */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+.innercontainer {
+  /* background-color: #1976d2; */
+  width: 65%; /* Match the doctorDashboardHeader width */
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margins */
+}
+
+
+/* Common Card Styles */
+.card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Dashboard Container */
+.dashboardContainer {
+  composes: card;
+  width: 35%;
+  display: flex;
+  margin-left: auto;
+  flex-direction: column;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Calendar Styles */
+.calendarContainer {
+  width: 100%;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.monthYear {
+  font-size: 20px;
+  font-weight: bolder;
+  color: var(--active-text);
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+
+
+/* .year {
+  font-weight: bold;
+  color: #fdc7c7;
+  margin-left: 5px;
+} */
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px; /* you can adjust this */
+}
+
+.navButtons {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  right: 120px;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--active-text);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-weight: bolder;
+}
+
+
+.navButton:hover {
+  background: #f3e3ae;
+  color: #333;
+}
+
+.weekdaysHeader {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  /* font-weight: 600; */
+  color:var(--calanderday);
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-size: 12px;
+  margin-left: -5px;
+}
+
+/* .weekday {
+  padding: 2px;
+} */
+
+.daysGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  background: #f8f9fa;
+  color: #495057;
+  position: relative;
+}
+
+.day:hover {
+  background: #e9ecef;
+}
+
+.day.otherMonth {
+  color: #adb5bd;
+  background: #f1f3f5;
+}
+
+.day.today {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.day.selected {
+  background: var(--icon-color);
+  color: white;
+  font-weight: 600;
+  border-radius: 100%;
+  position: relative; /* Needed for absolute positioning of the pseudo-element */
+}
+
+.day.selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px dashed white;
+  border-radius: 100%;
+  animation: rotate 4s linear infinite;
+  pointer-events: none; /* Ensures clicks go through to the main element */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.day.hasAppointment .dayNumber {
+  font-weight: 600;
+}
+
+.appointmentDot {
+  position: absolute;
+  bottom: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e74c3c;
+}
+
+.day.selected .appointmentDot {
+  background: white;
+}
+
+.dayNumber {
+  font-size: 0.9rem;
+}
+
+.addScheduleButton {
+  background: var(--icon-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+  margin-top: 30px;
+}
+
+.addScheduleButton:hover {
+  background:var(--icon-color);
+}
+
+/* Lab Results Section */
+.labResultsContainer {
+  width: 100%;
+  padding: 20px;
+  margin-top: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.labiconName {
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+.labicon{
+  color: var(--icon-color);
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.sectionIcon {
+  font-size: 1.4rem;
+  color: var(--icon-color);
+}
+
+.testIcon {
+  font-size: 1.2rem;
+  color: var(--icon-color);
+}
+
+.iconBorder {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 100%;
+  margin-right: 5px;
+}
+
+.resultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background-color: #e3f2fd;
+  border-radius: 20px;
+}
+
+.resultItem:hover {
+  background-color: #e9ecef;
+}
+
+.resultContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.patientInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patientName {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.testName {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.timeTag {
+  font-size: 0.8rem;
+  color: #1976d2;
+  background-color: #e3f2fd;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.statusLegend {
+  display: flex;
+  gap: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.statusItem span {
+  font-weight: 500;
+}
+
+/* Quick Actions Section */
+.quickActions {
+  padding: 20px;
+  
+  margin-top: -50px;
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actionButton {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.actionNew {
+  border: 1px solid #e7af5c;
+}
+
+.actionButton:hover {
+  background: #e9ecef;
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plusIcon {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  color: var(--icon-color);
+}
+
+/* Doctor Dashboard Header */
+.doctorDashboardHeader {
+  width: 100%;
+  padding: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.doctorInfo {
+  width: 105%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  composes: card;
+  margin-left: -30px;
+  padding: 40px 40px;
+  margin-top: -26px;
+}
+.doctorInfo > div {
+  position: relative;
+  flex-grow: 1;
+}
+
+
+.doctorInfo .FaStethoscope {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1);
+  font-size: 60px;
+  color: #2c3e50;
+}
+.clinicLogo {
+  width: 48px;
+  height: 48px;
+  background: var(--icon-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.welcomeText {
+  font-size: 1.3rem;
+  margin: 0;
+  color: var(--active-text) !important;     
+}
+
+.specialization {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* .metricsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-left: -15px;
+}
+
+.metricRing {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ringBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 8px solid #ebcfbc;
+  border-radius: 50%;
+}
+
+.ringValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e7af5c;
+  z-index: 1;
+}
+
+.metricLabel {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+} */
+.metricsContainer {
+  /* composes: card; */
+  margin-left: -30px;
+  margin-top: 10px;
+
+}
+
+.chartContainer {
+  width: 100%;
+  height: 250px; /* Fixed height */
+}
+
+/* Recent Prescriptions */
+.recentPrescriptions {
+  composes: card;
+
+  width: 96%;
+  padding: 20px;
+  margin-top: -10px;
+  height: auto; /* Default height */
+  max-height: 400px; /* Collapsed height */
+  overflow: hidden; /* Hide overflow when collapsed */
+  transition: max-height 0.3s ease;
+
+}
+
+.recentPrescriptions.expanded {
+  max-height: 70vh; /* Or whatever maximum height you prefer */
+}
+
+.sectionHeader {
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: -50px;
+}
+
+.titleIcon {
+  /* margin-right: 0.5rem; */
+  color: var(--icon-color);
+  font-size: larger;
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 30px;
+}
+
+.viewAllButton, .newPrescriptionButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.viewAllButton {
+  border: none;
+  background-color: transparent;
+  color: #e7af5c;
+  font-weight: bold;
+}
+
+.newPrescriptionButton {
+  background-color: #3b5c7a;
+  color: white;
+}
+
+.newPrescriptionButton:hover {
+  background-color: #193c66;
+}
+
+.collapseIcon {
+  font-size: 0.8rem;
+}
+
+.prescriptionsContainer {
+
+  overflow-y: hidden; 
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.prescriptionsContainer.expanded {
+  overflow-y: auto;
+  max-height: calc(70vh - 120px); /* Account for header height */
+  padding-right: 8px;
+  padding-bottom: 90px;
+  /* background-color: #e74c3c; */
+}
+
+/* Custom scrollbar styling */
+.prescriptionsContainer.expanded::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prescriptionsContainer.expanded::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.prescriptionsContainer.expanded::-webkit-scrollbar-thumb {
+  background: #e7af5c;
+  border-radius: 3px;
+}
+
+.prescriptionsContainer.expanded::-webkit-scrollbar-thumb:hover {
+  background: #d89c4a;
+}
+.prescriptionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.prescriptionCard {
+  padding: 1.2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+  min-height: 120px; /* Minimum card height */
+  height: auto;
+  box-sizing: border-box;
+  background: var(--card-bg);
+  color: var(--active-text);
+
+
+}
+.prescriptionHeader {
+  margin-bottom: 1rem;
+}
+
+.prescriptionHeader div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.prescriptionDate {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.prescriptionDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.prescription{
+border: 1px solid #e0e0e0;
+border-radius: 8px;
+padding: 20px;
+}
+.medicationInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.medicationName {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.medicationDosage {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+.ongoingTag {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.viewDetailsButton {
+  background: none;
+  margin-left: 120px;
+  color: #51555a;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border: 1px solid #9c7d28;
+}
+
+.viewDetailsButton:hover {
+  background-color: #f7ecd6;
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1.5s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .prescriptionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* modal */
+
+/* Add to Dashboard.module.css */
+/* Add to Dashboard.module.css */
+.viewAppointmentsBtn {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.viewAppointmentsBtn:hover {
+  background-color: #1565c0;
+}
+
+/* _____________ */
+.patientSection {
+  width: 96%;
+  /* background: #fff; */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin: 20px 0;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  composes: card;
+
+
+}
+
+.patientSection h3 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 12px;
+  color:var(--active-text);
+  font-size: 1.4rem;
+  margin-left: -40px;
+}
+.patientTitle {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+.patientNameSearch{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  color: #95a5a6;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.searchContainer {
+  position: relative;
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 300px;
+}
+.searchInput:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.patientTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.patientTable thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.patientTable th {
+  padding: 12px 16px;
+  text-align: left;
+  color: #4a5568;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+}
+
+.patientTable tbody tr {
+  border-bottom: 1px solid #edf2f7;
+  transition: background-color 0.2s ease;
+}
+
+.patientTable tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.patientTable td {
+  padding: 16px;
+  color: #4a5568;
+  vertical-align: middle;
+}
+
+.patientTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Zebra striping for better readability */
+.patientTable tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.patientTable tbody tr:nth-child(even):hover {
+  background-color: #f1f5f9;
+}
+
+/* Status indicators could be added later */
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-new {
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+.status-followup {
+  background-color: #fff5f5;
+  color: #e53e3e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .patientTable thead {
+    display: none;
+  }
+  
+  .patientTable tr {
+    display: block;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patientTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .patientTable td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4a5568;
+    margin-right: auto;
+    padding-right: 16px;
+    text-align: left;
+  }
+  
+  .patientSection {
+    padding: 16px;
+  }
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.paginationButton {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.paginationButton:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: #2c3e50;
+}
+/* dark */
+/* Dark Mode Styles */
+.darkMode {
+  background-color: #1a1a2e;
+  color: #e6e6e6;
+}
+
+.darkMode .doctorDashboardHeader {
+  background-color: #16213e;
+}
+
+.darkMode .sectionHeader,
+.darkMode .calendarHeader,
+.darkMode .labResultsContainer,
+.darkMode .quickActions {
+  background-color: #0f3460;
+  color: #ffffff;
+}
+
+.darkMode .patientTable {
+  background-color: #16213e;
+  color: #ffffff;
+}
+
+.darkMode .patientTable th {
+  background-color: #0f3460;
+}
+
+.darkMode .patientTable tr:nth-child(even) {
+  background-color: #1a1a2e;
+}
+
+.darkMode .patientTable tr:hover {
+  background-color: #2d3748;
+}
+
+.darkMode input,
+.darkMode select,
+.darkMode textarea {
+  background-color: #2d3748;
+  color: #ffffff;
+  border-color: #4a5568;
+}
+
+.darkMode .prescriptionCard {
+  background-color: #16213e;
+  color: #ffffff;
+}
+
+.darkMode .day {
+  color: #ffffff;
+}
+
+.darkMode .otherMonth {
+  color: #718096;
+}
+.secTitle{
+  color: var(--active-text);
+
+}
+
+
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .innercontainer {
+    margin-right: 0;
+  }
+
+  .dashboardContainer {
+    margin-top: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .doctorInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .clinicLogo {
+    margin-bottom: 1rem;
+  }
+
+  .welcomeText {
+    font-size: 1.5rem;
+  }
+
+  .metricsContainer {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .doctorDashboardHeader {
+    flex-direction: column;
+  }
+
+  .doctorInfo {
+    margin-bottom: 1.5rem;
+  }
+
+  .metricsContainer {
+    width: 100%;
+  }
+
+  .prescriptionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .patientTable {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerActions {
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .prescriptionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .patientTable {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .calendarContainer {
+    padding: 0.5rem;
+  }
+
+  .weekdaysHeader, .weekRow {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .day {
+    padding: 0.3rem;
+  }
+
+  .quickActions .actionButtons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcomeText {
+    font-size: 1.2rem;
+  }
+
+  .specialization {
+    font-size: 0.9rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+
+  .patientNameSearch {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .searchContainer {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .paginationButton {
+    width: 100%;
+  }
+
+  .pageInfo {
+    text-align: center;
+  }
+
+  .resultItem {
+    flex-direction: column;
+  }
+
+  .timeTag {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+}
+
+/* Specific mobile adjustments */
+@media (max-width: 480px) {
+  .doctorInfo {
+    position: relative;
+  }
+
+  .doctorInfo svg {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0;
+    font-size: 40px;
+  }
+
+  .metricsContainer {
+    padding: 0.5rem;
+  }
+
+  .chartContainer {
+    height: 200px;
+  }
+
+  .prescriptionCard {
+    padding: 0.8rem;
+  }
+
+  .patientTable th, 
+  .patientTable td {
+    padding: 0.3rem;
+    font-size: 0.8rem;
+  }
+
+  .calendarHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .headerControls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .weekday {
+    font-size: 0.7rem;
+  }
+
+  .day {
+    height: 30px;
+  }
+
+  .dayNumber {
+    font-size: 0.8rem;
+  }
+
+  .actionButton {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Adjustments for very small screens */
+@media (max-width: 360px) {
+  .container {
+    padding: 0.25rem;
+  }
+
+  .prescriptionDetails {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ongoingTag {
+    align-self: flex-start;
+  }
+
+  .viewDetailsButton {
+    width: 100%;
+  }
+
+  .patientTable {
+    font-size: 0.7rem;
+  }
+
+  .weekday {
+    font-size: 0.6rem;
+  }
+}

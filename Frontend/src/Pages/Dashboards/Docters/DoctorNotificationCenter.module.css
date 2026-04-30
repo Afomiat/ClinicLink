@@ -1,0 +1,387 @@
+/* DoctorNotificationCenter.module.css */
+.notificationCenter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eaeaea;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.headerIcon {
+  margin-right: 12px;
+  font-size: 1.8em;
+  color: #4E6AFF;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.6em;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  background-color: #FF4D4D;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.headerRight {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.markAllButton {
+  background-color: #4E6AFF;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.markAllButton:hover {
+  background-color: #3A56D1;
+  transform: translateY(-1px);
+}
+
+.markAllButton.disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.settingsButton {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settingsButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.soundToggle {
+  font-size: 1.2em;
+  color: #666;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.soundToggle:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.settingsPanel {
+  background-color: #f9faff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid #e0e6ff;
+}
+
+.settingsPanel h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.settingItem {
+  margin-bottom: 16px;
+}
+
+.settingItem label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95em;
+  color: #444;
+}
+
+.settingItem input[type="checkbox"] {
+  accent-color: #4E6AFF;
+  width: 18px;
+  height: 18px;
+}
+
+.filterBar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  background: none;
+  border: 1px solid #e0e0e0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.filterButton:hover {
+  background-color: #f5f5f5;
+}
+
+.filterButton.active {
+  background-color: rgba(78, 106, 255, 0.1);
+  border-color: #4E6AFF;
+  color: #4E6AFF;
+}
+
+.filterIcon {
+  font-size: 0.9em;
+}
+
+.categoryIcon {
+  font-size: 1.1em;
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificationItem {
+  display: flex;
+  padding: 18px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: all 0.3s;
+  position: relative;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.notificationItem.unread {
+  background-color: #f8faff;
+  border-left: 4px solid #4E6AFF;
+}
+
+.notificationItem.critical {
+  background-color: #fff5f5;
+  border-left: 4px solid #FF4D4D;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.2); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+}
+
+.notificationIcon {
+  font-size: 1.6em;
+  margin-right: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.notificationContent {
+  flex-grow: 1;
+  width: calc(100% - 60px);
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.notificationHeader h3 {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.notificationItem.unread h3 {
+  font-weight: 700;
+}
+
+.notificationItem.critical h3 {
+  color: #d32f2f;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timestamp {
+  color: #888;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.priorityBadge {
+  background-color: #FF4D4D;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.notificationMessage {
+  margin: 0;
+  color: #555;
+  font-size: 0.95em;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.notificationDetails {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.6;
+}
+
+.expandButton {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 0.9em;
+  padding: 4px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.expandButton:hover {
+  color: #333;
+}
+
+.notificationActions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.2s;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.actionButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.emptyIcon {
+  font-size: 3.5em;
+  margin-bottom: 20px;
+  color: #d0d0d0;
+  opacity: 0.7;
+}
+
+.emptyState h3 {
+  margin: 16px 0 8px;
+  color: #555;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.footer {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.viewAllButton {
+  background: none;
+  border: 1px solid #e0e0e0;
+  color: #4E6AFF;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 0.95em;
+}
+
+.viewAllButton:hover {
+  background-color: #f8faff;
+  border-color: #4E6AFF;
+}

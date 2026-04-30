@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+*{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    box-sizing: border-box;
+    /* box-sizing: border-box; Add this to prevent overflow */
+    /* overflow: hidden; Prevent any potential scrolling */
+  
+
+}

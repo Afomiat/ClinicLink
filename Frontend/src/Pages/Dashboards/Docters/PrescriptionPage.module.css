@@ -1,0 +1,635 @@
+.container {
+    padding: 24px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+  }
+  
+  /* Header Styles */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .headerIcon {
+    font-size: 28px;
+    color: #4a6fa5;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+  }
+  
+  .addButton {
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .addButton:hover {
+    background-color: #3a5a8a;
+  }
+  
+  /* Analytics Cards */
+  .analyticsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .analyticsCard {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cardContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .cardIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  
+  .cardPrimary .cardIcon {
+    background-color: #e8f0fe;
+    color: #4a6fa5;
+  }
+  
+  .cardSuccess .cardIcon {
+    background-color: #e6f7f0;
+    color: #50b5a6;
+  }
+  
+  .cardWarning .cardIcon {
+    background-color: #fff4e6;
+    color: #ff7e67;
+  }
+  
+  .cardInfo .cardIcon {
+    background-color: #f0f7ff;
+    color: #6c8dfa;
+  }
+  
+  .analyticsCard h3 {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+  }
+  
+  .analyticsCard p {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+  }
+  
+  /* Controls Section */
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .searchContainer {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bdc3c7;
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    border-color: #4a6fa5;
+    box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+  }
+  
+  .filterGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .filterLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .filterSelect {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .exportButtons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .exportButton, .printButton {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .exportButton:hover, .printButton:hover {
+    background-color: #f8fafc;
+  }
+  
+  /* Table Styles */
+  .tableContainer {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .prescriptionsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .prescriptionsTable th {
+    background-color: #f8fafc;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7f8c8d;
+    border-bottom: 1px solid #e0e6ed;
+  }
+  
+  .prescriptionsTable td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #2c3e50;
+  }
+  
+  .patientCell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .patientIcon {
+    font-size: 20px;
+    color: #bdc3c7;
+  }
+  
+  .patientId {
+    font-size: 12px;
+    color: #7f8c8d;
+  }
+  
+  .statusBadge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .statusActive {
+    background-color: #e6f7f0;
+    color: #50b5a6;
+  }
+  
+  .statusExpired {
+    background-color: #ffebee;
+    color: #ff5252;
+  }
+  
+  .statusPending {
+    background-color: #fff4e6;
+    color: #ff9800;
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .viewButton, .editButton {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .viewButton {
+    background-color: #e8f0fe;
+    color: #4a6fa5;
+    border: none;
+  }
+  
+  .viewButton:hover {
+    background-color: #d0e0fc;
+  }
+  
+  .editButton {
+    background-color: #fff4e6;
+    color: #ff9800;
+    border: none;
+  }
+  
+  .editButton:hover {
+    background-color: #ffe8cc;
+  }
+  
+  .loadingCell, .emptyCell {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .paginationButton {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #e0e6ed;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .paginationButton:hover {
+    background-color: #f8fafc;
+  }
+  
+  .paginationButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .activePage {
+    background-color: #4a6fa5;
+    color: white;
+    border-color: #4a6fa5;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .controls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .searchContainer {
+      width: 100%;
+    }
+    
+    .prescriptionsTable {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+
+  /* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .modalBody {
+    padding: 20px;
+  }
+  
+  .modalActionButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: left;
+  }
+  
+  .modalActionButton:hover {
+    background-color: #e9ecef;
+  }
+  
+  .deleteButton {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .deleteButton:hover {
+    background-color: #f5c6cb;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .saveEdit {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .cancelEdit {
+    background-color: #e2e3e5;
+    color: #383d41;
+  }
+  
+  .deleteConfirmButton {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .formGroup label {
+    font-weight: 500;
+    font-size: 14px;
+  }
+  
+  .formGroup input,
+  .formGroup select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .refillInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .prescriptionDetails {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+  }
+  
+  .deleteConfirmation {
+    text-align: center;
+    padding: 20px 0;
+  }
+  /* Action Button Styles */
+.actionMenuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: all 0.2s;
+  }
+  
+  .actionMenuButton:hover {
+    color: #4a6fa5;
+  }
+  
+  .actionDots {
+    transition: transform 0.2s;
+  }
+  
+  .actionMenuButton:hover .actionDots {
+    transform: scale(1.1);
+  }
+  
+  /* Modal Styles */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    max-width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .modalContent h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .modalActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .actionButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: all 0.2s;
+  }
+  
+  .actionButton:hover {
+    background: #e9ecef;
+  }
+  
+  .actionIcon {
+    font-size: 16px;
+  }
+  
+  .deleteButton {
+    color: #dc3545;
+    border-color: #f5c6cb;
+    background: #f8d7da;
+  }
+  
+  .deleteButton:hover {
+    background: #f1b0b7;
+  }
+  
+  .cancelButton {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .cancelButton:hover {
+    background: #5a6268;
+  }
+  .exportDropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .exportDropdownContent {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .exportDropdownContent button {
+    width: 100%;
+    padding: 8px 12px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .exportDropdownContent button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .exportDropdown:hover .exportDropdownContent {
+    display: block;
+  }

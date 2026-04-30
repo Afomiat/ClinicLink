@@ -1,0 +1,418 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContainer {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10;
+  border-radius: 16px 16px 0 0;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  font-size: 24px;
+  color: #4f46e5;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.appointmentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.appointmentTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  max-width: 70%;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.statusIcon {
+  font-size: 0.875rem;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detailCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.detailCard:hover {
+  background-color: #f3f4f6;
+}
+
+.detailIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.detailIcon {
+  font-size: 1rem;
+  color: #4f46e5;
+}
+
+.detailLabel {
+  margin: 0 0 4px 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.detailValue {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.notesSection {
+  margin-bottom: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sectionIcon {
+  font-size: 1rem;
+  color: #4f46e5;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: #f5f3ff;
+}
+
+.notesContent {
+  margin: 0;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.notesEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notesTextarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.notesTextarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.notesActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelEditButton {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelEditButton:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.saveNotesButton {
+  padding: 8px 16px;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveNotesButton:hover {
+  background-color: #4338ca;
+}
+
+.rescheduleSection {
+  margin-bottom: 24px;
+}
+
+.rescheduleForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.dateInput,
+.timeInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.dateInput:focus,
+.timeInput:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-top: 1px solid #f0f0f0;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  border-radius: 0 0 16px 16px;
+}
+
+.cancelButton {
+  padding: 10px 16px;
+  background-color: #fef2f2;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #dc2626;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancelButton:hover {
+  background-color: #fee2e2;
+}
+
+.rescheduleButton {
+  padding: 10px 20px;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rescheduleButton:hover {
+  background-color: #4338ca;
+}
+
+.rescheduleButton:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+}
+
+.buttonLoader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .rescheduleForm {
+    grid-template-columns: 1fr;
+  }
+  
+  .modalFooter {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+  
+  .modalHeader {
+    padding: 16px;
+  }
+  
+  .modalBody {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,177 @@
+.paymentIntegration {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.paymentHeader {
+  background: linear-gradient(135deg, #4e79a7 0%, #2c3e50 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+}
+
+.paymentHeader h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+.paymentContent {
+  padding: 2rem;
+}
+
+.paymentHistory {
+  animation: fadeIn 0.5s ease;
+}
+
+.historyTable {
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tableHeader {
+  display: flex;
+  background: #f5f7fa;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.headerCell {
+  flex: 1;
+}
+
+.tableRow {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableCell {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.statusBadge.completed {
+  background: #e6f7ee;
+  color: #4CAF50;
+}
+
+.downloadLink {
+  color: #4a6cf7;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.downloadLink:hover {
+  text-decoration: underline;
+}
+
+.noPayments {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .tableHeader {
+    display: none;
+  }
+  
+  .tableRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .tableCell {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .tableCell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #777;
+    margin-right: 1rem;
+  }
+}
+/* Previous styles remain the same */
+
+.downloadButton {
+  background: none;
+  color: #3a5bd9;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.downloadButton:hover {
+  color: #940e0e;
+  transform: translateY(-1px);
+}
+
+.downloadButton:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .downloadButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .tableCell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #777;
+    margin-right: 1rem;
+  }
+  
+  /* Make sure buttons are properly aligned in mobile view */
+  .tableCell:last-child {
+    justify-content: flex-end;
+  }
+}

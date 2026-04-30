@@ -1,0 +1,373 @@
+/* Modern Modal Overlay with blur effect */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal Container with smooth shadow and animation */
+.viewModalContainer {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Header with sticky positioning */
+.modalHeader {  padding: 2rem 3.5rem;
+  background: linear-gradient(135deg, #4e79a7 0%, #2c3e50 100%);
+  color: white;
+  margin-top: -20px;
+  display: flex;
+  gap: 450px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #feffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  color: #f4f4f5;
+  font-size: 1.2em;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #eeeeee;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 15px;
+  border-radius: 4px;
+  margin-right: auto;
+}
+
+.closeButton:hover {
+  color: #ef4444;
+  background-color: #fee2e2;
+}
+
+/* Modal Content */
+.viewModalContent {
+  padding: 25px;
+}
+
+/* Detail Sections */
+.detailSection {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detailSection:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sectionIcon {
+  color: #3b82f6;
+  font-size: 1em;
+}
+
+/* Grid Layout for Details */
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detailLabel {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.inlineIcon {
+  color: #94a3b8;
+  font-size: 0.9em;
+}
+
+.detailValue {
+  font-size: 0.95rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* Medication Details */
+.medicationsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medicationDetail {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #3b82f6;
+}
+
+.medicationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.medicationHeader h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.statusBadge {
+  color: #16a34a;
+  background-color: #dcfce7;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.statusBadge.expired {
+  color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.medicationName {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+.medicationName span {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.instructions {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  color: #334155;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.instructions p {
+  margin: 5px 0 0 0;
+}
+
+/* Clinic Information */
+.clinicInfo {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.clinicName {
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+.clinicAddress,
+.clinicContact {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.clinicContact {
+  margin-top: 10px;
+}
+
+/* Action Buttons */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.printButton {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #dcfce7;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.printButton:hover {
+  background-color: #dcfce7;
+}
+
+.cancelButton {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #e2e8f0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .viewModalContainer {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modalActions {
+    flex-direction: column;
+  }
+  
+  .printButton,
+  .cancelButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .viewModalContainer,
+  .viewModalContainer * {
+    visibility: visible;
+  }
+  
+  .viewModalContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: white;
+    color: black;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+  }
+  
+
+  
+  .modalHeader h2 {
+    font-size: 1.5rem;
+  }
+  
+  .closeButton,
+  .modalActions {
+    display: none;
+  }
+  
+  .detailSection {
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+  
+  .medicationDetail {
+    background-color: transparent !important;
+    border-left: 2px solid #000 !important;
+  }
+  
+  /* Ensure good contrast for printing */
+  .detailLabel,
+  .detailValue {
+    color: #000 !important;
+  }
+  
+  /* Status indicators should be visible when printed */
+  .statusBadge {
+    color: #000 !important;
+    background-color: transparent !important;
+    border: 1px solid #000 !important;
+    padding: 2px 6px !important;
+  }
+}

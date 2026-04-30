@@ -1,0 +1,297 @@
+.notificationCenter {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.darkMode.notificationCenter {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.darkMode .header {
+  border-bottom-color: #444;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.headerIcon {
+  margin-right: 12px;
+  font-size: 1.5em;
+  color: #4CAF50;
+}
+
+.badge {
+  background-color: #F44336;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+.headerRight {
+  display: flex;
+  gap: 12px;
+}
+
+.markAllButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.markAllButton:hover {
+  background-color: #3d8b40;
+}
+
+.markAllButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.settingsButton {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.darkMode .settingsButton {
+  color: #aaa;
+}
+
+.settingsButton:hover {
+  color: #333;
+}
+
+.darkMode .settingsButton:hover {
+  color: #fff;
+}
+
+.settingsPanel {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.darkMode .settingsPanel {
+  background-color: #333;
+}
+
+.settingsPanel h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.darkMode .settingsPanel h3 {
+  color: #f0f0f0;
+}
+
+.settingItem {
+  margin-bottom: 12px;
+}
+
+.settingItem label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.filterBar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.darkMode .filterButton {
+  border-color: #555;
+  color: #f0f0f0;
+}
+
+.filterButton:hover {
+  background-color: #f0f0f0;
+}
+
+.darkMode .filterButton:hover {
+  background-color: #444;
+}
+
+.filterButton.active {
+  background-color: #e0f7fa;
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.darkMode .filterButton.active {
+  background-color: #1a3a3e;
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificationItem {
+  display: flex;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.darkMode .notificationItem {
+  background-color: #333;
+}
+
+.notificationItem.unread {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196F3;
+}
+
+.darkMode .notificationItem.unread {
+  background-color: #1a3a3e;
+  border-left-color: #4CAF50;
+}
+
+.notificationIcon {
+  font-size: 1.5em;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.notificationContent {
+  flex-grow: 1;
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.notificationHeader h3 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.timestamp {
+  color: #777;
+  font-size: 0.9em;
+}
+
+.darkMode .timestamp {
+  color: #aaa;
+}
+
+.notificationItem p {
+  margin: 0;
+  color: #555;
+}
+
+.darkMode .notificationItem p {
+  color: #ccc;
+}
+
+.notificationActions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.2s;
+  padding: 4px;
+}
+
+.darkMode .actionButton {
+  color: #aaa;
+}
+
+.actionButton:hover {
+  color: #333;
+}
+
+.darkMode .actionButton:hover {
+  color: #fff;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  color: #777;
+}
+
+.darkMode .emptyState {
+  color: #aaa;
+}
+
+.emptyIcon {
+  font-size: 3em;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.darkMode .emptyIcon {
+  color: #555;
+}
+
+.emptyState h3 {
+  margin: 16px 0 8px;
+  color: #333;
+}
+
+.darkMode .emptyState h3 {
+  color: #f0f0f0;
+}
+
+.emptyState p {
+  margin: 0;
+}

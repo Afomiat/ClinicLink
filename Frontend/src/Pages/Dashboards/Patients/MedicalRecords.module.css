@@ -1,0 +1,393 @@
+.medicalRecords {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+
+.darkMode.medicalRecords {
+  color: #f0f0f0;
+  background-color: #1a1a1a;
+}
+
+.header {
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.darkMode .header {
+  border-bottom-color: #444;
+}
+
+.header h1 {
+  display: flex;
+  align-items: center;
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.darkMode .header h1 {
+  color: #f0f0f0;
+}
+
+.headerIcon {
+  margin-right: 15px;
+  color: #3498db;
+  font-size: 1.8rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.darkMode .subtitle {
+  color: #bdc3c7;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.searchContainer {
+  position: relative;
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.darkMode .searchInput {
+  background-color: #333;
+  border-color: #555;
+  color: #f0f0f0;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterIcon {
+  font-size: 1.3rem;
+  color: #7f8c8d;
+}
+
+.filterSelect {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.darkMode .filterSelect {
+  background-color: #333;
+  border-color: #555;
+  color: #f0f0f0;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 20px;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.darkMode .loadingSpinner {
+  border-color: #444;
+  border-top-color: #3498db;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+.recordsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recordCard {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.darkMode .recordCard {
+  background-color: #2a2a2a;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.recordCard.critical {
+  border-left: 4px solid #e74c3c;
+}
+
+.recordCard.expanded {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.darkMode .recordCard.expanded {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.recordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.recordMainInfo {
+  flex: 1;
+  min-width: 200px;
+}
+
+.recordHeader h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.darkMode .recordHeader h3 {
+  color: #f0f0f0;
+}
+
+.recordDate {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.recordDoctor {
+  margin: 5px 0 0 0;
+  font-size: 0.95rem;
+  color: #3498db;
+}
+
+.recordDiagnosis {
+  flex: 1;
+  min-width: 250px;
+  font-size: 0.95rem;
+}
+
+.recordDiagnosis span {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.darkMode .recordDiagnosis span {
+  color: #f0f0f0;
+}
+
+.expandIcon {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  transition: transform 0.3s;
+}
+
+.recordCard.expanded .expandIcon {
+  transform: rotate(180deg);
+}
+
+.recordDetails {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.darkMode .recordDetails {
+  border-top-color: #444;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recordSummary {
+  margin-bottom: 20px;
+}
+
+.recordSummary h4 {
+  margin: 20px 0 10px 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.darkMode .recordSummary h4 {
+  color: #f0f0f0;
+}
+
+.recordSummary p {
+  margin: 0;
+  line-height: 1.6;
+  color: #34495e;
+}
+
+.darkMode .recordSummary p {
+  color: #ecf0f1;
+}
+
+.attachments h4 {
+  margin: 20px 0 10px 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.darkMode .attachments h4 {
+  color: #f0f0f1;
+}
+
+.attachments ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.attachments li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.darkMode .attachments li {
+  border-bottom-color: #444;
+}
+
+.attachments li:last-child {
+  border-bottom: none;
+}
+
+.attachments li span {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #34495e;
+}
+
+.darkMode .attachments li span {
+  color: #bdc3c7;
+}
+
+.fileActions {
+  display: flex;
+  gap: 10px;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background-color:transparent;
+  border: none;
+  /* border-radius: 4px; */
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: rgb(37, 156, 106);
+}
+
+.darkMode .actionButton {
+  background-color: #333;
+  border-color: #555;
+  color: #f0f0f0;
+}
+
+.actionButton:hover {
+  background-color: #e9ecef;
+}
+
+.darkMode .actionButton:hover {
+  background-color: #444;
+}
+
+.footerNote {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+.downloadButton {
+  background: none;
+  color: #3a5bd9;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.downloadButton:hover {
+  color: #940e0e;
+  transform: translateY(-1px);
+}
+
+.downloadButton:active {
+  transform: translateY(0);
+}
