@@ -1,491 +1,538 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import {
-  FaUserMd,
-  FaCalendarAlt,
-  FaCommentAlt,
-  FaFileMedicalAlt,
-  FaPills,
-  FaVial,
-  FaSearch,
-  FaArrowRight,
-  FaBell,
-  FaPlus
-} from 'react-icons/fa';
-import { FiX, FiEye, FiRefreshCw } from 'react-icons/fi';
-
-import { RiHealthBookFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import { GiHealthNormal } from 'react-icons/gi';
-import styles from './PatientDashboard.module.css';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { FiRefreshCw, FiArrowRight } from 'react-icons/fi';
 import PatientDashboardModal from './PatientDashboardModal';
 import RescheduleModal from './RescheduleModal';
-import RefillModal from './RefillModal'
-import ViewPrescriptionModal from './ViewPrescriptionModal'
+import RefillModal from './RefillModal';
+import ViewPrescriptionModal from './ViewPrescriptionModal';
 import ViewTestResultModal from './ViewTestResultModal';
-
-
-
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
 
-  // Sample data - replace with real API calls
   const [patientData, setPatientData] = useState({
     profile: {
-      name: "Sarah Johnson",
-      firstName: "Sarah",
-      lastName: "Johnson",
+      name: 'Sarah Johnson',
+      firstName: 'Sarah',
+      lastName: 'Johnson',
       age: 42,
-      gender: "Female",
-      phone: "+1 (555) 123-4567",
-      avatar: "SJ",
-      lastLogin: new Date().toISOString()
+      gender: 'Female',
+      phone: '+1 (555) 123-4567',
+      avatar: 'SJ',
+      lastLogin: new Date().toISOString(),
     },
     stats: {
       upcomingAppointments: 2,
       activePrescriptions: 3,
-      testResults: 5
+      testResults: 5,
     },
     appointments: [
       {
         id: 1,
-        doctor: "Robert Chen",
-        specialty: "Cardiology",
+        doctor: 'Robert Chen',
+        specialty: 'Cardiology',
         date: new Date(Date.now() + 86400000 * 3).toISOString(),
-        time: "10:30 AM",
-        location: "Main Hospital, Room 302",
-        status: "Scheduled"
+        time: '10:30 AM',
+        location: 'Main Hospital, Room 302',
+        status: 'Scheduled',
       },
       {
         id: 2,
-        doctor: "Lisa Wong",
-        specialty: "Dermatology",
+        doctor: 'Lisa Wong',
+        specialty: 'Dermatology',
         date: new Date(Date.now() + 86400000 * 8).toISOString(),
-        time: "2:15 PM",
-        location: "West Clinic",
-        status: "Scheduled"
-      }
+        time: '2:15 PM',
+        location: 'West Clinic',
+        status: 'Scheduled',
+      },
     ],
     prescriptions: [
       {
         id: 1,
-        medication: "Atorvastatin",
-        dosage: "40mg once daily",
-        status: "active",
-        doctor: "Robert Chen",
+        medication: 'Atorvastatin',
+        dosage: '40mg once daily',
+        status: 'active',
+        doctor: 'Robert Chen',
         date: new Date(Date.now() - 86400000 * 7).toISOString(),
-        instructions: "Take with food at bedtime"
+        instructions: 'Take with food at bedtime',
+        category: 'CHOLESTEROL',
+        color: 'purple',
       },
       {
         id: 2,
-        medication: "Lisinopril",
-        dosage: "10mg once daily",
-        status: "active",
-        doctor: "Robert Chen",
+        medication: 'Lisinopril',
+        dosage: '10mg once daily',
+        status: 'active',
+        doctor: 'Robert Chen',
         date: new Date(Date.now() - 86400000 * 14).toISOString(),
-        instructions: "Take in the morning"
+        instructions: 'Take in the morning',
+        category: 'BLOOD PRESSURE',
+        color: 'blue',
       },
       {
         id: 3,
-        medication: "selemon",
-        dosage: "10mg once daily",
-        status: "active",
-        doctor: "Robert Chen",
+        medication: 'Selemon',
+        dosage: '10mg once daily',
+        status: 'active',
+        doctor: 'Robert Chen',
         date: new Date(Date.now() - 86400000 * 14).toISOString(),
-        instructions: "Take in the morning"
-      }
-      ,
+        instructions: 'Take in the morning',
+        category: 'VITAMINS',
+        color: 'orange',
+      },
       {
         id: 4,
-        medication: "selemon",
-        dosage: "10mg once daily",
-        status: "active",
-        doctor: "Robert Chen",
-        date: new Date(Date.now() - 86400000 * 14).toISOString(),
-        instructions: "Take in the morning"
-      }
+        medication: 'Metformin',
+        dosage: '500mg twice daily',
+        status: 'active',
+        doctor: 'Robert Chen',
+        date: new Date(Date.now() - 86400000 * 20).toISOString(),
+        instructions: 'Take with meals',
+        category: 'DIABETES',
+        color: 'green',
+      },
     ],
     testResults: [
       {
         id: 1,
-        testName: "Complete Blood Count",
-        status: "Completed",
+        testName: 'Complete Blood Count',
+        shortName: 'CBC',
+        status: 'Completed',
+        statusLabel: 'Normal',
+        statusColor: 'green',
         date: new Date(Date.now() - 86400000 * 3).toISOString(),
-        labName: "City Lab Center",
-        results: "All values within normal range"
+        labName: 'City Lab Center',
+        results: 'All values within normal range',
+        value: '14.2 g/dL',
       },
       {
         id: 2,
-        testName: "Lipid Panel",
-        status: "Completed",
+        testName: 'Lipid Panel',
+        shortName: 'Lipid Panel',
+        status: 'Completed',
+        statusLabel: 'Elevated',
+        statusColor: 'orange',
         date: new Date(Date.now() - 86400000 * 10).toISOString(),
-        labName: "Main Hospital Lab",
-        results: "Cholesterol slightly elevated"
-      }
-    ]
+        labName: 'Main Hospital Lab',
+        results: 'Cholesterol slightly elevated',
+        value: '185 mg/dL',
+      },
+    ],
   });
- 
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState('');
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [appointmentToReschedule, setAppointmentToReschedule] = useState(null);
-  const [showAllPrescriptions, setShowAllPrescriptions] = useState(false);
   const [isRefillModalOpen, setIsRefillModalOpen] = useState(false);
   const [viewingPrescription, setViewingPrescription] = useState(null);
-const [viewingTestResult, setViewingTestResult] = useState(null);
+  const [viewingTestResult, setViewingTestResult] = useState(null);
 
   const formatDate = (dateStr) => {
-    const options = { 
-      weekday: 'short', 
-      month: 'short', 
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    return new Date(dateStr).toLocaleDateString('en-US', options);
+    });
   };
+
+  const formatTime = (dateStr) => {
+    return new Date(dateStr).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
   const getUpcomingAppointment = () => {
     const now = new Date();
     const upcoming = patientData.appointments
-      .filter(app => new Date(app.date) > now)
+      .filter((app) => new Date(app.date) > now)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
-    
     return upcoming.length > 0 ? upcoming[0] : null;
   };
-  const getFilteredPrescriptions = () => {
-  // Sort by date (newest first)
-  const sorted = [...patientData.prescriptions].sort((a, b) => 
-    new Date(b.date) - new Date(a.date)
-  );
-  
-  // Return either all or just the first 3
-  return showAllPrescriptions ? sorted : sorted.slice(0, 3);
-};
 
-  const handlePrevMonth = () => {
+  const handlePrevMonth = () =>
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  };
-
-  const handleNextMonth = () => {
+  const handleNextMonth = () =>
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  };
 
   const handleReschedule = (updatedAppointment) => {
-  setPatientData(prev => ({
-    ...prev,
-    appointments: prev.appointments.map(app => 
-      app.id === updatedAppointment.id ? updatedAppointment : app
-    ),
-    stats: {
-      ...prev.stats,
-      upcomingAppointments: prev.appointments.filter(a => 
-        new Date(a.date) > new Date() && 
-        a.status !== 'Cancelled'
-      ).length
-    }
-  }));
-};
+    setPatientData((prev) => ({
+      ...prev,
+      appointments: prev.appointments.map((app) =>
+        app.id === updatedAppointment.id ? updatedAppointment : app
+      ),
+    }));
+  };
+
+  const colorMap = {
+    purple: { border: 'border-l-purple-500', label: 'text-purple-600', bg: 'bg-purple-50' },
+    blue:   { border: 'border-l-blue-500',   label: 'text-blue-600',   bg: 'bg-blue-50'   },
+    orange: { border: 'border-l-orange-500', label: 'text-orange-600', bg: 'bg-orange-50' },
+    green:  { border: 'border-l-green-500',  label: 'text-green-600',  bg: 'bg-green-50'  },
+  };
+
+  const statusColorMap = {
+    green:  'bg-green-50 text-green-700',
+    orange: 'bg-orange-50 text-orange-700',
+    red:    'bg-red-50 text-red-700',
+  };
+
+  const nextAppt = getUpcomingAppointment();
+  const displayedPrescriptions = patientData.prescriptions
+    .filter((p) => {
+      if (!searchQuery.trim()) return true;
+      return (
+        p.medication.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.doctor.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
+  const activityBars = [40, 65, 50, 85, 70, 95, 60];
+  const dayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
   return (
-    <div className={styles.dashboard}>
-      {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.userInfo}>
-          <div className={styles.avatar}>
-            {patientData.profile.avatar}
-          </div>
-          <div>
-            <h1>Welcome back, <span>{patientData.profile.firstName}</span></h1>
-            <p className={styles.lastLogin}>
-              Last login: {formatDate(patientData.profile.lastLogin)}
-            </p>
-          </div>
-        </div>
+    <div className="px-8 py-8 pb-16 min-h-screen bg-background">
 
-      </header>
-
-      {/* Stats Cards */}
-      <div className={styles.statsGrid}>
-        <div className={`${styles.statCard} ${styles.primary}`}>
-          <RiHealthBookFill className={styles.statIcon} />
-          <div>
-            <h3>{patientData.stats.upcomingAppointments}</h3>
-            <p>Upcoming Appointments</p>
-          </div>
+      {/* ── Welcome Header ── */}
+      <div className="mb-8 flex justify-between items-end flex-wrap gap-4">
+        <div>
+          <h2 className="text-2xl font-extrabold text-slate-900 font-manrope">
+            Welcome back, {patientData.profile.firstName} 👋
+          </h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Your health status is stable. Last login:{' '}
+            {new Date(patientData.profile.lastLogin).toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </p>
         </div>
-        
-        <div className={`${styles.statCard} ${styles.secondary}`}>
-          <FaPills className={styles.statIcon} />
-          <div>
-            <h3>{patientData.stats.activePrescriptions}</h3>
-            <p>Active Prescriptions</p>
-          </div>
-        </div>
-        
-        <div className={`${styles.statCard} ${styles.tertiary}`}>
-          <FaVial className={styles.statIcon} />
-          <div>
-            <h3>{patientData.stats.testResults}</h3>
-            <p>Test Results</p>
-          </div>
-        </div>
-        
-        <div className={`${styles.statCard} ${styles.quaternary}`}>
-          <GiHealthNormal className={styles.statIcon} />
-          <div>
-            <h3>Good</h3>
-            <p>Health Status</p>
-          </div>
+        <div className="flex items-center gap-2 bg-secondary-container/20 text-secondary px-4 py-2 rounded-full text-xs font-bold border border-secondary/10">
+          <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+          Systems Normal
         </div>
       </div>
 
-     {/* Upcoming Appointment */}
-      {getUpcomingAppointment() && (
-        <section className={styles.upcomingAppointment}>
-          <div className={styles.sectionHeader}>
-            <h2>
-              <FaCalendarAlt /> Next Appointment
-            </h2>
-            <button 
-              className={styles.viewAll}
-              onClick={() => setIsModalOpen(true)}
-            >
-              View All <FaArrowRight />
-            </button>
+      {/* ── Stat Cards ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+        {/* Appointments */}
+        <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
+          onClick={() => navigate('appointments')}>
+          <div className="flex justify-between items-start mb-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary">calendar_today</span>
+            </div>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Upcoming</span>
           </div>
-          
-          <div className={styles.appointmentCard}>
-            <div className={styles.appointmentContent}>
-              <div className={styles.doctorInfo}>
-                <div className={styles.doctorAvatar}>
-                  {getUpcomingAppointment().doctor.split(' ').map(n => n[0]).join('')}
+          <p className="text-3xl font-extrabold text-slate-900 mb-1">{patientData.stats.upcomingAppointments}</p>
+          <p className="text-sm text-slate-500">Upcoming Appointments</p>
+        </div>
+
+        {/* Prescriptions */}
+        <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
+          onClick={() => navigate('prescriptions')}>
+          <div className="flex justify-between items-start mb-4">
+            <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-purple-600">medication</span>
+            </div>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active</span>
+          </div>
+          <p className="text-3xl font-extrabold text-slate-900 mb-1">{patientData.stats.activePrescriptions}</p>
+          <p className="text-sm text-slate-500">Active Prescriptions</p>
+        </div>
+
+        {/* Test Results */}
+        <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
+          onClick={() => navigate('test-results')}>
+          <div className="flex justify-between items-start mb-4">
+            <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-secondary">biotech</span>
+            </div>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">New</span>
+          </div>
+          <p className="text-3xl font-extrabold text-slate-900 mb-1">{patientData.stats.testResults}</p>
+          <p className="text-sm text-slate-500">Test Results</p>
+        </div>
+
+        {/* Health Status – gradient card */}
+        <div className="p-6 rounded-2xl shadow-sm bg-gradient-to-br from-secondary to-[#008f60] text-white hover:-translate-y-1 transition-all cursor-pointer">
+          <div className="flex justify-between items-start mb-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-white">favorite</span>
+            </div>
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Current</span>
+          </div>
+          <p className="text-3xl font-extrabold mb-1">Good</p>
+          <p className="text-sm text-white/80">Health Status</p>
+        </div>
+      </div>
+
+      {/* ── Main Grid ── */}
+      <div className="grid grid-cols-12 gap-7">
+
+        {/* Left column (8) */}
+        <div className="col-span-12 lg:col-span-8 space-y-7">
+
+          {/* Next Appointment */}
+          {nextAppt && (
+            <section className="glass-card rounded-2xl overflow-hidden shadow-sm border border-slate-100">
+              <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 className="text-base font-bold text-slate-900 font-manrope flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-xl">event</span>
+                  Next Appointment
+                </h3>
+                <button
+                  className="text-sm font-semibold text-primary hover:underline"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  View Calendar
+                </button>
+              </div>
+
+              <div className="p-6 flex flex-wrap items-center gap-6">
+                {/* Doctor Avatar */}
+                <div className="relative flex-shrink-0">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center shadow-md">
+                    <span className="text-2xl font-extrabold text-primary">
+                      {nextAppt.doctor.split(' ').map((n) => n[0]).join('')}
+                    </span>
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-secondary text-white p-1 rounded-lg">
+                    <span className="material-symbols-outlined text-sm">verified</span>
+                  </div>
                 </div>
-                <div>
-                  <h3>Dr. {getUpcomingAppointment().doctor}</h3>
-                  <p className={styles.specialty}>{getUpcomingAppointment().specialty}</p>
+
+                {/* Details */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-3 flex-wrap">
+                    <h4 className="text-lg font-bold text-slate-900">Dr. {nextAppt.doctor}</h4>
+                    <span className="px-2 py-0.5 bg-blue-50 text-primary text-[10px] font-black uppercase tracking-wider rounded">
+                      {nextAppt.specialty}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-500">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-slate-400 text-lg">calendar_month</span>
+                      {formatDate(nextAppt.date)}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-slate-400 text-lg">schedule</span>
+                      {nextAppt.time}
+                    </div>
+                    <div className="flex items-center gap-2 sm:col-span-2">
+                      <span className="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+                      {nextAppt.location}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  <button className="bg-primary text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                    Join Telehealth
+                  </button>
+                  <button
+                    className="border border-slate-200 text-slate-600 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors"
+                    onClick={() => {
+                      setAppointmentToReschedule(nextAppt);
+                      setIsRescheduleModalOpen(true);
+                    }}
+                  >
+                    Reschedule
+                  </button>
                 </div>
               </div>
-              
-              <div className={styles.appointmentDetails}>
-                <div className={styles.dateTime}>
-                  <span className={styles.date}>
-                    {formatDate(getUpcomingAppointment().date)}
-                  </span>
-                  <span className={styles.time}>
-                    {getUpcomingAppointment().time}
-                  </span>
+            </section>
+          )}
+
+          {/* Prescriptions */}
+          <section className="glass-card rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center flex-wrap gap-3">
+              <h3 className="text-base font-bold text-slate-900 font-manrope flex items-center gap-2">
+                <span className="material-symbols-outlined text-purple-600 text-xl">medication</span>
+                My Prescriptions
+              </h3>
+              <div className="flex gap-3 items-center flex-wrap">
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">search</span>
+                  <input
+                    className="pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs w-40 focus:outline-none focus:ring-1 focus:ring-purple-200"
+                    placeholder="Search meds..."
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                 </div>
-                <p className={styles.location}>
-                  {getUpcomingAppointment().location}
-                </p>
+                <button
+                  className="bg-purple-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-purple-700 transition-colors flex items-center gap-1"
+                  onClick={() => setIsRefillModalOpen(true)}
+                >
+                  <FiRefreshCw className="text-xs" /> Request Refill
+                </button>
               </div>
             </div>
-            
-            <div className={styles.actions}>
 
-              <button 
-                className={styles.secondaryButton}
-                onClick={() => {
-                  const upcomingAppt = getUpcomingAppointment();
-                  if (upcomingAppt) {
-                    setAppointmentToReschedule(upcomingAppt);
-                    setIsRescheduleModalOpen(true);
-                  }
-                }}
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                {displayedPrescriptions.map((prescription) => {
+                  const c = colorMap[prescription.color] || colorMap.blue;
+                  return (
+                    <div
+                      key={prescription.id}
+                      className={`p-5 border border-slate-100 rounded-xl bg-slate-50/30 hover:bg-white hover:shadow-md transition-all border-l-4 cursor-pointer ${c.border}`}
+                      onClick={() => setViewingPrescription(prescription)}
+                    >
+                      <p className={`text-[10px] font-black mb-1 uppercase tracking-wider ${c.label}`}>
+                        {prescription.category}
+                      </p>
+                      <h4 className="font-bold text-slate-900 text-sm mb-2">{prescription.medication}</h4>
+                      <div className="space-y-1 text-xs text-slate-500">
+                        <p><span className="font-semibold text-slate-700">Dosage:</span> {prescription.dosage}</p>
+                        <p><span className="font-semibold text-slate-700">Dr.</span> {prescription.doctor}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {patientData.prescriptions.length > 3 && (
+                <div className="mt-5 text-center">
+                  <Link
+                    to="prescriptions"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                  >
+                    View All <FiArrowRight />
+                  </Link>
+                </div>
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* Right column (4) */}
+        <div className="col-span-12 lg:col-span-4 space-y-7">
+
+          {/* Test Results */}
+          <section className="glass-card rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+              <h3 className="text-base font-bold text-slate-900 font-manrope flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-xl">biotech</span>
+                Latest Results
+              </h3>
+            </div>
+            <div className="p-5">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <th className="pb-3">Test</th>
+                    <th className="pb-3">Result</th>
+                    <th className="pb-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {patientData.testResults.map((test) => (
+                    <tr
+                      key={test.id}
+                      className="hover:bg-slate-50 transition-colors cursor-pointer"
+                      onClick={() => setViewingTestResult(test)}
+                    >
+                      <td className="py-3">
+                        <p className="font-bold text-slate-800 text-sm">{test.shortName}</p>
+                        <p className="text-[10px] text-slate-400">{formatDate(test.date)}</p>
+                      </td>
+                      <td className="py-3 text-sm font-medium text-slate-700">{test.value}</td>
+                      <td className="py-3">
+                        <span className={`px-2 py-0.5 text-[10px] font-bold rounded-md ${
+                          test.statusColor === 'green' ? 'bg-secondary/10 text-secondary' : 'bg-orange-50 text-orange-700'
+                        }`}>
+                          {test.statusLabel}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button
+                className="w-full mt-5 py-2 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                onClick={() => navigate('test-results')}
               >
-                Reschedule
+                View All Lab Work
+                <span className="material-symbols-outlined text-base">arrow_forward</span>
               </button>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
 
-{/* Prescriptions Section */}
-<section className={styles.prescriptions}>
-  <div className={styles.sectionHeader}>
-    <h2>
-      <FaPills /> My Prescriptions
-    </h2>
-    <div className={styles.searchWrapper}>
-      {/* <FaSearch className={styles.searchIcon} /> */}
-      <input
-        type="text"
-        placeholder="Search prescriptions..."
-        className={styles.searchInput}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button 
-        className={styles.addButton}
-        onClick={() => setIsRefillModalOpen(true)}
-      >
-        <FiRefreshCw /> Request Refill
-      </button>
-    </div>
-  </div>
-  
-  <div className={styles.prescriptionsGrid}>
-    {patientData.prescriptions
-      .filter(prescription => {
-        // Return all prescriptions if search query is empty
-        if (!searchQuery.trim()) return true;
-        
-        // Case-insensitive search on medication name and doctor
-        const query = searchQuery.toLowerCase();
-        return (
-          prescription.medication.toLowerCase().includes(query) ||
-          prescription.doctor.toLowerCase().includes(query)
-        );
-      })
-      .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date (newest first)
-      .slice(0, 3) // Take only first 3
-      .map(prescription => (
-        <div 
-          key={prescription.id} 
-          className={styles.prescriptionCard}
-          onClick={() => setViewingPrescription(prescription)}
-        >
-          <div className={styles.prescriptionHeader}>
-            <h3>{prescription.medication}</h3>
-            {/* <span className={`${styles.status} ${prescription.status === 'active' ? styles.active : styles.inactive}`}>
-              {prescription.status}
-            </span> */}
-          </div>
-          
-          <div className={styles.prescriptionBody}>
-            <p className={styles.dosage}>{prescription.dosage}</p>
-            <p className={styles.doctor}>Dr. {prescription.doctor}</p>
-            <p className={styles.date}>Prescribed: {formatDate(prescription.date)}</p>
-          </div>
-          
-          <div className={styles.prescriptionFooter}>
-            <button 
-              className={styles.viewButton}
-              onClick={(e) => {
-                e.stopPropagation();
-                setViewingPrescription(prescription);
-              }}
-            >
-              View Details <FaArrowRight />
-            </button>
-          </div>
+          {/* Activity Insights */}
+          <section className="glass-card rounded-2xl shadow-sm p-6 bg-gradient-to-br from-white to-secondary/5 border border-slate-100">
+            <h3 className="font-bold text-slate-900 mb-5 flex items-center gap-2 font-manrope">
+              <span className="material-symbols-outlined text-secondary text-xl">show_chart</span>
+              Health Activity
+            </h3>
+            <div className="h-36 flex items-end gap-2 px-1">
+              {activityBars.map((height, i) => (
+                <div
+                  key={i}
+                  className={`flex-1 rounded-t-lg transition-colors cursor-pointer ${
+                    i === 5 ? 'bg-secondary' : 'bg-secondary/10 hover:bg-secondary/40'
+                  }`}
+                  style={{ height: `${height}%` }}
+                />
+              ))}
+            </div>
+            <div className="flex justify-between mt-3">
+              {dayLabels.map((day, i) => (
+                <span
+                  key={i}
+                  className={`text-[10px] font-bold ${i === 5 ? 'text-secondary' : 'text-slate-400'}`}
+                >
+                  {day}
+                </span>
+              ))}
+            </div>
+          </section>
         </div>
-      ))}
-  </div>
-  
-  {/* View All button that links to prescriptions page */}
-  {patientData.prescriptions.length > 3 && (
-    <div className={styles.viewAllWrapper}>
-      <Link 
-        to="prescriptions"
-        className={styles.viewAll}
-      >
-        View All <FaArrowRight />
-      </Link>
-    </div>
-  )}
-</section>
+      </div>
 
-      {/* Test Results Section */}
-      <section className={styles.testResults}>
-        <div className={styles.sectionHeader}>
-          <h2>
-            <FaVial /> Test Results
-          </h2>
-          <div className={styles.searchWrapper}>
-            {/* <FaSearch className={styles.searchIcon} /> */}
-            <input
-              type="text"
-              placeholder="Search test results..."
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-        
-        <div className={styles.resultsTable}>
-          <div className={styles.tableHeader}>
-            <div className={styles.col1}>Test Name</div>
-            <div className={styles.col2}>Date</div>
-            <div className={styles.col3}>Status</div>
-            <div className={styles.col4}>Lab</div>
-            <div className={styles.col5}>Action</div>
-          </div>
-          
-            {patientData.testResults
-              .filter(test =>
-                test.testName.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map(test => (
-                <div key={test.id} className={styles.tableRow}>
-                  <div className={styles.col1}>{test.testName}</div>
-                  <div className={styles.col2}>{formatDate(test.date)}</div>
-                  <div className={`${styles.col3} ${styles[test.status.toLowerCase()]}`}>
-                    {test.status}
-                  </div>
-                  <div className={styles.col4}>{test.labName}</div>
-                  <div className={styles.col5}>
-                  <button 
-                    className={styles.viewButton}
-                    onClick={() => setViewingTestResult(test)}
-                  >
-                    View <FaArrowRight />
-                  </button>
-
-                  </div>
+      {/* ── Quick Actions ── */}
+      <section className="mt-8">
+        <h2 className="text-lg font-bold text-slate-900 font-manrope mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { icon: 'person_search', label: 'Find a Doctor', sub: 'Search specialists', color: 'blue', action: () => navigate('doctors', { state: { activeTab: 'allDoctors' } }) },
+            { icon: 'event_available', label: 'Book Appointment', sub: 'Schedule a visit', color: 'green', action: () => navigate('appointments') },
+            { icon: 'chat', label: 'Message Doctor', sub: 'Secure consultation', color: 'orange', action: () => navigate('messages') },
+            { icon: 'folder_shared', label: 'Medical Records', sub: 'Download history', color: 'purple', action: () => navigate('medical-records') },
+          ].map(({ icon, label, sub, color, action }) => {
+            const hoverMap = {
+              blue: 'group-hover:bg-primary group-hover:text-white bg-blue-50 text-primary',
+              green: 'group-hover:bg-secondary group-hover:text-white bg-secondary/10 text-secondary',
+              orange: 'group-hover:bg-orange-600 group-hover:text-white bg-orange-50 text-orange-600',
+              purple: 'group-hover:bg-purple-600 group-hover:text-white bg-purple-50 text-purple-600',
+            };
+            return (
+              <button
+                key={label}
+                onClick={action}
+                className="flex items-center gap-4 p-5 glass-card rounded-2xl border border-slate-100 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all group text-left"
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${hoverMap[color]}`}>
+                  <span className="material-symbols-outlined">{icon}</span>
                 </div>
-            ))}
-
+                <div>
+                  <p className="font-bold text-slate-900 text-sm">{label}</p>
+                  <p className="text-xs text-slate-500">{sub}</p>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </section>
 
-{/* Quick Actions */}
-<section className={styles.quickActions}>
-  <h2>Quick Actions</h2>
-  <div className={styles.actionsGrid}>
-    {/* Find a Doctor */}
-    <button 
-      onClick={() => navigate('doctors', { state: { activeTab: 'allDoctors' } })}
-      className={styles.actionCard}
-    >
-      <FaUserMd className={styles.actionIcon} />
-      <span>Find a Doctor</span>
-    </button>
-
-    {/* Book Appointment */}
-    <button 
-      onClick={() => navigate('appointments')}
-      className={styles.actionCard}
-    >
-      <FaCalendarAlt className={styles.actionIcon} />
-      <span>Book Appointment</span>
-    </button>
-
-    {/* Message Doctor */}
-    <button 
-      onClick={() => navigate('messages')}
-      className={styles.actionCard}
-    >
-      <FaCommentAlt className={styles.actionIcon} />
-      <span>Message Doctor</span>
-    </button>
-
-    {/* Medical Records */}
-    <button 
-      onClick={() => navigate('medical-records')}
-      className={styles.actionCard}
-    >
-      <FaFileMedicalAlt className={styles.actionIcon} />
-      <span>Medical Records</span>
-    </button>
-  </div>
-</section>
-
-      {/* Modal */}
+      {/* ── Modals ── */}
       <PatientDashboardModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -495,40 +542,30 @@ const [viewingTestResult, setViewingTestResult] = useState(null);
         onPrevMonth={handlePrevMonth}
         onNextMonth={handleNextMonth}
       />
-    <RescheduleModal
-      isOpen={isRescheduleModalOpen}
-      onClose={() => setIsRescheduleModalOpen(false)}
-      appointment={appointmentToReschedule}
-      onReschedule={handleReschedule}
-    />
-    <RefillModal
-      isOpen={isRefillModalOpen}
-      onClose={() => {
-        setIsRefillModalOpen(false);
-        setStep(1); // Reset to first step when closing
-        setIsSubmitted(false); // Reset submission state
-      }}
-      prescriptions={patientData.prescriptions}
-    />
-    {viewingPrescription && (
-      <ViewPrescriptionModal 
-        prescription={viewingPrescription}
-        onClose={() => setViewingPrescription(null)}
+      <RescheduleModal
+        isOpen={isRescheduleModalOpen}
+        onClose={() => setIsRescheduleModalOpen(false)}
+        appointment={appointmentToReschedule}
+        onReschedule={handleReschedule}
       />
-
-)}
-{viewingTestResult && (
-  <ViewTestResultModal
-    result={viewingTestResult}
-    onClose={() => setViewingTestResult(null)}
-    onPrint={(result) => {
-      // Optional: implement print logic
-      console.log('Printing result:', result);
-    }}
-  />
-)}
-
-          
+      <RefillModal
+        isOpen={isRefillModalOpen}
+        onClose={() => setIsRefillModalOpen(false)}
+        prescriptions={patientData.prescriptions}
+      />
+      {viewingPrescription && (
+        <ViewPrescriptionModal
+          prescription={viewingPrescription}
+          onClose={() => setViewingPrescription(null)}
+        />
+      )}
+      {viewingTestResult && (
+        <ViewTestResultModal
+          result={viewingTestResult}
+          onClose={() => setViewingTestResult(null)}
+          onPrint={(result) => console.log('Printing result:', result)}
+        />
+      )}
     </div>
   );
 };

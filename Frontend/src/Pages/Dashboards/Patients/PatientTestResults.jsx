@@ -1,118 +1,97 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaVial, 
-  FaSearch, 
-  FaCalendarAlt,
-  FaPrint,
-  FaEye,
-  FaArrowLeft,
-  FaArrowRight,
-  FaFileDownload,
-  FaChartLine,
-  FaFilter,
-  FaTimes
-} from 'react-icons/fa';
-import { 
-  CheckCircle, 
-  Clock, 
-  AlertCircle,
-  ChevronDown,
-  ChevronUp
-} from 'react-feather';
-import styles from './PatientTestResults.module.css';
-import TestResultActionModal from './TestResultActionModal'
+  FiSearch, FiFilter, FiX, FiActivity, FiCheckCircle, 
+  FiClock, FiAlertCircle, FiMoreVertical, FiDownload, FiPrinter 
+} from 'react-icons/fi';
+import TestResultActionModal from './TestResultActionModal';
 import ViewTestResultModal from './ViewTestResultModal';
 
 const PatientTestResults = () => {
   const [testResults, setTestResults] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]); // Add this state
+  const [filteredResults, setFilteredResults] = useState([]);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDateRange, setSelectedDateRange] = useState('all');
   const [selectedResult, setSelectedResult] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [ordersPerPage] = useState(5);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [currentActionResult, setCurrentActionResult] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   
   useEffect(() => {
-    // Simulate API call
     const sampleData = [
       {
         id: 'TR-1001',
         testName: 'Complete Blood Count',
         status: 'completed',
-        date: '2023-06-15',
+        date: '2026-04-25',
         labName: 'Main Hospital Lab',
         results: 'All values within normal range',
         doctor: 'Dr. Emily Carter',
         attachments: ['blood_test.pdf'],
-        isAbnormal: false
+        isAbnormal: false,
+        category: 'Hematology'
       },
       {
         id: 'TR-1002',
         testName: 'Lipid Panel',
         status: 'completed',
-        date: '2023-06-14',
+        date: '2026-04-14',
         labName: 'City Lab Center',
         results: 'Cholesterol slightly elevated',
         doctor: 'Dr. Michael Brown',
         attachments: ['lipid_report.pdf'],
-        isAbnormal: true
+        isAbnormal: true,
+        category: 'Biochemistry'
       },
       {
         id: 'TR-1003',
         testName: 'Thyroid Function Test',
         status: 'pending',
-        date: '2023-06-16',
+        date: '2026-05-01',
         labName: 'Main Hospital Lab',
         results: 'Results pending analysis',
         doctor: 'Dr. Lisa Wong',
         attachments: [],
-        isAbnormal: false
+        isAbnormal: false,
+        category: 'Endocrinology'
       },
       {
         id: 'TR-1004',
         testName: 'Urinalysis',
         status: 'completed',
-        date: '2023-06-10',
+        date: '2026-03-10',
         labName: 'Westside Diagnostics',
         results: 'Normal results',
         doctor: 'Dr. Robert Chen',
         attachments: ['urinalysis.pdf'],
-        isAbnormal: false
+        isAbnormal: false,
+        category: 'Urology'
       },
       {
         id: 'TR-1005',
         testName: 'Liver Function Test',
         status: 'completed',
-        date: '2023-06-08',
+        date: '2026-02-08',
         labName: 'Main Hospital Lab',
         results: 'Elevated liver enzymes detected',
         doctor: 'Dr. Sarah Johnson',
         attachments: ['liver_test.pdf', 'doctor_notes.pdf'],
-        isAbnormal: true
+        isAbnormal: true,
+        category: 'Gastroenterology'
       }
     ];
     setTestResults(sampleData);
     setFilteredResults(sampleData);
-
   }, []);
 
   useEffect(() => {
-    // Apply filters whenever filter, searchTerm, or selectedDateRange changes
     const filtered = testResults.filter(result => {
-      // Filter by status (case-insensitive)
-      if (filter !== 'all' && result.status.toLowerCase() !== filter.toLowerCase()) {
-        return false;
-      }
+      if (filter !== 'all' && result.status.toLowerCase() !== filter.toLowerCase()) return false;
       
-      // Filter by date range
       const resultDate = new Date(result.date);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Normalize today's date
+      today.setHours(0, 0, 0, 0);
       
       if (selectedDateRange === 'today') {
         const resultDay = new Date(resultDate);
@@ -120,16 +99,12 @@ const PatientTestResults = () => {
         if (resultDay.getTime() !== today.getTime()) return false;
       } else if (selectedDateRange === 'week') {
         const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday of this week
+        startOfWeek.setDate(today.getDate() - today.getDay());
         if (resultDate < startOfWeek) return false;
       } else if (selectedDateRange === 'month') {
-        if (resultDate.getMonth() !== today.getMonth() || 
-            resultDate.getFullYear() !== today.getFullYear()) {
-          return false;
-        }
+        if (resultDate.getMonth() !== today.getMonth() || resultDate.getFullYear() !== today.getFullYear()) return false;
       }
       
-      // Filter by search term (case-insensitive)
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
         return (
@@ -139,335 +114,241 @@ const PatientTestResults = () => {
           result.id.toLowerCase().includes(searchLower)
         );
       }
-      
       return true;
     });
-
     setFilteredResults(filtered);
-    setCurrentPage(1);
   }, [filter, searchTerm, selectedDateRange, testResults]);
-
-  // Calculate pagination
-  const indexOfLastResult = currentPage * ordersPerPage;
-  const indexOfFirstResult = indexOfLastResult - ordersPerPage;
-  const currentResults = filteredResults.slice(indexOfFirstResult, indexOfLastResult);
-  const totalPages = Math.ceil(filteredResults.length / ordersPerPage);
-
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filter, searchTerm, selectedDateRange]);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-
-  const getStatusIcon = (status, isAbnormal) => {
-    switch (status) {
-      case 'completed':
-        return isAbnormal ? (
-          <AlertCircle size={18} className={styles.statusAbnormal} />
-        ) : (
-          <CheckCircle size={18} className={styles.statusCompleted} />
-        );
-      case 'pending':
-        return <Clock size={18} className={styles.statusPending} />;
-      default:
-        return null;
-    }
-  };
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+      year: 'numeric', month: 'short', day: 'numeric'
     });
   };
-    const handleViewResult = (result) => {
+
+  const handleViewResult = (result) => {
     setSelectedResult(result);
     setIsViewModalOpen(true);
-     setIsActionModalOpen(false); 
+    setIsActionModalOpen(false); 
   };
 
   const handlePrintResult = (result) => {
-    const printWindow = window.open('', '_blank');
-    
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Test Result: ${result.testName}</title>
-          <style>
-            body { font-family: Arial, sans-serif; line-height: 1.5; padding: 20px; }
-            .header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-            .result-title { font-size: 1.5em; margin-bottom: 10px; }
-            .section { margin-bottom: 20px; }
-            .label { font-weight: bold; }
-            .value { margin-left: 10px; }
-            .abnormal { color: #dc3545; font-weight: bold; }
-            .normal { color: #28a745; }
-            @page { size: auto; margin: 10mm; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>Test Result Report</h1>
-            <div>Printed: ${new Date().toLocaleString()}</div>
-          </div>
-          
-          <div class="section">
-            <h2 class="result-title">${result.testName}</h2>
-            <p><span class="label">Status:</span> <span class="value">${result.status}</span></p>
-            <p><span class="label">Date:</span> <span class="value">${formatDate(result.date)}</span></p>
-          </div>
-          
-          <div class="section">
-            <h3>Results</h3>
-            <p class="${result.isAbnormal ? 'abnormal' : 'normal'}">
-              ${result.results}
-            </p>
-          </div>
-          
-          <div class="section">
-            <h3>Details</h3>
-            <p><span class="label">Lab:</span> <span class="value">${result.labName}</span></p>
-            <p><span class="label">Ordering Physician:</span> <span class="value">${result.doctor}</span></p>
-          </div>
-          
-          <div style="margin-top: 30px; font-size: 0.8em; text-align: center;">
-            This document contains confidential health information. Please handle with care.
-          </div>
-        </body>
-      </html>
-    `);
-    
-    printWindow.document.close();
-    setTimeout(() => {
-      printWindow.focus();
-      printWindow.print();
-      printWindow.close();
-    }, 500);
+    window.print();
   };
 
+  const upcomingResults = filteredResults.filter(r => r.status === 'pending');
+  const pastResults = filteredResults.filter(r => r.status === 'completed');
+
   return (
-    <div className={styles.dashboard}>
-      {/* Header Section */}
-      <div className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1>
-            <FaVial className={styles.headerIcon} />
-            My Test Results
-          </h1>
-          <p className={styles.subtitle}>
-            View and manage your laboratory test results
-          </p>
+    <div className="max-w-[1280px] mx-auto px-lg py-lg font-inter bg-[#f8f9ff] min-h-screen">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-lg gap-md">
+        <div>
+          <h2 className="font-h1 text-h1 text-on-surface font-manrope">Test Results</h2>
+          <p className="text-body-md text-on-surface-variant mt-xs">Track and manage your clinical lab records.</p>
+        </div>
+        <div className="flex items-center gap-sm">
+          <div className="relative group">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-secondary transition-colors" size={18} />
+            <input
+              type="text"
+              placeholder="Search results..."
+              className="pl-11 pr-6 py-3 bg-white border border-slate-100 rounded-full shadow-sm focus:ring-2 focus:ring-secondary/20 w-full md:w-[300px] transition-all font-medium text-slate-600 outline-none text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className={styles.statsGrid}>
-        <div className={`${styles.statCard} ${styles.primary}`}>
-          <div className={styles.statContent}>
-            <h3>Total Tests</h3>
-            <div className={styles.statValue}>{testResults.length}</div>
-          </div>
-          <FaVial className={styles.statIcon} />
-        </div>
-        
-        <div className={`${styles.statCard} ${styles.secondary}`}>
-          <div className={styles.statContent}>
-            <h3>Completed</h3>
-            <div className={styles.statValue}>
-              {testResults.filter(r => r.status === 'completed').length}
-            </div>
-          </div>
-          <CheckCircle className={styles.statIcon} />
-        </div>
-        
-        <div className={`${styles.statCard} ${styles.tertiary}`}>
-          <div className={styles.statContent}>
-            <h3>Pending</h3>
-            <div className={styles.statValue}>
-              {testResults.filter(r => r.status === 'pending').length}
-            </div>
-          </div>
-          <Clock className={styles.statIcon} />
-        </div>
-        
-        <div className={`${styles.statCard} ${styles.quaternary}`}>
-          <div className={styles.statContent}>
-            <h3>Abnormal</h3>
-            <div className={styles.statValue}>
-              {testResults.filter(r => r.isAbnormal).length}
-            </div>
-          </div>
-          <AlertCircle className={styles.statIcon} />
-        </div>
-      </div>
-
-      {/* Filters Section */}
-      <div className={styles.filterSection}>
-        <div className={styles.searchBox}>
-          <FaSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Search tests by name, doctor, or lab..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        <button 
-          className={styles.filterToggle}
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-        >
-          <FaFilter className={styles.filterIcon} />
-          Filters
-          {isFilterOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-
-        {isFilterOpen && (
-          <div className={styles.filterPanel}>
-            <div className={styles.filterGroup}>
-              <label>Status</label>
-              <select 
-                value={filter} 
-                onChange={(e) => setFilter(e.target.value)}
-                className={styles.filterSelect}
+      <div className="grid grid-cols-12 gap-gutter items-start">
+        {/* Sidebar Filters */}
+        <div className="col-span-12 lg:col-span-3 space-y-md sticky top-24">
+          <div className="bg-white rounded-xl p-sm border border-slate-100 shadow-[0px_4px_20px_rgba(15,23,42,0.05)]">
+            <div className="p-xs border-b border-slate-50 mb-sm flex items-center justify-between">
+              <h3 className="font-label-md text-on-surface text-sm font-bold">Filters</h3>
+              <button 
+                onClick={() => { setFilter('all'); setSelectedDateRange('all'); setSearchTerm(''); }}
+                className="text-[11px] font-bold text-secondary hover:underline uppercase tracking-wider"
               >
-                <option value="all">All Statuses</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-              </select>
+                Reset
+              </button>
             </div>
-
-            <div className={styles.filterGroup}>
-              <label>Date Range</label>
-              <select 
-                value={selectedDateRange} 
-                onChange={(e) => setSelectedDateRange(e.target.value)}
-                className={styles.filterSelect}
-              >
-                <option value="all">All Dates</option>
-                <option value="today">Today</option>
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-              </select>
-            </div>
-
-            <button 
-              className={styles.clearFilters}
-              onClick={() => {
-                setFilter('all');
-                setSelectedDateRange('all');
-              }}
-            >
-              <FaTimes /> Clear Filters
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Results Table */}
-      <div className={styles.resultsContainer}>
-        <div className={styles.resultsTable}>
-          <div className={styles.tableHeader}>
-            <div className={styles.headerCell}>Test Name</div>
-            <div className={styles.headerCell}>Status</div>
-            <div className={styles.headerCell}>Date</div>
-            <div className={styles.headerCell}>Lab</div>
-            <div className={styles.headerCell}>Actions</div>
-          </div>
-
-          {currentResults.length > 0 ? (
-            currentResults.map(result => (
-              <div key={result.id} className={styles.tableRow}>
-                <div className={styles.dataCell}>
-                  <div className={styles.testName}>{result.testName}</div>
-                  <div className={styles.doctorName}>{result.doctor}</div>
-                </div>
-                <div className={styles.dataCell}>
-                  <div className={styles.statusContainer}>
-                    {getStatusIcon(result.status, result.isAbnormal)}
-                    <span className={styles.statusText}>
-                      {result.status}
-                      {result.isAbnormal && ' (Abnormal)'}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.dataCell}>
-                  {formatDate(result.date)}
-                </div>
-                <div className={styles.dataCell}>
-                  {result.labName}
-                </div>
-                <div className={styles.actionCell}>
-                  <button 
-                    className={styles.actionDots}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentActionResult(result);
-                      setIsActionModalOpen(true);
-                    }}
-                  >
-                    •••
-                  </button>
+            
+            <div className="space-y-sm p-xs">
+              <div>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-3">Status</label>
+                <div className="space-y-2">
+                  {['all', 'completed', 'pending'].map(s => (
+                    <label key={s} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer capitalize font-medium">
+                      <input 
+                        type="radio"
+                        checked={filter === s}
+                        onChange={() => setFilter(s)}
+                        className="rounded-full border-slate-300 text-secondary focus:ring-secondary"
+                      />
+                      {s}
+                    </label>
+                  ))}
                 </div>
               </div>
-            ))
-          ) : (
-            <div className={styles.noResults}>
-              <div className={styles.noResultsContent}>
-                <FaVial className={styles.noResultsIcon} />
-                <h3>No test results found</h3>
-                <p>Try adjusting your filters or search term</p>
+              
+              <hr className="border-slate-50"/>
+              
+              <div>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-3">Timeframe</label>
+                <div className="relative">
+                  <select 
+                    value={selectedDateRange} 
+                    onChange={(e) => setSelectedDateRange(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl py-2.5 pl-3 pr-10 text-[13px] text-slate-600 focus:ring-2 focus:ring-secondary/20 outline-none appearance-none cursor-pointer font-bold"
+                  >
+                    <option value="all">Lifetime</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none">expand_more</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Summary */}
+          <div className="bg-secondary-container rounded-xl p-sm text-on-secondary-container bg-[#6cf8bb]/10 border border-[#6cf8bb]/20">
+            <h4 className="font-bold text-sm text-secondary flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px]">analytics</span>
+              Insights
+            </h4>
+            <div className="mt-4 space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-500 uppercase">Abnormal</span>
+                <span className="text-sm font-black text-error bg-error/10 px-2 py-0.5 rounded-full">
+                  {testResults.filter(r => r.isAbnormal).length}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-500 uppercase">Completed</span>
+                <span className="text-sm font-black text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">
+                  {testResults.filter(r => r.status === 'completed').length}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Results List */}
+        <div className="col-span-12 lg:col-span-9 space-y-4">
+          {/* Pending Section */}
+          {upcomingResults.length > 0 && (
+            <div>
+              <h3 className="text-[11px] text-slate-400 uppercase tracking-[0.15em] mb-4 font-bold flex items-center gap-2">
+                Pending Analysis
+                <span className="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded text-[9px]">{upcomingResults.length}</span>
+              </h3>
+              <div className="space-y-3">
+                {upcomingResults.map(result => (
+                  <div key={result.id} className="bg-white rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between border border-slate-100 shadow-sm opacity-80 transition-all hover:shadow-md">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300">
+                        <span className="material-symbols-outlined text-2xl font-light">hourglass_empty</span>
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <h4 className="text-[16px] text-slate-900 font-bold tracking-tight">{result.testName}</h4>
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-amber-500/10 text-amber-600">
+                            {result.status}
+                          </span>
+                        </div>
+                        <p className="text-[12px] text-slate-400 font-bold uppercase tracking-wider">Requested on {formatDate(result.date)} • {result.labName}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
-        </div>
 
-        {/* Pagination */}
-        {filteredResults.length > ordersPerPage && (
-          <div className={styles.pagination}>
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={styles.paginationButton}
-            >
-              <FaArrowLeft /> Previous
-            </button>
-            
-            <div className={styles.pageInfo}>
-              Page {currentPage} of {totalPages}
+          {/* Completed Section */}
+          <div>
+            <h3 className="text-[11px] text-slate-400 uppercase tracking-[0.15em] mb-4 font-bold">
+              Lab Records History
+            </h3>
+            <div className="space-y-3">
+              {pastResults.length > 0 ? pastResults.map(result => (
+                <motion.div
+                  key={result.id}
+                  layout
+                  className={`bg-white rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between border border-slate-100 transition-all group cursor-pointer hover:shadow-md ${result.isAbnormal ? 'bg-error/[0.04]' : ''}`}
+                  onClick={() => handleViewResult(result)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0 ${result.isAbnormal ? 'bg-error/10 text-error' : 'bg-secondary/10 text-secondary'}`}>
+                      <span className="material-symbols-outlined text-2xl font-light">
+                        {result.isAbnormal ? 'error_outline' : 'biotech'}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <h4 className="text-[16px] text-slate-900 font-bold tracking-tight group-hover:text-secondary transition-colors">{result.testName}</h4>
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                          result.isAbnormal ? 'bg-error/10 text-error' : 'bg-secondary/10 text-secondary'
+                        }`}>
+                          {result.isAbnormal ? 'Abnormal' : 'Normal'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+                        <span>{result.doctor}</span>
+                        <span>•</span>
+                        <span>{result.labName}</span>
+                        <span>•</span>
+                        <span>{formatDate(result.date)}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-4 md:mt-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-50">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleViewResult(result); }}
+                      className="px-4 py-1.5 bg-slate-50 text-[12px] font-black text-slate-600 hover:bg-slate-100 rounded-lg transition-all uppercase tracking-widest"
+                    >
+                      View Report
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setCurrentActionResult(result); setIsActionModalOpen(true); }}
+                      className="p-1.5 hover:bg-slate-50 rounded-lg transition-colors text-slate-300"
+                    >
+                      <FiMoreVertical size={18} />
+                    </button>
+                  </div>
+                </motion.div>
+              )) : (
+                <div className="bg-slate-50/50 border-2 border-dashed border-slate-100 rounded-xl p-12 text-center">
+                  <span className="material-symbols-outlined text-4xl text-slate-200 mb-2">search_off</span>
+                  <p className="text-slate-400 text-sm font-medium">No test results match your filters</p>
+                </div>
+              )}
             </div>
-            
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={styles.paginationButton}
-            >
-              Next <FaArrowRight />
-            </button>
           </div>
-        )}
+        </div>
       </div>
 
-      {isActionModalOpen && (
-        <TestResultActionModal
-          result={currentActionResult}
-          onClose={() => setIsActionModalOpen(false)}
-          onView={handleViewResult}
-          onPrint={handlePrintResult}
-        />
-      )}
-      {/* View Result Modal */}
-      {isViewModalOpen && (
-        <ViewTestResultModal
-          result={selectedResult}
-          onClose={() => setIsViewModalOpen(false)}
-          onPrint={handlePrintResult}
-        />
-      )}
-          </div>
+      <AnimatePresence>
+        {isActionModalOpen && (
+          <TestResultActionModal
+            result={currentActionResult}
+            onClose={() => setIsActionModalOpen(false)}
+            onView={handleViewResult}
+            onPrint={handlePrintResult}
+          />
+        )}
+        {isViewModalOpen && (
+          <ViewTestResultModal
+            result={selectedResult}
+            onClose={() => setIsViewModalOpen(false)}
+            onPrint={handlePrintResult}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

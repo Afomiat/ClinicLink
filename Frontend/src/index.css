@@ -1,13 +1,221 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* ── Fonts (must be first) ── */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Tailwind ── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: #faf8ff;
+  color: #1a1b22;
 }
-*{
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    box-sizing: border-box;
-    /* box-sizing: border-box; Add this to prevent overflow */
-    /* overflow: hidden; Prevent any potential scrolling */
-  
 
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+body {
+  font-family: 'Inter', sans-serif !important;
+  background-color: #f8f9ff;
+  color: #0b1c30;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display, [class*="font-h"] {
+  font-family: 'Manrope', sans-serif !important;
+}
+
+
+/* ── Utility: Glass card ── */
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c3c6d5; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #747684; }
+
+/* Premium FullCalendar Customization */
+.fc {
+    --fc-border-color: #f1f5f9;
+    --fc-button-bg-color: #ffffff;
+    --fc-button-border-color: #e2e8f0;
+    --fc-button-hover-bg-color: #f8fafc;
+    --fc-button-hover-border-color: #cbd5e1;
+    --fc-button-active-bg-color: #f1f5f9;
+    --fc-button-active-border-color: #94a3b8;
+    --fc-event-border-color: transparent;
+    --fc-today-bg-color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+}
+
+.fc .fc-toolbar-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    color: #0f172a;
+}
+
+.fc .fc-button {
+    border-radius: 12px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: capitalize !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+    color: #475569 !important;
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+}
+
+.fc-button-group {
+    gap: 8px !important;
+    box-shadow: none !important;
+}
+
+.fc-button-group > .fc-button {
+    border-radius: 12px !important;
+    margin-left: 0 !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #0f172a !important;
+    border-color: #0f172a !important;
+    color: #ffffff !important;
+}
+
+.fc .fc-button-primary {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgba(11, 28, 48, 0.03) !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+    border: 1px solid #f1f5f9 !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+    padding: 12px 4px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: #94a3b8 !important;
+}
+
+.fc .fc-scrollgrid {
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    border: 1px solid #f1f5f9 !important;
+}
+
+.fc-event {
+    border-radius: 8px !important;
+    padding: 0 !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.fc-daygrid-day-frame {
+    min-height: 140px !important;
+}
+
+.fc-v-event, .fc-h-event {
+    background-color: transparent !important;
+    border: none !important;
+    margin-bottom: 6px !important;
+}
+
+/* Timeline/Week View Specifics */
+.fc .fc-timegrid-slot {
+    height: 80px !important; /* Taller slots for more space */
+}
+
+.fc .fc-timegrid-axis-cushion {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #94a3b8 !important;
+    text-transform: uppercase !important;
+}
+
+/* Cute All-Day Row */
+.fc .fc-timegrid-allday {
+    background-color: #f8fafc !important;
+}
+
+.fc .fc-timegrid-allday-frame {
+    min-height: 60px !important;
+    padding: 8px !important;
+}
+
+.fc .fc-timegrid-col-view-h-export {
+    background: #ffffff !important;
+}
+
+.fc-daygrid-event {
+    margin-top: 4px !important;
+}
+
+/* Ensure the custom event container handles the background */
+.fc-event-main {
+    padding: 0 !important;
+    color: inherit !important;
+}
+
+.fc-v-event .fc-event-main-frame {
+    height: 100%;
+}
+
+.fc .fc-timegrid-now-indicator-line {
+    border-color: #006c49 !important;
+    border-width: 2px !important;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+    border-left-color: #006c49 !important;
+    border-width: 6px !important;
+}
+
+.fc-daygrid-event {
+    margin-top: 2px !important;
+}
+
+/* Ensure the custom event container handles the background */
+.fc-event-main {
+    padding: 0 !important;
+    color: inherit !important;
+}
+
+.fc-v-event .fc-event-main-frame {
+    height: 100%;
+}
+
+.fc-daygrid-event {
+    margin-top: 2px !important;
 }

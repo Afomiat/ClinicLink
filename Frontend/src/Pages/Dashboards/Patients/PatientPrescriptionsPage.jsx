@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  FiPieChart, FiPlus, FiSearch, FiFilter, FiDownload, FiPrinter, 
-  FiUser, FiCalendar, FiClock, FiChevronLeft, FiChevronRight,
-  FiAlertCircle, FiCheckCircle, FiRefreshCw, FiX
+  FiSearch, FiFilter, FiDownload, FiPrinter, 
+  FiCalendar, FiCheckCircle, FiRefreshCw, FiX, FiPlus
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -354,22 +353,40 @@ const chartOptions = {
     }
   }
 };
-const handleRefillRequest = (prescription) => {
-  // Prepare the prescriptions array for the RefillModal
-  const eligiblePrescriptions = prescription.medications
-    .filter(m => m.refills > 0)
-    .map(m => ({
-      id: `${prescription.id}-${m.name}`,
-      medication: m.name,
-      dosage: m.dosage,
-      doctor: prescription.prescribedBy,
-      refills: m.refills,
-      originalPrescription: prescription
-    }));
-  
-  setRefillPrescriptions(eligiblePrescriptions);
-  setShowRefillModal(true);
-};
+  const handleRefillRequest = (prescription) => {
+    // Prepare the prescriptions array for the RefillModal
+    const eligiblePrescriptions = prescription.medications
+      ? prescription.medications
+          .filter(m => m.refills > 0)
+          .map(m => ({
+            id: `${prescription.id}-${m.name}`,
+            medication: m.name,
+            dosage: m.dosage,
+            doctor: prescription.prescribedBy,
+            refills: m.refills,
+            originalPrescription: prescription
+          }))
+      : [];
+    
+    setRefillPrescriptions(eligiblePrescriptions);
+    setShowRefillModal(true);
+  };
+
+  const getNextDose = () => {
+    const active = prescriptions.filter(p => p.status === 'active');
+    if (active.length === 0) return null;
+    
+    // For demo purposes, pick the first active medication's next dose
+    const med = active[0].medications[0];
+    return {
+      time: '08:00 AM',
+      name: med.name,
+      dosage: med.dosage
+    };
+  };
+
+  const nextDose = getNextDose();
+
   // Add new prescription
   const handleAddPrescription = (newPrescription) => {
     const prescriptionToAdd = {
@@ -475,318 +492,291 @@ const formatMonth = (monthYear) => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
   return (
-    <div className={styles.prescriptionDashboard}>
-      {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <FiPieChart className={styles.headerIcon} />
-          <h1>My Prescriptions</h1>
-          <p className={styles.subtitle}>Manage and track your medications</p>
+    <div className="max-w-[1400px] mx-auto p-gutter space-y-md min-h-screen bg-surface relative">
+      {/* Page Header */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-md mb-2">
+        <div>
+          <h2 className="font-h1 text-h1 text-on-surface leading-tight">Prescription Management</h2>
+          <p className="text-body-md text-on-surface-variant">Manage your current medications and refill requests.</p>
         </div>
-        
-      </header>
-
-      {/* Analytics Cards */}
-      <div className={styles.analyticsGrid}>
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className={`${styles.analyticsCard} ${styles.totalCard}`}
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.cardIcon}>
-              <FiPieChart />
-            </div>
-            <div>
-              <h3>Total Prescriptions</h3>
-              <p>{analytics.total}</p>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className={`${styles.analyticsCard} ${styles.activeCard}`}
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.cardIcon}>
-              <FiCheckCircle />
-            </div>
-            <div>
-              <h3>Active</h3>
-              <p>{analytics.active}</p>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className={`${styles.analyticsCard} ${styles.expiredCard}`}
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.cardIcon}>
-              <FiAlertCircle />
-            </div>
-            <div>
-              <h3>Expired</h3>
-              <p>{analytics.expired}</p>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className={`${styles.analyticsCard} ${styles.refillCard}`}
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.cardIcon}>
-              <FiRefreshCw />
-            </div>
-            <div>
-              <h3>Refills Available</h3>
-              <p>{analytics.refillNeeded}</p>
-            </div>
-          </div>
-        </motion.div>
+        <div className="flex items-center gap-xs flex-wrap">
+          <button 
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline text-label-md text-on-surface-variant hover:bg-slate-100 transition-all shadow-sm active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[20px]">download</span>
+            Export CSV
+          </button>
+          <button 
+            onClick={() => window.print()}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline text-label-md text-on-surface-variant hover:bg-slate-100 transition-all shadow-sm active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[20px]">print</span>
+            Print List
+          </button>
+        </div>
       </div>
 
-      {/* Medication Distribution Chart */}
-        <div className={styles.chartContainer}>
-        <h2>Prescription Trends Over Time</h2>
-        <div className={styles.chartWrapper}>
-            <Line 
-            data={chartData} 
-            options={chartOptions}
-            />
-        </div>
+
+      {/* Dashboard Row 1: Insights */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-stretch">
+        {/* Adherence Chart */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)] p-sm border border-slate-100 flex flex-col h-full">
+          <div className="flex items-center justify-between mb-md">
+            <div>
+              <h3 className="font-h3 text-h3">Adherence Trends</h3>
+              <p className="text-body-sm text-on-surface-variant">30-day medication compliance</p>
+            </div>
+            <div className="flex items-center gap-2 bg-secondary-container/10 px-3 py-1 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-secondary"></span>
+              <span className="text-label-sm text-on-secondary-container">94% Adherence</span>
+            </div>
+          </div>
+          <div className="flex-1 flex items-end justify-between gap-3 px-4 h-48 py-2">
+            {/* Mock Bar Chart representing adherence */}
+            {[85, 95, 90, 75, 100, 92, 88, 96, 85, 91].map((h, i) => (
+              <div 
+                key={i} 
+                className={`flex-1 rounded-t-lg transition-all duration-300 group relative ${i === 4 ? 'bg-secondary/70 hover:bg-secondary' : 'bg-slate-100 hover:bg-secondary/30'}`}
+                style={{ height: `${h}%` }}
+              >
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[11px] px-2 py-1 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                  {h}%
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between mt-2 px-2">
+            <span className="text-label-sm text-slate-400">Week 1</span>
+            <span className="text-label-sm text-slate-400">Week 2</span>
+            <span className="text-label-sm text-slate-400">Week 3</span>
+            <span className="text-label-sm text-slate-400">Week 4</span>
+          </div>
         </div>
 
-      {/* Controls Section */}
-      <div className={styles.controlsSection}>
-        <div className={styles.searchBox}>
-          <FiSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Search prescriptions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {searchTerm && (
-            <button 
-              className={styles.clearSearch}
-              onClick={() => setSearchTerm('')}
-            >
-              <FiX />
-            </button>
+        {/* Next Dose Card */}
+        <div className="bg-primary-container text-white rounded-xl p-md shadow-xl flex flex-col justify-between overflow-hidden relative min-h-[280px]">
+          <div className="absolute -top-4 -right-4 p-4 opacity-10 pointer-events-none">
+            <span className="material-symbols-outlined text-[160px] leading-none">notifications_active</span>
+          </div>
+          {nextDose ? (
+            <>
+              <div className="relative z-10">
+                <span className="bg-white/10 text-white text-label-sm px-3 py-1 rounded-full border border-white/20 uppercase tracking-wider">Upcoming Dose</span>
+                <h3 className="font-display text-[40px] font-bold mt-sm leading-none">{nextDose.time}</h3>
+                <p className="text-body-lg text-white/80 mt-1">{nextDose.name} {nextDose.dosage}</p>
+              </div>
+              <div className="space-y-md relative z-10">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-secondary-fixed text-[20px]">check_circle</span>
+                  <span className="text-body-sm font-medium">Reminders active</span>
+                </div>
+                <button className="w-full bg-white text-primary-container font-label-md py-3.5 rounded-xl hover:bg-slate-100 active:scale-[0.98] transition-all shadow-lg">Mark as Taken</button>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center p-6 relative z-10">
+               <span className="material-symbols-outlined text-5xl mb-3 text-white/20">medication_off</span>
+               <p className="text-body-md text-white/60 font-medium">No active doses scheduled</p>
+            </div>
           )}
         </div>
-
-        <div className={styles.filterGroup}>
-          <div className={styles.filterLabel}>
-            <FiFilter /> Status:
-          </div>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="all">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="expired">Expired</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
-
-        <div className={styles.dateRangePicker}>
-          <div className={styles.filterLabel}>
-            <FiCalendar /> Date Range:
-          </div>
-          <DatePicker
-            selectsRange={true}
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(update) => setDateRange(update)}
-            isClearable={true}
-            placeholderText="Select date range"
-            className={styles.datePickerInput}
-          />
-        </div>
-
-        <div className={styles.exportButtons}>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={styles.exportButton}
-            onClick={exportToCSV}
-          >
-            <FiDownload /> CSV
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={styles.printButton}
-            onClick={() => window.print()}
-          >
-            <FiPrinter /> Print
-          </motion.button>
-        </div>
       </div>
 
-      {/* Prescriptions Table */}
-      <div className={styles.tableWrapper}>
-        <table className={styles.prescriptionsTable}>
-          <thead>
-            <tr>
-              <th>Prescription ID</th>
-              <th>Medication</th>
-              <th>Dosage</th>
-              <th>Frequency</th>
-              <th>Status</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+      {/* Medication Table */}
+      <div className="bg-white rounded-xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)] border border-slate-100 overflow-hidden">
+        <div className="p-sm border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <h3 className="font-h3 text-h3">Current Medications</h3>
+          <div className="flex items-center gap-xs w-full sm:w-auto">
+            <div className="relative flex-1 sm:w-64">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+              <input 
+                type="text" 
+                placeholder="Search medications..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-secondary/20"
+              />
+            </div>
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="text-label-sm border-slate-200 rounded-lg focus:ring-secondary/20"
+            >
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="expired">Expired</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left table-fixed">
+            <thead className="bg-slate-50/50">
               <tr>
-                <td colSpan="8" className={styles.loadingCell}>
-                  <div className={styles.spinner}></div>
-                  Loading your prescriptions...
-                </td>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant w-1/3">Medication Name</th>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant">Dosage</th>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant">Frequency</th>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant">Status</th>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant">Refills</th>
+                <th className="px-sm py-4 text-label-sm text-on-surface-variant text-right">Actions</th>
               </tr>
-            ) : currentPrescriptions.length === 0 ? (
-              <tr>
-                <td colSpan="8" className={styles.emptyCell}>
-                  <FiAlertCircle className={styles.emptyIcon} />
-                  No prescriptions found matching your criteria
-                </td>
-              </tr>
-            ) : (
-              currentPrescriptions.map((prescription) => (
-                <motion.tr 
-                  key={prescription.id}
-                  whileHover={{ backgroundColor: 'rgba(240, 240, 240, 0.5)' }}
-                  className={styles.prescriptionRow}
-                >
-                  <td>
-                    <div className={styles.prescriptionId}>
-                      {prescription.id}
-                      <div className={styles.prescriber}>
-                        <FiUser size={12} /> {prescription.prescribedBy}
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+
+              {loading ? (
+                <tr>
+                  <td colSpan="6" className="px-sm py-12 text-center">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-200 border-t-secondary"></div>
+                    <p className="mt-2 text-slate-500">Loading medications...</p>
+                  </td>
+                </tr>
+              ) : currentPrescriptions.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="px-sm py-12 text-center text-slate-500">
+                    No medications found matching your criteria
+                  </td>
+                </tr>
+              ) : (
+                currentPrescriptions.map((prescription) => (
+                  <tr key={prescription.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-sm py-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${prescription.status === 'active' ? 'bg-secondary-container/10' : 'bg-slate-100'}`}>
+                          <span className={`material-symbols-outlined text-[20px] ${prescription.status === 'active' ? 'text-secondary' : 'text-slate-500'}`}>
+                            {prescription.status === 'active' ? 'medication' : 'pill'}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-body-md font-bold">{prescription.medications[0].name}</p>
+                          <p className="text-label-sm text-slate-400">Dr. {prescription.prescribedBy}</p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    {prescription.medications.map((med, index) => (
-                      <div key={index} className={styles.medication}>
-                        <FiPieChart size={14} /> {med.name} ({med.form})
-                      </div>
-                    ))}
-                  </td>
-                  <td>
-                    {prescription.medications.map((med, index) => (
-                      <div key={index}>{med.dosage}</div>
-                    ))}
-                  </td>
-                  <td>
-                    {prescription.medications.map((med, index) => (
-                      <div key={index}>{med.frequency}</div>
-                    ))}
-                  </td>
-                  <td>
-                    <div className={styles.statusCell}>
-                      <span className={`${styles.statusBadge} ${
-                        prescription.status === 'active' ? styles.activeStatus :
-                        prescription.status === 'expired' ? styles.expiredStatus :
-                        styles.completedStatus
+                    </td>
+                    <td className="px-sm py-4 text-body-md">{prescription.medications[0].dosage}</td>
+                    <td className="px-sm py-4 text-body-md">{prescription.medications[0].frequency}</td>
+                    <td className="px-sm py-4">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-label-sm ${
+                        prescription.status === 'active' ? 'bg-secondary-container/10 text-secondary' :
+                        prescription.status === 'expired' ? 'bg-error-container/10 text-error' :
+                        'bg-slate-100 text-slate-500'
                       }`}>
-                        {prescription.status}
+                        {prescription.status.charAt(0).toUpperCase() + prescription.status.slice(1)}
                       </span>
-                      {prescription.medications.some(m => m.refills > 0) && (
-                        <span className={styles.refillBadge}>
-                          {prescription.medications.reduce((sum, m) => sum + m.refills, 0)} refills
-                        </span>
+                    </td>
+                    <td className="px-sm py-4">
+                      {prescription.status === 'completed' ? (
+                        <span className="text-label-sm font-medium text-slate-400">N/A</span>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-500 ${prescription.medications[0].refills === 0 ? 'bg-error w-0' : 'bg-secondary'}`}
+                              style={{ width: `${Math.min(100, (prescription.medications[0].refills / 5) * 100)}%` }}
+                            ></div>
+                          </div>
+                          <span className={`text-label-sm font-bold ${prescription.medications[0].refills === 0 ? 'text-error' : 'text-slate-700'}`}>
+                            {prescription.medications[0].refills} left
+                          </span>
+                        </div>
                       )}
-                    </div>
-                  </td>
-                  <td>
-                    {prescription.medications.map((med, index) => (
-                      <div key={index}>
-                        <FiCalendar size={12} /> {med.startDate}
-                      </div>
-                    ))}
-                  </td>
-                  <td>
-                    {prescription.medications.map((med, index) => (
-                      <div key={index}>
-                        <FiCalendar size={12} /> {med.endDate}
-                      </div>
-                    ))}
-                  </td>
-                  <td>
-                    <div className={styles.actionButtons}>
+                    </td>
+                    <td className="px-sm py-4 text-right">
+                      {prescription.status === 'active' && prescription.medications[0].refills > 0 ? (
                         <button 
-                            className="actionDots"
-                            onClick={() => handleActionClick(prescription)}
+                          onClick={() => handleRefillRequest(prescription)}
+                          className="bg-on-surface text-white text-label-sm px-4 py-2 rounded-full hover:bg-slate-800 transition-colors opacity-0 group-hover:opacity-100"
                         >
-                            •••
+                          Request Refill
                         </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className={styles.pagination}>
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={styles.paginationButton}
-          >
-            <FiChevronLeft /> Previous
-          </button>
-          
-          <div className={styles.pageNumbers}>
-            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let pageNum;
-              if (totalPages <= 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
-              
-              return (
+                      ) : prescription.status === 'expired' || prescription.medications[0].refills === 0 ? (
+                        <button className="text-secondary font-label-md px-4 py-2 hover:underline opacity-0 group-hover:opacity-100">
+                          Contact Doctor
+                        </button>
+                      ) : (
+                        <span className="text-label-sm text-slate-400 italic">Course finished</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="p-sm bg-slate-50/50 flex items-center justify-between border-t border-slate-100">
+            <button 
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="text-label-sm font-bold text-slate-500 disabled:opacity-30 hover:text-secondary transition-colors"
+            >
+              Previous
+            </button>
+            <div className="flex gap-2">
+              {Array.from({ length: totalPages }, (_, i) => (
                 <button
-                  key={pageNum}
-                  onClick={() => paginate(pageNum)}
-                  className={`${styles.pageButton} ${
-                    currentPage === pageNum ? styles.activePage : ''
+                  key={i + 1}
+                  onClick={() => paginate(i + 1)}
+                  className={`w-8 h-8 rounded-lg text-label-sm font-bold transition-all ${
+                    currentPage === i + 1 ? 'bg-secondary text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'
                   }`}
                 >
-                  {pageNum}
+                  {i + 1}
                 </button>
-              );
-            })}
+              ))}
+            </div>
+            <button 
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="text-label-sm font-bold text-slate-500 disabled:opacity-30 hover:text-secondary transition-colors"
+            >
+              Next
+            </button>
           </div>
-          
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={styles.paginationButton}
-          >
-            Next <FiChevronRight />
+        )}
+      </div>
+
+      {/* Pharmacy Information Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+        <div className="bg-white rounded-xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)] border border-slate-100 p-sm flex items-start gap-md">
+          <div className="w-16 h-16 bg-slate-50 rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center">
+            <span className="material-symbols-outlined text-secondary text-[32px]">local_pharmacy</span>
+          </div>
+          <div className="flex-1">
+            <h4 className="font-h3 text-h3 text-slate-900 mb-base">Preferred Pharmacy</h4>
+            <p className="text-body-md font-bold">Main St. Wellness Center</p>
+            <p className="text-body-sm text-slate-500">1234 Healthcare Plaza, Suite 400</p>
+            <div className="mt-sm flex items-center gap-sm">
+              <span className="text-label-sm bg-slate-100 px-3 py-1 rounded-full">(555) 012-3456</span>
+              <button className="text-secondary text-label-sm hover:underline">Change Pharmacy</button>
+            </div>
+          </div>
+        </div>
+        <div className="bg-secondary-container/10 border border-secondary-container/30 rounded-xl p-sm flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-xs">
+              <span className="material-symbols-outlined text-secondary text-[20px]">info</span>
+              <p className="text-label-md font-bold text-on-secondary-container">Medication Tip</p>
+            </div>
+            <p className="text-body-md text-on-secondary-container">Taking medications at the same time every day helps maintain stable levels in your bloodstream. Set reminders on your phone or use our "Upcoming Dose" alert.</p>
+          </div>
+          <button className="text-secondary font-label-md mt-md flex items-center gap-1 hover:gap-2 transition-all self-start">
+            View clinical drug info
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
           </button>
         </div>
-      )}
+      </div>
+
+      {/* FAB for Quick Refill Action */}
+      <button 
+        onClick={() => setShowRefillModal(true)}
+        className="fixed bottom-gutter right-gutter w-16 h-16 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all z-[100] group"
+      >
+        <span className="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform" style={{ fontVariationSettings: "'FILL' 1" }}>add</span>
+      </button>
+
 
       {/* Modals */}
       <AnimatePresence>
@@ -802,27 +792,25 @@ const formatMonth = (monthYear) => {
           <ViewPrescriptionModal
             prescription={selectedPrescription}
             onClose={() => setShowViewModal(false)}
-            onRefill={() => {
-              // Handle refill logic
-              setShowViewModal(false);
-            }}
           />
         )}
-              {isActionModalOpen && (
-                <PrescriptionActionModal
-                    prescription={currentActionPrescription}
-                    onClose={() => setIsActionModalOpen(false)}
-                    onView={handleViewDetails}
-                    onRefill={handleRefillRequest}
-                />
-      )}
-      {showRefillModal && (
-        <RefillModal
+
+        {isActionModalOpen && (
+          <PrescriptionActionModal
+            prescription={currentActionPrescription}
+            onClose={() => setIsActionModalOpen(false)}
+            onView={handleViewDetails}
+            onRefill={handleRefillRequest}
+          />
+        )}
+
+        {showRefillModal && (
+          <RefillModal
             isOpen={showRefillModal}
             onClose={() => setShowRefillModal(false)}
             prescriptions={refillPrescriptions}
-        />
-)}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
