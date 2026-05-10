@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaArrowLeft, FaCalendarAlt, FaCommentMedical, FaClinicMedical, FaArrowRight, FaHeartbeat, FaBrain, FaAward, FaUserFriends, FaClinicMedical as FaHospital } from 'react-icons/fa';
-import './Home.css';
+import './home.css';
 import doctorImage from '../../assets/doc.png'; 
 import logo from '../../assets/logo-2.png';
 const Home = () => {
