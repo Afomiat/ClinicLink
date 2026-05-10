@@ -303,13 +303,13 @@
 }
 
 .bookButton {
-  background-color: #4f46e5;
-  border: 1px solid #4f46e5;
+  background-color: #000000;
+  border: 1px solid #000000;
   color: white;
 }
 
 .bookButton:hover {
-  background-color: #4338ca;
+  background-color: #1f2937;
 }
 
 .noResults {
@@ -484,13 +484,13 @@
 }
 
 .primaryButton {
-  background-color: #4f46e5;
+  background-color: #000000;
   color: white;
   border: none;
 }
 
 .primaryButton:hover {
-  background-color: #4338ca;
+  background-color: #1f2937;
 }
 
 .secondaryButton {

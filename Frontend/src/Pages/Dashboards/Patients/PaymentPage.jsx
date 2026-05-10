@@ -154,11 +154,11 @@ const PaymentPage = () => {
         </div>
         <div className="flex items-center gap-sm">
           <div className="relative group">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#000000] transition-colors" size={18} />
             <input
               type="text"
               placeholder="Search invoice ID or service..."
-              className="pl-11 pr-6 py-3 bg-white border border-slate-100 rounded-full shadow-sm focus:ring-2 focus:ring-primary/20 w-full md:w-[320px] transition-all font-medium text-slate-600 outline-none text-sm"
+              className="pl-11 pr-6 py-3 bg-white border border-slate-100 rounded-full shadow-sm focus:ring-2 focus:ring-[#000000]/20 w-full md:w-[320px] transition-all font-medium text-slate-600 outline-none text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -172,7 +172,7 @@ const PaymentPage = () => {
           <div className="bg-white rounded-xl p-sm border border-slate-100 shadow-sm">
             <div className="p-xs border-b border-slate-50 mb-sm flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-900">Billing Filters</h3>
-              <button onClick={() => {setFilter('all'); setSearchTerm('')}} className="text-[11px] font-bold text-primary hover:underline uppercase tracking-wider">Reset</button>
+              <button onClick={() => {setFilter('all'); setSearchTerm('')}} className="text-[11px] font-bold text-[#000000] hover:underline uppercase tracking-wider">Reset</button>
             </div>
             
             <div className="space-y-sm p-xs">
@@ -182,7 +182,7 @@ const PaymentPage = () => {
                     key={cat.value}
                     onClick={() => setFilter(cat.value)}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-sm font-bold ${
-                      filter === cat.value ? 'bg-primary/10 text-primary shadow-sm' : 'text-slate-500 hover:bg-slate-50'
+                      filter === cat.value ? 'bg-[#000000]/10 text-[#000000] shadow-sm' : 'text-slate-500 hover:bg-slate-50'
                     }`}
                   >
                     <span className="material-symbols-outlined text-[20px]">{cat.icon}</span>
@@ -194,8 +194,8 @@ const PaymentPage = () => {
           </div>
 
           {/* Quick Stats Sidebar */}
-          <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
-            <h4 className="font-bold text-sm text-secondary flex items-center gap-2">
+          <div className="bg-[#006c49]-container/20 rounded-xl p-sm border border-[#006c49]/10">
+            <h4 className="font-bold text-sm text-[#006c49] flex items-center gap-2">
               <span className="material-symbols-outlined text-[20px]">account_balance_wallet</span>
               Billing Summary
             </h4>
@@ -204,8 +204,8 @@ const PaymentPage = () => {
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Outstanding Balance</p>
                 <p className="text-2xl font-black text-slate-900">$130.00</p>
               </div>
-              <div className="pt-3 border-t border-secondary/5">
-                <button className="w-full py-2.5 bg-secondary text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20">
+              <div className="pt-3 border-t border-[#006c49]/5">
+                <button className="w-full py-2.5 bg-[#000000] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#000000]/90 transition-all shadow-lg shadow-[#000000]/20">
                   Pay All Balance
                 </button>
               </div>
@@ -218,7 +218,7 @@ const PaymentPage = () => {
           {/* Top Summary Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="h-12 w-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
+              <div className="h-12 w-12 bg-[#000000]/5 rounded-xl flex items-center justify-center text-[#000000]">
                 <span className="material-symbols-outlined text-2xl">verified_user</span>
               </div>
               <div>
@@ -227,7 +227,7 @@ const PaymentPage = () => {
               </div>
             </div>
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="h-12 w-12 bg-secondary/5 rounded-xl flex items-center justify-center text-secondary">
+              <div className="h-12 w-12 bg-[#006c49]/5 rounded-xl flex items-center justify-center text-[#006c49]">
                 <span className="material-symbols-outlined text-2xl">credit_card</span>
               </div>
               <div>
@@ -244,7 +244,7 @@ const PaymentPage = () => {
 
           {isLoading ? (
             <div className="p-20 flex flex-col items-center justify-center text-slate-300">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#000000] mb-4"></div>
               <p className="text-sm font-bold uppercase tracking-widest">Accessing Secure Ledger...</p>
             </div>
           ) : filteredPayments.length > 0 ? (
@@ -259,7 +259,7 @@ const PaymentPage = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className={`h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      p.status === 'completed' ? 'bg-secondary/5 text-secondary' : 
+                      p.status === 'completed' ? 'bg-[#006c49]/5 text-[#006c49]' : 
                       p.status === 'pending' ? 'bg-amber-500/5 text-amber-600' : 'bg-error/5 text-error'
                     }`}>
                       <span className="material-symbols-outlined text-2xl font-light">
@@ -270,7 +270,7 @@ const PaymentPage = () => {
                       <div className="flex items-center gap-2 mb-0.5">
                         <h4 className="text-[16px] text-slate-900 font-bold tracking-tight">{p.service}</h4>
                         <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                          p.status === 'completed' ? 'bg-secondary/10 text-secondary' : 
+                          p.status === 'completed' ? 'bg-[#006c49]/10 text-[#006c49]' : 
                           p.status === 'pending' ? 'bg-amber-500/10 text-amber-600' : 'bg-error/10 text-error'
                         }`}>
                           {p.status}
@@ -303,7 +303,7 @@ const PaymentPage = () => {
                       ) : (
                         <button 
                           onClick={() => { setSelectedInvoice(p); setShowPayModal(true); }}
-                          className="px-5 py-2 bg-primary text-white text-[11px] font-black rounded-xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95"
+                          className="px-5 py-2 bg-[#000000] text-white text-[11px] font-black rounded-xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[#000000]/20 hover:scale-105 active:scale-95"
                         >
                           Pay Now <FiArrowUpRight />
                         </button>
@@ -368,7 +368,7 @@ const PaymentPage = () => {
                     >
                       <div className="p-4 bg-slate-50 rounded-2xl mb-8 flex justify-between items-center">
                         <span className="text-sm font-bold text-slate-600 uppercase">Amount Due</span>
-                        <span className="text-2xl font-black text-primary">${selectedInvoice?.amount.toFixed(2)}</span>
+                        <span className="text-2xl font-black text-[#000000]">${selectedInvoice?.amount.toFixed(2)}</span>
                       </div>
 
                       <div className="space-y-3 flex-1">
@@ -382,19 +382,19 @@ const PaymentPage = () => {
                             key={method.name} 
                             onClick={() => setPaymentMethod(method.name)}
                             className={`w-full flex items-center justify-between p-4 border rounded-2xl transition-all group ${
-                              paymentMethod === method.name ? 'border-primary bg-primary/5' : 'border-slate-100 hover:border-primary/30 hover:bg-slate-50'
+                              paymentMethod === method.name ? 'border-[#000000] bg-[#000000]/5' : 'border-slate-100 hover:border-[#000000]/30 hover:bg-slate-50'
                             }`}
                           >
                             <div className="flex items-center gap-4">
                               <div className={`h-10 w-10 ${method.color} text-white rounded-xl flex items-center justify-center`}>
                                 <span className="material-symbols-outlined">{method.icon}</span>
                               </div>
-                              <span className={`font-bold ${paymentMethod === method.name ? 'text-primary' : 'text-slate-700'}`}>{method.name}</span>
+                              <span className={`font-bold ${paymentMethod === method.name ? 'text-[#000000]' : 'text-slate-700'}`}>{method.name}</span>
                             </div>
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                              paymentMethod === method.name ? 'border-primary' : 'border-slate-200 group-hover:border-primary/50'
+                              paymentMethod === method.name ? 'border-[#000000]' : 'border-slate-200 group-hover:border-[#000000]/50'
                             }`}>
-                              <div className={`w-2.5 h-2.5 rounded-full bg-primary transition-opacity ${paymentMethod === method.name ? 'opacity-100' : 'opacity-0'}`} />
+                              <div className={`w-2.5 h-2.5 rounded-full bg-[#000000] transition-opacity ${paymentMethod === method.name ? 'opacity-100' : 'opacity-0'}`} />
                             </div>
                           </button>
                         ))}
@@ -405,7 +405,7 @@ const PaymentPage = () => {
                         onClick={handlePayment}
                         className={`w-full mt-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-xl active:scale-95 ${
                           paymentMethod 
-                            ? 'bg-primary text-white shadow-primary/30 hover:bg-primary/90' 
+                            ? 'bg-[#000000] text-white shadow-[#000000]/30 hover:bg-[#000000]/90' 
                             : 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none'
                         }`}
                       >
@@ -423,8 +423,8 @@ const PaymentPage = () => {
                     >
                       <div className="relative mb-6">
                         <div className="h-20 w-20 border-4 border-slate-100 rounded-full" />
-                        <div className="absolute top-0 left-0 h-20 w-20 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                        <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary text-3xl">lock</span>
+                        <div className="absolute top-0 left-0 h-20 w-20 border-4 border-[#000000] border-t-transparent rounded-full animate-spin" />
+                        <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#000000] text-3xl">lock</span>
                       </div>
                       <h4 className="text-lg font-bold text-slate-900 mb-2">Processing Payment</h4>
                       <p className="text-sm text-slate-500 text-center px-8">Connecting to secure gateway. Please do not close this window.</p>
@@ -438,7 +438,7 @@ const PaymentPage = () => {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex-1 flex flex-col items-center justify-center py-8"
                     >
-                      <div className="h-20 w-20 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mb-6">
+                      <div className="h-20 w-20 bg-[#006c49]/10 text-[#006c49] rounded-full flex items-center justify-center mb-6">
                         <motion.span 
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
@@ -462,7 +462,7 @@ const PaymentPage = () => {
                         </button>
                         <button 
                           onClick={resetModal}
-                          className="w-full py-3.5 bg-secondary text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20"
+                          className="w-full py-3.5 bg-[#000000] text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[#000000]/90 transition-all shadow-lg shadow-[#000000]/20"
                         >
                           Done
                         </button>

@@ -167,16 +167,16 @@ const PatientDashboard = () => {
   };
 
   const colorMap = {
-    purple: { border: 'border-l-purple-500', label: 'text-purple-600', bg: 'bg-purple-50' },
-    blue:   { border: 'border-l-blue-500',   label: 'text-blue-600',   bg: 'bg-blue-50'   },
-    orange: { border: 'border-l-orange-500', label: 'text-orange-600', bg: 'bg-orange-50' },
-    green:  { border: 'border-l-green-500',  label: 'text-green-600',  bg: 'bg-green-50'  },
+    purple: { border: 'border-l-purple-500', label: 'text-primary', bg: 'bg-primary/10' },
+    blue:   { border: 'border-l-blue-500',   label: 'text-primary',   bg: 'bg-primary/10'   },
+    orange: { border: 'border-l-orange-500', label: 'text-warning', bg: 'bg-warning/10' },
+    green:  { border: 'border-l-green-500',  label: 'text-secondary',  bg: 'bg-secondary/10'  },
   };
 
   const statusColorMap = {
-    green:  'bg-green-50 text-green-700',
-    orange: 'bg-orange-50 text-orange-700',
-    red:    'bg-red-50 text-red-700',
+    green:  'bg-secondary/10 text-secondary',
+    orange: 'bg-warning/10 text-warning',
+    red:    'bg-error/10 text-error',
   };
 
   const nextAppt = getUpcomingAppointment();
@@ -211,8 +211,8 @@ const PatientDashboard = () => {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-secondary-container/20 text-secondary px-4 py-2 rounded-full text-xs font-bold border border-secondary/10">
-          <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+        <div className="flex items-center gap-2 bg-warning-container/20 text-secondary px-4 py-2 rounded-full text-xs font-bold border border-secondary/10">
+          <span className="w-2 h-2 bg-warning rounded-full animate-pulse" />
           Systems Normal
         </div>
       </div>
@@ -223,7 +223,7 @@ const PatientDashboard = () => {
         <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
           onClick={() => navigate('appointments')}>
           <div className="flex justify-between items-start mb-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
               <span className="material-symbols-outlined text-primary">calendar_today</span>
             </div>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Upcoming</span>
@@ -236,8 +236,8 @@ const PatientDashboard = () => {
         <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
           onClick={() => navigate('prescriptions')}>
           <div className="flex justify-between items-start mb-4">
-            <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
-              <span className="material-symbols-outlined text-purple-600">medication</span>
+            <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary">medication</span>
             </div>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active</span>
           </div>
@@ -249,7 +249,7 @@ const PatientDashboard = () => {
         <div className="glass-card p-6 rounded-2xl shadow-sm hover:-translate-y-1 transition-all cursor-pointer"
           onClick={() => navigate('test-results')}>
           <div className="flex justify-between items-start mb-4">
-            <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
               <span className="material-symbols-outlined text-secondary">biotech</span>
             </div>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">New</span>
@@ -258,16 +258,16 @@ const PatientDashboard = () => {
           <p className="text-sm text-slate-500">Test Results</p>
         </div>
 
-        {/* Health Status – gradient card */}
-        <div className="p-6 rounded-2xl shadow-sm bg-gradient-to-br from-secondary to-[#008f60] text-white hover:-translate-y-1 transition-all cursor-pointer">
+        {/* Health Status – box style */}
+        <div className="p-6 rounded-2xl shadow-sm bg-secondary-container/20 border border-secondary/10 hover:-translate-y-1 transition-all cursor-pointer">
           <div className="flex justify-between items-start mb-4">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <span className="material-symbols-outlined text-white">favorite</span>
+            <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-secondary">favorite</span>
             </div>
-            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Current</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current</span>
           </div>
-          <p className="text-3xl font-extrabold mb-1">Good</p>
-          <p className="text-sm text-white/80">Health Status</p>
+          <p className="text-3xl font-extrabold mb-1 text-slate-900">Good</p>
+          <p className="text-sm text-slate-500">Health Status</p>
         </div>
       </div>
 
@@ -301,7 +301,7 @@ const PatientDashboard = () => {
                       {nextAppt.doctor.split(' ').map((n) => n[0]).join('')}
                     </span>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 bg-secondary text-white p-1 rounded-lg">
+                  <div className="absolute -bottom-2 -right-2 bg-warning text-white p-1 rounded-lg">
                     <span className="material-symbols-outlined text-sm">verified</span>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ const PatientDashboard = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-3 flex-wrap">
                     <h4 className="text-lg font-bold text-slate-900">Dr. {nextAppt.doctor}</h4>
-                    <span className="px-2 py-0.5 bg-blue-50 text-primary text-[10px] font-black uppercase tracking-wider rounded">
+                    <span className="px-2 py-0.5 bg-warning/10 text-primary text-[10px] font-black uppercase tracking-wider rounded">
                       {nextAppt.specialty}
                     </span>
                   </div>
@@ -332,7 +332,7 @@ const PatientDashboard = () => {
 
                 {/* Actions */}
                 <div className="flex flex-col gap-2 flex-shrink-0">
-                  <button className="bg-primary text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                  <button className="bg-[#000000] text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-[#000000]/90 transition-colors shadow-lg shadow-[#000000]/20">
                     Join Telehealth
                   </button>
                   <button
@@ -353,7 +353,7 @@ const PatientDashboard = () => {
           <section className="glass-card rounded-2xl shadow-sm overflow-hidden border border-slate-100">
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center flex-wrap gap-3">
               <h3 className="text-base font-bold text-slate-900 font-manrope flex items-center gap-2">
-                <span className="material-symbols-outlined text-purple-600 text-xl">medication</span>
+                <span className="material-symbols-outlined text-primary text-xl">medication</span>
                 My Prescriptions
               </h3>
               <div className="flex gap-3 items-center flex-wrap">
@@ -368,7 +368,7 @@ const PatientDashboard = () => {
                   />
                 </div>
                 <button
-                  className="bg-purple-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-purple-700 transition-colors flex items-center gap-1"
+                  className="bg-[#000000] text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#000000] transition-colors flex items-center gap-1"
                   onClick={() => setIsRefillModalOpen(true)}
                 >
                   <FiRefreshCw className="text-xs" /> Request Refill
@@ -447,7 +447,7 @@ const PatientDashboard = () => {
                       <td className="py-3 text-sm font-medium text-slate-700">{test.value}</td>
                       <td className="py-3">
                         <span className={`px-2 py-0.5 text-[10px] font-bold rounded-md ${
-                          test.statusColor === 'green' ? 'bg-secondary/10 text-secondary' : 'bg-orange-50 text-orange-700'
+                          test.statusColor === 'green' ? 'bg-warning/10 text-secondary' : 'bg-warning/10 text-warning'
                         }`}>
                           {test.statusLabel}
                         </span>
@@ -477,7 +477,7 @@ const PatientDashboard = () => {
                 <div
                   key={i}
                   className={`flex-1 rounded-t-lg transition-colors cursor-pointer ${
-                    i === 5 ? 'bg-secondary' : 'bg-secondary/10 hover:bg-secondary/40'
+                    i === 5 ? 'bg-warning' : 'bg-warning/10 hover:bg-warning/40'
                   }`}
                   style={{ height: `${height}%` }}
                 />
@@ -508,10 +508,10 @@ const PatientDashboard = () => {
             { icon: 'folder_shared', label: 'Medical Records', sub: 'Download history', color: 'purple', action: () => navigate('medical-records') },
           ].map(({ icon, label, sub, color, action }) => {
             const hoverMap = {
-              blue: 'group-hover:bg-primary group-hover:text-white bg-blue-50 text-primary',
+              blue: 'group-hover:bg-primary group-hover:text-white bg-primary/10 text-primary',
               green: 'group-hover:bg-secondary group-hover:text-white bg-secondary/10 text-secondary',
-              orange: 'group-hover:bg-orange-600 group-hover:text-white bg-orange-50 text-orange-600',
-              purple: 'group-hover:bg-purple-600 group-hover:text-white bg-purple-50 text-purple-600',
+              orange: 'group-hover:bg-warning group-hover:text-white bg-warning/10 text-warning',
+              purple: 'group-hover:bg-primary group-hover:text-white bg-primary/10 text-primary',
             };
             return (
               <button

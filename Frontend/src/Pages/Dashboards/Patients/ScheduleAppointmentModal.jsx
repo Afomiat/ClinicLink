@@ -1,21 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-import styles from './ScheduleAppointmentModal.module.css';
 import { 
-  FaTimes,
-  FaCalendarAlt,
-  FaClock,
-  FaUserMd,
-  FaMapMarkerAlt,
-  FaInfoCircle,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCreditCard,
-  FaLock,
-  FaCloudUploadAlt,
-  FaCheckCircle,
-  FaTrashAlt
-} from 'react-icons/fa';
+  FiX, FiCalendar, FiClock, FiUser, FiMapPin, FiInfo,
+  FiChevronLeft, FiChevronRight, FiCreditCard, FiLock,
+  FiUploadCloud, FiCheckCircle, FiTrash2, FiFileText,
+  FiArrowRight, FiShield, FiDollarSign, FiPlus
+} from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ScheduleAppointmentModal = ({ 
@@ -32,16 +21,11 @@ const ScheduleAppointmentModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('telebirr');
-  const [cardDetails, setCardDetails] = useState({
-    number: '',
-    name: '',
-    expiry: '',
-    cvv: ''
-  });
- const [paymentProof, setPaymentProof] = useState(null);
+  const [paymentProof, setPaymentProof] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
+
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true);
@@ -55,89 +39,46 @@ const ScheduleAppointmentModal = ({
 
   const generateMockSlots = (month) => {
     if (!month) return {};
-    
     const slots = {};
-    const daysInMonth = new Date(
-      month.getFullYear(), 
-      month.getMonth() + 1, 
-      0
-    ).getDate();
-    
+    const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(month.getFullYear(), month.getMonth(), i);
-      if (date && date.getDay() !== 0 && date.getDay() !== 6) {
+      if (date.getDay() !== 0 && date.getDay() !== 6) {
         slots[date.toISOString().split('T')[0]] = [
-          '9:00 AM', '10:30 AM', '11:00 AM',
-          '1:00 PM', '2:30 PM', '3:00 PM'
+          '09:00 AM', '10:30 AM', '11:00 AM',
+          '01:00 PM', '02:30 PM', '03:00 PM'
         ];
       }
     }
     return slots;
   };
 
-  const handlePrevMonth = () => {
-    setCurrentMonth(new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() - 1,
-      1
-    ));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth(new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1,
-      1
-    ));
-  };
+  const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
 
   const handleDateSelect = (date) => {
-    if (!date) return;
     setSelectedDate(date);
     setSelectedTime('');
     setStep(2);
   };
 
   const handleTimeSelect = (time) => {
-    if (!time) return;
     setSelectedTime(time);
     setStep(3);
   };
 
-  const handlePaymentSubmit = async (e) => {
-    e?.preventDefault();
+  const handlePaymentSubmit = async () => {
     setIsLoading(true);
-    
-    // Simulate payment verification
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Move to payment proof step instead of confirmation
-    setStep(3.5); // New step for payment proof
+    setStep(3.5);
     setIsLoading(false);
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // Validate file type and size
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (!validTypes.includes(file.type)) {
-      alert('Please upload an image (JPEG, PNG, GIF) or PDF file');
-      return;
-    }
-
-    if (file.size > maxSize) {
-      alert('File size should not exceed 5MB');
-      return;
-    }
-
-    // Simulate upload progress
     setIsUploading(true);
     setUploadProgress(0);
-    
     const interval = setInterval(() => {
       setUploadProgress(prev => {
         if (prev >= 100) {
@@ -147,25 +88,21 @@ const ScheduleAppointmentModal = ({
         }
         return prev + 10;
       });
-    }, 200);
+    }, 150);
 
-    // For demo purposes, we'll just store the file object
     setTimeout(() => {
       setPaymentProof({
         name: file.name,
-        size: (file.size / (1024 * 1024)).toFixed(2) + 'MB',
-        type: file.type,
+        size: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
         preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
       });
       clearInterval(interval);
       setIsUploading(false);
-    }, 2000);
+    }, 1800);
   };
 
   const removePaymentProof = () => {
-    if (paymentProof?.preview) {
-      URL.revokeObjectURL(paymentProof.preview);
-    }
+    if (paymentProof?.preview) URL.revokeObjectURL(paymentProof.preview);
     setPaymentProof(null);
     setUploadProgress(0);
   };
@@ -173,683 +110,398 @@ const ScheduleAppointmentModal = ({
   const verifyPaymentProof = async () => {
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
-    setStep(4); // Move to confirmation
+    setStep(4);
     setIsLoading(false);
   };
 
   const handleConfirmAppointment = async () => {
     setIsLoading(true);
-    
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newAppointment = {
+    const newApt = {
       id: `APP-${Date.now()}`,
-      doctor: doctor?.name || 'Unknown Doctor',
-      specialty: doctor?.specialty || 'General',
-      date: selectedDate?.toISOString() || new Date().toISOString(),
-      time: selectedTime || 'Not specified',
-      status: 'Confirmed',
-      location: doctor?.contact?.address || 'Not specified',
-      notes: reason,
-      payment: {
-        method: paymentMethod,
-        amount: 75.00,
-        status: 'Completed'
-      }
+      doctor: doctor?.name || 'Dr. Sarah Mitchell',
+      specialty: doctor?.specialty || 'General Practice',
+      date: selectedDate.toISOString().split('T')[0],
+      time: selectedTime,
+      status: 'confirmed',
+      notes: reason
     };
-    
-    onSchedule(newAppointment);
+    onSchedule(newApt);
     setIsLoading(false);
     onClose();
   };
 
-  const handleCardInputChange = (e) => {
-    if (!e?.target) return;
-    
-    const { name, value } = e.target;
-    
-    if (name === 'number') {
-      const formattedValue = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
-      if (formattedValue.length > 19) return;
-      setCardDetails(prev => ({ ...prev, [name]: formattedValue }));
-      return;
-    }
-    
-    if (name === 'expiry') {
-      const formattedValue = value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2');
-      if (formattedValue.length > 5) return;
-      setCardDetails(prev => ({ ...prev, [name]: formattedValue }));
-      return;
-    }
-    
-    setCardDetails(prev => ({ ...prev, [name]: value }));
-  };
-
   const renderCalendar = () => {
-    if (!currentMonth) return null;
-    
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
     const days = [];
-    
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`prev-${i}`} className={styles.calendarDayEmpty}></div>);
-    }
-    
+    for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`} />);
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(year, month, i);
-      const dateString = date?.toISOString()?.split('T')[0] || '';
-      const hasSlots = availableSlots[dateString]?.length > 0;
-      const isSelected = selectedDate?.toISOString()?.split('T')[0] === dateString;
-      const isToday = date?.toDateString() === new Date().toDateString();
-      
+      const dateStr = date.toISOString().split('T')[0];
+      const hasSlots = availableSlots[dateStr]?.length > 0;
+      const isSelected = selectedDate.toISOString().split('T')[0] === dateStr;
+      const isToday = date.toDateString() === new Date().toDateString();
       days.push(
-        <motion.div
-          key={`day-${i}`}
-          className={`
-            ${styles.calendarDay} 
-            ${hasSlots ? styles.available : styles.unavailable}
-            ${isSelected ? styles.selected : ''}
-            ${isToday ? styles.today : ''}
-          `}
+        <motion.button
+          key={i}
           whileHover={{ scale: hasSlots ? 1.05 : 1 }}
           whileTap={{ scale: hasSlots ? 0.95 : 1 }}
           onClick={() => hasSlots && handleDateSelect(date)}
+          className={`aspect-square rounded-2xl flex flex-col items-center justify-center relative transition-all ${
+            isSelected ? 'bg-slate-900 text-white shadow-xl shadow-slate-200' : 
+            hasSlots ? 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-100' : 'text-slate-200 cursor-not-allowed opacity-40'
+          }`}
         >
-          <span className={styles.dayNumber}>{i}</span>
-          {hasSlots && (
-            <span className={styles.slotIndicator}>
-              {availableSlots[dateString]?.length || 0} slots
-            </span>
-          )}
-          {isToday && <span className={styles.todayBadge}>Today</span>}
-        </motion.div>
+          <span className="text-sm font-black">{i}</span>
+          {hasSlots && !isSelected && <span className="absolute bottom-2 h-1 w-1 bg-primary rounded-full" />}
+          {isToday && !isSelected && <span className="absolute top-2 text-[8px] font-black uppercase text-primary">Today</span>}
+        </motion.button>
       );
     }
-    
     return days;
   };
 
   if (!isOpen) return null;
 
+  const steps = [
+    { id: 1, label: 'Date', icon: <FiCalendar /> },
+    { id: 2, label: 'Time', icon: <FiClock /> },
+    { id: 3, label: 'Payment', icon: <FiCreditCard /> },
+    { id: 4, label: 'Confirm', icon: <FiCheckCircle /> }
+  ];
+
   return (
     <AnimatePresence>
-      <motion.div
-        className={styles.overlay}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 overflow-y-auto">
         <motion.div
-          className={styles.modal}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+        />
+
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          className="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px] font-manrope"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className={styles.modalHeader}>
-            {step > 1 && (
-              <button 
-                className={styles.backButton}
-                onClick={() => setStep(step - 1)}
-                aria-label="Go back"
-              >
-                <FaChevronLeft />
-              </button>
-            )}
-            <div className={styles.headerContent}>
-              <h2>Schedule Appointment</h2>
-              <p className={styles.subtitle}>
-                {step === 1 && 'Select a date for your appointment'}
-                {step === 2 && 'Select a time for your appointment'}
-                {step === 3 && 'Enter payment details'}
-                {step === 4 && 'Confirm your appointment'}
-              </p>
+          {/* Sidebar Info - Matching Reschedule Layout */}
+          <div className="w-full md:w-[320px] bg-slate-50 p-8 flex flex-col justify-between border-r border-slate-100">
+            <div>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="h-10 w-10 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm border border-slate-100">
+                  <FiPlus size={20} />
+                </div>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">New Booking</h2>
+              </div>
+
+              <div className="space-y-6">
+                {/* Specialist Profile Card */}
+                <div className="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-2 opacity-5">
+                    <FiUser size={60} />
+                  </div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Selected Specialist</p>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="h-12 w-12 rounded-xl overflow-hidden bg-slate-100 shadow-sm border border-slate-200">
+                      <img src={doctor?.image || 'https://randomuser.me/api/portraits/women/65.jpg'} alt="Doctor" className="h-full w-full object-cover" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-slate-900">{doctor?.name?.startsWith('Dr.') ? doctor.name : `Dr. ${doctor?.name || 'Sarah Mitchell'}`}</h3>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{doctor?.specialty || 'General Practice'}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
+                      <FiMapPin size={14} className="text-primary" />
+                      <span className="truncate">{doctor?.contact?.address || 'Medical Plaza, NY'}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
+                      <FiDollarSign size={14} className="text-secondary" />
+                      <span>Consultation: ETB 750.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress Stepper */}
+                <div className="space-y-3">
+                  {steps.map((s) => (
+                    <div key={s.id} className="flex items-center gap-3">
+                      <div className={`h-8 w-8 rounded-xl flex items-center justify-center text-xs font-black transition-all ${
+                        step >= s.id ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-slate-300 border border-slate-100'
+                      }`}>
+                        {step > s.id ? <FiCheckCircle size={14} /> : s.id}
+                      </div>
+                      <p className={`text-xs font-black uppercase tracking-widest ${
+                        step >= s.id ? 'text-slate-900' : 'text-slate-300'
+                      }`}>{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <button 
-              className={styles.closeButton}
-              onClick={onClose}
-              aria-label="Close modal"
-            >
-              <FaTimes />
-            </button>
+
+            <div className="pt-8">
+              <div className="p-4 bg-primary/5 rounded-2xl flex items-start gap-3 border border-primary/10">
+                <FiShield size={18} className="text-primary mt-0.5" />
+                <p className="text-[10px] font-bold text-primary leading-relaxed opacity-80">
+                  Your medical data is encrypted and secure. We follow strict HIPAA guidelines for patient privacy.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className={styles.modalBody}>
-            <div className={styles.appointmentCard}>
-              <div className={styles.doctorInfo}>
-                <div className={styles.avatar}>
-                  <img 
-                    src={doctor?.image || '/default-doctor.png'} 
-                    alt={doctor?.name || "Doctor"} 
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/default-doctor.png';
-                    }}
-                  />
-                </div>
-                <div>
-                  <h3>
-                    <FaUserMd /> {doctor?.name || 'No doctor selected'}
-                  </h3>
-                  <p className={styles.specialty}>{doctor?.specialty || 'Specialty not available'}</p>
-                </div>
-              </div>
-              
-              <div className={styles.appointmentMeta}>
-                <div className={styles.metaItem}>
-                  <FaMapMarkerAlt />
-                  <span>{doctor?.contact?.address || 'Address not available'}</span>
-                </div>
-                <div className={styles.metaItem}>
-                  <FaInfoCircle />
-                  <span>Consultation Fee: $75.00</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.progressSteps}>
-              <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>
-                <span>1</span>
-                <p>Select Date</p>
-              </div>
-              <div className={`${styles.step} ${step >= 2 ? styles.active : ''}`}>
-                <span>2</span>
-                <p>Select Time</p>
-              </div>
-              <div className={`${styles.step} ${step >= 3 ? styles.active : ''}`}>
-                <span>3</span>
-                <p>Payment</p>
-              </div>
-              <div className={`${styles.step} ${step >= 4 ? styles.active : ''}`}>
-                <span>4</span>
-                <p>Confirm</p>
-              </div>
-            </div>
-
-            {step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className={styles.dateSelection}
-              >
-                <div className={styles.calendarHeader}>
-                  <button 
-                    className={styles.navButton}
-                    onClick={handlePrevMonth}
-                    disabled={isLoading}
-                  >
-                    <FaChevronLeft />
-                  </button>
-                  <h3 className={styles.monthTitle}>
-                    {currentMonth?.toLocaleString('default', { month: 'long' })} {currentMonth?.getFullYear()}
-                  </h3>
-                  <button 
-                    className={styles.navButton}
-                    onClick={handleNextMonth}
-                    disabled={isLoading}
-                  >
-                    <FaChevronRight />
-                  </button>
-                </div>
-                
-                <div className={styles.calendarGrid}>
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                    <div key={day} className={styles.dayHeader}>{day}</div>
-                  ))}
-                  
-                  {isLoading ? (
-                    <div className={styles.loadingCalendar}>
-                      <div className={styles.loadingSpinner}></div>
-                      <p>Loading available dates...</p>
-                    </div>
-                  ) : (
-                    renderCalendar()
-                  )}
-                </div>
-              </motion.div>
-            )}
-
-            {step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className={styles.timeSelection}
-              >
-                <div className={styles.selectedDate}>
-                  <FaCalendarAlt />
-                  <h3>
-                    {selectedDate?.toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </h3>
-                  <button 
-                    className={styles.textBackButton}
-                    onClick={() => setStep(1)}
-                  >
-                    Change date
-                  </button>
-                </div>
-                
-                <div className={styles.timeSlotsGrid}>
-                  {availableSlots[selectedDate?.toISOString()?.split('T')[0]]?.map(time => (
-                    <motion.button
-                      key={time}
-                      type="button"
-                      className={`${styles.timeSlot} ${
-                        selectedTime === time ? styles.selected : ''
-                      }`}
-                      onClick={() => handleTimeSelect(time)}
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                    >
-                      {time}
-                    </motion.button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className={styles.paymentStep}
-              >
-                <div className={styles.paymentMethods}>
-                  <h3>Payment Method</h3>
-                  <div className={styles.methodOptions}>
-                    <button
-                      type="button"
-                      className={`${styles.methodOption} ${paymentMethod === 'telebirr' ? styles.active : ''}`}
-                      onClick={() => setPaymentMethod('telebirr')}
-                    >
-                      <img 
-                        src="/assets/telebirr.svg" 
-                        alt="Telebirr" 
-                        className={styles.paymentIcon}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/default-payment.svg';
-                        }}
-                      />
-                      Telebirr
-                    </button>
-                    <button
-                      type="button"
-                      className={`${styles.methodOption} ${paymentMethod === 'cbe' ? styles.active : ''}`}
-                      onClick={() => setPaymentMethod('cbe')}
-                    >
-                      <img 
-                        src="/assets/cbe-birr.svg" 
-                        alt="CBE Birr" 
-                        className={styles.paymentIcon}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/default-payment.svg';
-                        }}
-                      />
-                      CBE Birr
-                    </button>
-                  </div>
-                </div>
-
-                {paymentMethod === 'telebirr' && (
-                  <div className={styles.localPayment}>
-                    <div className={styles.paymentInstructions}>
-                      <h4>Pay with Telebirr</h4>
-                      <ol>
-                        <li>Open your Telebirr mobile app</li>
-                        <li>Go to <strong>Pay Bill</strong> section</li>
-                        <li>Enter Biller ID: <strong>HEALTH123</strong></li>
-                        <li>Enter Reference: <strong>DOC-{doctor?.id || '000'}</strong></li>
-                        <li>Enter Amount: <strong>ETB 77.50</strong></li>
-                        <li>Complete your payment</li>
-                      </ol>
-                    </div>
-                    
-                    <div className={styles.paymentSummary}>
-                      <div className={styles.summaryItem}>
-                        <span>Consultation Fee</span>
-                        <span>ETB 75.00</span>
-                      </div>
-                      <div className={styles.summaryItem}>
-                        <span>Service Fee</span>
-                        <span>ETB 2.50</span>
-                      </div>
-                      <div className={styles.summaryTotal}>
-                        <span>Total</span>
-                        <span>ETB 77.50</span>
-                      </div>
-                    </div>
-                    
-                    <div className={styles.securityNote}>
-                      <FaLock /> Your payment is secure and encrypted
-                    </div>
-                    
-                    <button
-                      type="button"
-                      className={styles.primaryButton}
-                      onClick={handlePaymentSubmit}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <span className={styles.buttonLoading}>
-                          <span className={styles.spinner}></span>
-                          Verifying Payment...
-                        </span>
-                      ) : (
-                        'I Have Completed Payment'
-                      )}
-                    </button>
-                  </div>
-                )}
-                
-                {paymentMethod === 'cbe' && (
-                  <div className={styles.localPayment}>
-                    <div className={styles.paymentInstructions}>
-                      <h4>Pay with CBE Birr</h4>
-                      <ol>
-                        <li>Open your CBE Birr mobile app</li>
-                        <li>Go to <strong>Payments</strong> section</li>
-                        <li>Select <strong>Health Services</strong></li>
-                        <li>Enter Provider: <strong>HealthConnect</strong></li>
-                        <li>Enter Reference: <strong>DOC-{doctor?.id || '000'}</strong></li>
-                        <li>Enter Amount: <strong>ETB 77.50</strong></li>
-                        <li>Complete your payment</li>
-                      </ol>
-                      <p className={styles.note}>
-                        You can also pay at any CBE branch using the reference above.
-                      </p>
-                    </div>
-                    
-                    <div className={styles.paymentSummary}>
-                      <div className={styles.summaryItem}>
-                        <span>Consultation Fee</span>
-                        <span>ETB 75.00</span>
-                      </div>
-                      <div className={styles.summaryItem}>
-                        <span>Service Fee</span>
-                        <span>ETB 2.50</span>
-                      </div>
-                      <div className={styles.summaryTotal}>
-                        <span>Total</span>
-                        <span>ETB 77.50</span>
-                      </div>
-                    </div>
-                    
-                    <div className={styles.securityNote}>
-                      <FaLock /> Your payment is secure and encrypted
-                    </div>
-                    
-                    <button
-                      type="button"
-                      className={styles.primaryButton}
-                      onClick={handlePaymentSubmit}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <span className={styles.buttonLoading}>
-                          <span className={styles.spinner}></span>
-                          Verifying Payment...
-                        </span>
-                      ) : (
-                        'I Have Completed Payment'
-                      )}
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-                      {/* NEW STEP: Payment Proof Upload */}
-          {step === 3.5 && (
-            <motion.div
-              key="step3.5"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3 }}
-              className={styles.paymentProofStep}
+          {/* Main Content Area */}
+          <div className="flex-1 p-8 md:p-12 flex flex-col relative bg-white">
+            <button 
+              onClick={onClose} 
+              className="absolute top-8 right-8 h-10 w-10 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-all"
             >
-              <div className={styles.paymentProofHeader}>
-                <h3>Upload Payment Proof</h3>
-              </div>
+              <FiX size={20} />
+            </button>
 
-              <div className={styles.uploadContainer}>
-                {!paymentProof ? (
-                  <div 
-                    className={styles.uploadArea}
-                    onClick={() => fileInputRef.current.click()}
+            <div className="flex-1 flex flex-col justify-center max-w-[500px] mx-auto w-full">
+              <AnimatePresence mode="wait">
+                {step === 1 && (
+                  <motion.div 
+                    key="step1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
                   >
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      accept="image/*,.pdf"
-                      style={{ display: 'none' }}
-                    />
-                    <div className={styles.uploadContent}>
-                      <FaCloudUploadAlt className={styles.uploadIcon} />
-                      <p className={styles.uploadText}>Click to browse</p>
-                      <p className={styles.uploadSubtext}>JPEG, PNG, GIF or PDF (Max 5MB)</p>
+                    <div>
+                      <h3 className="text-3xl font-black text-slate-900 mb-2">Pick a Date</h3>
+                      <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em]">When would you like to visit?</p>
                     </div>
-                  </div>
-                ) : (
-                  <div className={styles.uploadPreview}>
-                    {paymentProof.preview ? (
-                      <div className={styles.imagePreview}>
-                        <img src={paymentProof.preview} alt="Payment proof" />
-                        <button 
-                          className={styles.removeButton}
-                          onClick={removePaymentProof}
-                        >
-                          <FaTrashAlt />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className={styles.filePreview}>
-                        <div className={styles.fileInfo}>
-                          <FaFileAlt className={styles.fileIcon} />
-                          <div>
-                            <p className={styles.fileName}>{paymentProof.name}</p>
-                            <p className={styles.fileSize}>{paymentProof.size}</p>
-                          </div>
+
+                    <div className="bg-white">
+                      <div className="flex items-center justify-between mb-6">
+                        <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest">
+                          {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                        </h4>
+                        <div className="flex gap-2">
+                          <button onClick={handlePrevMonth} className="h-8 w-8 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-all"><FiChevronLeft /></button>
+                          <button onClick={handleNextMonth} className="h-8 w-8 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-all"><FiChevronRight /></button>
                         </div>
-                        <button 
-                          className={styles.removeButton}
-                          onClick={removePaymentProof}
+                      </div>
+                      <div className="grid grid-cols-7 gap-2">
+                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
+                          <div key={d} className="text-center text-[10px] font-black text-slate-300 uppercase py-2">{d}</div>
+                        ))}
+                        {renderCalendar()}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {step === 2 && (
+                  <motion.div 
+                    key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
+                  >
+                    <div>
+                      <h3 className="text-3xl font-black text-slate-900 mb-2">Select Time</h3>
+                      <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest">
+                        <FiCalendar size={14} />
+                        {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      {availableSlots[selectedDate.toISOString().split('T')[0]]?.map((time) => (
+                        <motion.button
+                          key={time}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleTimeSelect(time)}
+                          className={`py-5 rounded-3xl text-sm font-black transition-all border ${
+                            selectedTime === time ? 'bg-slate-900 border-slate-900 text-white shadow-xl shadow-slate-200' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
+                          }`}
                         >
-                          <FaTrashAlt />
+                          {time}
+                        </motion.button>
+                      ))}
+                    </div>
+
+                    <button onClick={() => setStep(1)} className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors flex items-center gap-2">
+                      <FiChevronLeft /> Change Date
+                    </button>
+                  </motion.div>
+                )}
+
+                {step === 3 && (
+                  <motion.div 
+                    key="step3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
+                  >
+                    <div>
+                      <h3 className="text-3xl font-black text-slate-900 mb-2">Payment</h3>
+                      <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em]">Secure Checkout</p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        {['telebirr', 'cbe'].map((m) => (
+                          <button
+                            key={m}
+                            onClick={() => setPaymentMethod(m)}
+                            className={`flex items-center gap-3 p-4 rounded-3xl border transition-all ${
+                              paymentMethod === m ? 'bg-slate-900 border-slate-900 text-white shadow-xl shadow-slate-200' : 'bg-white border-slate-100 text-slate-600'
+                            }`}
+                          >
+                            <div className={`h-8 w-8 rounded-xl flex items-center justify-center ${paymentMethod === m ? 'bg-white/20' : 'bg-slate-50'}`}>
+                              <FiCreditCard size={16} />
+                            </div>
+                            <span className="text-xs font-black uppercase tracking-widest">{m}</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="p-6 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-inner">
+                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Instructions</h4>
+                        <ol className="space-y-3 text-[11px] font-bold text-slate-600 list-decimal pl-4">
+                          <li>Open your {paymentMethod.toUpperCase()} app</li>
+                          <li>Go to "Pay Bill" or "Transfer"</li>
+                          <li>Enter ID: <span className="font-black text-slate-900">HEALTH77</span></li>
+                          <li>Reference: <span className="font-black text-slate-900">DOC-552</span></li>
+                          <li>Amount: <span className="font-black text-slate-900">ETB 750.00</span></li>
+                        </ol>
+                      </div>
+
+                      <button
+                        onClick={handlePaymentSubmit}
+                        disabled={isLoading}
+                        className="w-full py-5 bg-slate-900 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-100 active:scale-95 disabled:opacity-50"
+                      >
+                        {isLoading ? 'Processing...' : 'I have paid'}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {step === 3.5 && (
+                  <motion.div 
+                    key="step3.5"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
+                  >
+                    <div>
+                      <h3 className="text-3xl font-black text-slate-900 mb-2">Upload Proof</h3>
+                      <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em]">Transaction Confirmation</p>
+                    </div>
+
+                    {!paymentProof ? (
+                      <div 
+                        onClick={() => fileInputRef.current.click()}
+                        className="border-4 border-dashed border-slate-50 bg-slate-50/50 rounded-[2.5rem] p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-primary/5 hover:border-primary/20 transition-all group"
+                      >
+                        <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
+                        <div className="h-16 w-16 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                          <FiUploadCloud size={32} />
+                        </div>
+                        <p className="text-sm font-black text-slate-900 mb-1">Click to upload</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Screenshot or Receipt (Max 5MB)</p>
+                      </div>
+                    ) : (
+                      <div className="p-6 bg-white rounded-[2rem] border-2 border-primary/20 shadow-xl shadow-primary/5 relative group">
+                        <button onClick={removePaymentProof} className="absolute -top-2 -right-2 h-8 w-8 bg-rose-500 text-white rounded-xl flex items-center justify-center shadow-lg hover:bg-rose-600 transition-all opacity-0 group-hover:opacity-100">
+                          <FiTrash2 size={14} />
                         </button>
+                        <div className="flex items-center gap-4">
+                          {paymentProof.preview ? (
+                            <img src={paymentProof.preview} className="h-16 w-16 rounded-2xl object-cover shadow-sm" alt="Preview" />
+                          ) : (
+                            <div className="h-16 w-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400"><FiFileText size={24} /></div>
+                          )}
+                          <div className="flex-1">
+                            <p className="text-sm font-black text-slate-900 truncate">{paymentProof.name}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{paymentProof.size}</p>
+                          </div>
+                          <FiCheckCircle size={24} className="text-secondary" />
+                        </div>
                       </div>
                     )}
-                  </div>
+
+                    <button
+                      onClick={verifyPaymentProof}
+                      disabled={!paymentProof || isLoading}
+                      className="w-full py-5 bg-slate-900 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-100 active:scale-95 disabled:opacity-50"
+                    >
+                      {isLoading ? 'Verifying...' : 'Submit Verification'}
+                    </button>
+                  </motion.div>
                 )}
 
-                {isUploading && (
-                  <div className={styles.uploadProgress}>
-                    <div 
-                      className={styles.progressBar}
-                      style={{ width: `${uploadProgress}%` }}
-                    ></div>
-                    <span>{uploadProgress}%</span>
-                  </div>
-                )}
-
-                {paymentProof && !isUploading && (
-                  <div className={styles.uploadSuccess}>
-                    <FaCheckCircle className={styles.successIcon} />
-                    <span>File uploaded successfully</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.uploadInstructions}>
-                <h4>How to take a good screenshot:</h4>
-                <ul>
-                  <li>Make sure the transaction ID and amount are visible</li>
-                  <li>Capture the entire confirmation screen</li>
-                  <li>Ensure the image is clear and readable</li>
-                  <li>Check that the date/time is visible</li>
-                </ul>
-              </div>
-                <div className={styles.proofActionButtons}>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    onClick={() => setStep(3)}
+                {step === 4 && (
+                  <motion.div 
+                    key="step4"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-8"
                   >
-                    <FaChevronLeft className={`${styles.backIcon} backIcon`} />
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.primaryButton}
-                    onClick={verifyPaymentProof}
-                    disabled={!paymentProof || isLoading}
-                  >
-                    {isLoading ? (
-                      <span className={styles.buttonLoading}>
-                        <span className={styles.spinner}></span>
-                        Verifying...
-                      </span>
-                    ) : (
-                      <>
-                        Verify Payment
-                        <FaCheckCircle className={`${styles.verifyIcon} verifyIcon`} />
-                      </>
-                    )}
-                  </button>
-                </div>
-            </motion.div>
-          )}
-
-
-            {step === 4 && (
-              <motion.div
-                key="step4"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className={styles.confirmationStep}
-              >
-                <div className={styles.successCheckmark}>
-                  <div className={styles.checkIcon}>
-                    <span className={styles.iconLine + ' ' + styles.lineTip}></span>
-                    <span className={styles.iconLine + ' ' + styles.lineLong}></span>
-                    <div className={styles.iconCircle}></div>
-                    <div className={styles.iconFix}></div>
-                  </div>
-                </div>
-                
-                <h3 className={styles.successTitle}>Payment Successful!</h3>
-                <p className={styles.successMessage}>Your appointment has been scheduled and payment processed.</p>
-                
-                <div className={styles.confirmationCard}>
-                  <div className={styles.detailRow}>
-                    <span>Doctor:</span>
-                    <span>{doctor?.name || 'Unknown Doctor'}</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>Date:</span>
-                    <span>
-                      {selectedDate?.toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>Time:</span>
-                    <span>{selectedTime || 'Not specified'}</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>Location:</span>
-                    <span>{doctor?.contact?.address || 'Not specified'}</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>Payment Method:</span>
-                    <span>
-                      {paymentMethod === 'telebirr' ? 'Telebirr' : 
-                       paymentMethod === 'cbe' ? 'CBE Birr' : 'Unknown'}
-                    </span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>Amount Paid:</span>
-                    <span>ETB 77.50</span>
-                  </div>
-                </div>
-                
-                <div className={styles.reasonInput}>
-                  <label>
-                    <FaInfoCircle /> Additional Notes (optional)
-                  </label>
-                  <textarea
-                    value={reason}
-                    onChange={(e) => setReason(e?.target?.value || '')}
-                    placeholder="Any special requests or information for the doctor..."
-                    rows={3}
-                  />
-                </div>
-                
-                <div className={styles.actionButtons}>
-                  <button
-                    type="button"
-                    className={styles.primaryButton}
-                    onClick={handleConfirmAppointment}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className={styles.buttonLoading}>
-                        <span className={styles.spinner}></span>
-                        Confirming...
-                      </span>
-                    ) : (
-                      'Confirm Appointment'
-                    )}
-                  </button>
-                </div>
-              </motion.div>
-            )}
-
-                          {/* {paymentProof && (
-                <div className={styles.paymentProofConfirmation}>
-                  <h4>Payment Proof:</h4>
-                  {paymentProof.preview ? (
-                    <div className={styles.proofImageContainer}>
-                      <img 
-                        src={paymentProof.preview} 
-                        alt="Payment proof" 
-                        className={styles.proofImage}
-                      />
+                    <div className="text-center">
+                      <div className="h-20 w-20 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <FiCheckCircle size={40} />
+                      </div>
+                      <h3 className="text-3xl font-black text-slate-900 mb-2">All Set!</h3>
+                      <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em]">Ready to confirm booking</p>
                     </div>
-                  ) : (
-                    <div className={styles.proofFileInfo}>
-                      <FaFileAlt className={styles.fileIcon} />
-                      <span>{paymentProof.name}</span>
+
+                    <div className="bg-slate-50 rounded-[2.5rem] p-8 space-y-4 shadow-inner">
+                      <div className="flex justify-between items-center py-3 border-b border-slate-200/50">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Doctor</p>
+                        <p className="text-sm font-black text-slate-900">{doctor?.name || 'Dr. Sarah Mitchell'}</p>
+                      </div>
+                      <div className="flex justify-between items-center py-3 border-b border-slate-200/50">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Schedule</p>
+                        <div className="text-right">
+                          <p className="text-sm font-black text-slate-900">{selectedTime}</p>
+                          <p className="text-[10px] font-bold text-slate-500 uppercase">{selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                        </div>
+                      </div>
+                      <div className="pt-2">
+                        <textarea
+                          placeholder="Add a note for the doctor..."
+                          value={reason}
+                          onChange={(e) => setReason(e.target.value)}
+                          className="w-full bg-white border border-slate-100 rounded-2xl p-4 text-sm font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all resize-none h-24 shadow-sm"
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
-              )} */}
+
+                    <button
+                      onClick={handleConfirmAppointment}
+                      disabled={isLoading}
+                      className="w-full py-6 bg-slate-900 text-white rounded-[2rem] text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-2xl shadow-slate-200 active:scale-95 group"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        {isLoading ? 'Finalizing...' : 'Finalize Appointment'}
+                        {!isLoading && <FiArrowRight className="group-hover:translate-x-1 transition-transform" />}
+                      </span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </AnimatePresence>
   );
 };

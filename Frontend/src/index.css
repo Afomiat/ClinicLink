@@ -219,3 +219,136 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="font-h"] {
 .fc-daygrid-event {
     margin-top: 2px !important;
 }
+/* ── Dark Mode Global Overrides (Exact StayTuned Theme) ── */
+.dark-mode {
+  --bg-primary: #121212;
+  --sidebar-bg: #121212;
+  --card-bg: #232323;
+  --card-hover: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --accent: #ff6624;
+}
+
+.dark-mode body,
+.dark-mode main,
+.dark-mode .bg-\[var\(--bg-primary\)\] {
+  background-color: var(--bg-primary) !important;
+  background-image: none !important;
+  color: var(--text-primary) !important;
+}
+
+/* Exact Card & Background Overrides */
+.dark-mode aside, 
+.dark-mode header,
+.dark-mode .bg-white,
+.dark-mode .glass-card,
+.dark-mode .bg-background,
+.dark-mode .bg-slate-50,
+.dark-mode .bg-slate-100 {
+  background-color: var(--card-bg) !important;
+  backdrop-filter: none !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .bg-slate-50\/50,
+.dark-mode .hover\:bg-slate-50:hover,
+.dark-mode .hover\:bg-slate-100:hover,
+.dark-mode .hover\:-translate-y-1:hover {
+  background-color: var(--card-hover) !important;
+}
+
+/* Typography & Accents */
+.dark-mode .text-slate-900,
+.dark-mode .text-slate-800,
+.dark-mode .text-slate-700,
+.dark-mode .text-on-surface {
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .text-slate-500,
+.dark-mode .text-slate-400,
+.dark-mode .text-on-surface-variant {
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode .text-secondary {
+  color: var(--accent) !important;
+}
+
+/* Buttons & Interactive */
+.dark-mode .bg-secondary,
+.dark-mode .bg-accent {
+  background-color: var(--accent) !important;
+  background-image: none !important;
+  box-shadow: 0 8px 25px rgba(255, 102, 36, 0.35) !important;
+  border: none !important;
+}
+
+.dark-mode .bg-secondary-container\/10,
+.dark-mode .bg-secondary-container\/20 {
+  background-color: rgba(255, 102, 36, 0.1) !important;
+  border: 1px solid rgba(255, 102, 36, 0.2) !important;
+}
+
+.dark-mode .shadow-slate-100,
+.dark-mode .shadow-sm,
+.dark-mode .shadow-md,
+.dark-mode .shadow-lg {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Form Elements */
+.dark-mode input, 
+.dark-mode textarea, 
+.dark-mode select {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 12px !important;
+}
+
+.dark-mode .bg-gradient-to-br {
+  background: var(--card-hover) !important;
+}
+
+
+
+
+
+/* Calendar Dark Mode */
+.dark-mode .fc {
+    --fc-border-color: var(--border-color);
+    --fc-page-bg-color: var(--bg-primary);
+    --fc-neutral-bg-color: var(--sidebar-bg);
+    --fc-list-event-hover-bg-color: var(--card-bg);
+    --fc-button-bg-color: var(--card-bg);
+    --fc-button-border-color: var(--border-color);
+}
+
+.dark-mode .fc .fc-toolbar-title {
+    color: var(--text-primary) !important;
+}
+
+.dark-mode .fc-theme-standard td, 
+.dark-mode .fc-theme-standard th {
+    border-color: var(--border-color) !important;
+}
+
+.dark-mode .fc .fc-button {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.dark-mode .fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+.dark-mode .fc .fc-daygrid-day.fc-day-today {
+    background-color: rgba(17, 156, 137, 0.1) !important;
+}

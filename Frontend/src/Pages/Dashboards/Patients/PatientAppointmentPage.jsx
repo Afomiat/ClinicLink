@@ -14,6 +14,7 @@ import styles from './PatientAppointments.module.css';
 import AppointmentActionModal from './AppointmentActionModal';
 import ScheduleAppointmentModal from './ScheduleAppointmentModal';
 import AppointmentViewModal from './AppointmentViewModal';
+import RescheduleModal from './RescheduleModal';
 
 
 
@@ -30,6 +31,8 @@ const PatientAppointmentsPage = () => {
   const [appointmentsPerPage] = useState(5);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [currentActionAppointment, setCurrentActionAppointment] = useState(null);
+  const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
+  const [appointmentToReschedule, setAppointmentToReschedule] = useState(null);
 
   const [filters, setFilters] = useState({
     status: 'all',
@@ -377,10 +380,10 @@ const PatientAppointmentsPage = () => {
           </div>
           <button 
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full hover:shadow-lg transition-all active:scale-95 duration-150 font-label-md"
+            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95"
           >
-            <span className="material-symbols-outlined">add</span>
-            Schedule New Appointment
+            <FiPlus size={16} />
+            New Appointment
           </button>
         </div>
       </div>
@@ -450,11 +453,11 @@ const PatientAppointmentsPage = () => {
               </div>
             </div>
             {/* Promo/Support Card */}
-            <div className="bg-secondary-container rounded-xl p-sm text-on-secondary-container">
+            <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
               <span className="material-symbols-outlined text-secondary">help_outline</span>
-              <h4 className="font-label-md mt-2">Need Help?</h4>
-              <p className="text-label-sm mt-1 opacity-80">Our support team is available 24/7 for emergency scheduling assistance.</p>
-              <button className="mt-md w-full bg-white text-secondary py-2 rounded-lg font-label-md hover:bg-slate-50 transition-colors">Contact Support</button>
+              <h4 className="font-label-md mt-2 text-secondary">Need Help?</h4>
+              <p className="text-label-sm mt-1 text-slate-500">Our support team is available 24/7 for emergency scheduling assistance.</p>
+              <button className="mt-md w-full bg-white text-slate-900 py-2 rounded-lg font-label-md hover:bg-slate-50 transition-colors shadow-sm">Contact Support</button>
             </div>
           </div>
 
@@ -471,60 +474,60 @@ const PatientAppointmentsPage = () => {
                   <motion.div 
                     layout
                     key={apt.id} 
-                    className="bg-white rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between border border-slate-100 shadow-sm hover:shadow-md transition-all group cursor-pointer" 
+                    className="bg-white rounded-xl overflow-hidden border border-slate-100 transition-all hover:shadow-md" 
                     onClick={() => setSelectedAppointment(apt)}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-xl bg-surface-container overflow-hidden flex-shrink-0 border border-slate-50">
-                        <img 
-                          src={`https://ui-avatars.com/api/?name=${apt.doctor}&background=d3e4fe&color=0b1c30`} 
-                          alt={apt.doctor} 
-                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h4 className="text-[16px] text-slate-900 font-bold tracking-tight group-hover:text-secondary transition-colors">{apt.doctor}</h4>
-                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                            apt.status === 'confirmed' ? 'bg-secondary/10 text-secondary' : 'bg-amber-500/10 text-amber-600'
-                          }`}>
-                            {apt.status}
+                    <div className="p-4 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-primary/5 text-primary">
+                          <span className="material-symbols-outlined text-2xl font-light">
+                            event
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
-                          <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[15px]">medical_information</span>
-                            {apt.title}
-                          </span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[15px]">event</span>
-                            {apt.date}
-                          </span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[15px]">schedule</span>
-                            {apt.time}
-                          </span>
+                        <div>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <h4 className="text-[16px] text-slate-900 font-bold tracking-tight capitalize">{apt.type}</h4>
+                            <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${
+                              apt.status === 'confirmed' ? 'bg-secondary/10 text-secondary' : 'bg-amber-500/10 text-amber-600'
+                            }`}>
+                              {apt.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+                            <span>{apt.doctor}</span>
+                            <span>•</span>
+                            <span>{apt.title}</span>
+                            <span>•</span>
+                            <span>{apt.date} at {apt.time}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 mt-4 md:mt-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-50">
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); handleCancelAppointment(apt.id); }}
-                        className="px-3 py-1.5 text-[12px] font-bold text-error hover:bg-error/5 rounded-lg transition-colors uppercase tracking-widest"
-                      >
-                        Cancel
-                      </button>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setSelectedAppointment(apt); }}
-                        className="px-4 py-1.5 bg-slate-50 border border-slate-100 text-[12px] font-black text-slate-600 hover:bg-slate-100 rounded-lg transition-all uppercase tracking-widest"
-                      >
-                        Reschedule
-                      </button>
-                      <button className="p-1.5 hover:bg-slate-50 rounded-lg transition-colors text-slate-300">
-                        <span className="material-symbols-outlined">more_vert</span>
-                      </button>
+                      <div className="flex items-center gap-3">
+                        <div className="hidden md:block text-right pr-4 border-r border-slate-100">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Actions</p>
+                          <div className="flex gap-2 mt-1">
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); handleCancelAppointment(apt.id); }}
+                              className="px-2 py-1 text-[10px] font-bold text-error hover:bg-error/5 rounded transition-colors uppercase tracking-widest"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              onClick={(e) => { 
+                                e.stopPropagation(); 
+                                setAppointmentToReschedule(apt);
+                                setIsRescheduleModalOpen(true);
+                              }}
+                              className="px-2 py-1 text-[10px] font-bold text-primary hover:bg-primary/5 rounded transition-colors uppercase tracking-widest"
+                            >
+                              Reschedule
+                            </button>
+                          </div>
+                        </div>
+                        <div className="p-2 rounded-full transition-all bg-slate-50 text-slate-400 hover:bg-primary hover:text-white">
+                          <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 )) : (
@@ -543,35 +546,46 @@ const PatientAppointmentsPage = () => {
               </h3>
               <div className="space-y-2">
                 {pastAppointments.map(apt => (
-                  <div key={apt.id} className="bg-white rounded-xl p-3 flex flex-col md:flex-row md:items-center justify-between border border-slate-100 group transition-all cursor-pointer hover:shadow-md" onClick={() => setSelectedAppointment(apt)}>
-                    <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 border border-slate-100/50">
-                        <img 
-                          src={`https://ui-avatars.com/api/?name=${apt.doctor}&background=e5eeff&color=0b1c30`} 
-                          alt={apt.doctor} 
-                          className="h-full w-full object-cover" 
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h4 className="text-[15px] text-slate-900 font-bold tracking-tight group-hover:text-secondary transition-colors">{apt.doctor}</h4>
-                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                            apt.status === 'completed' ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'
-                          }`}>
-                            {apt.status}
+                  <div key={apt.id} className="bg-white rounded-xl overflow-hidden border border-slate-100 transition-all hover:shadow-md cursor-pointer" onClick={() => setSelectedAppointment(apt)}>
+                    <div className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-slate-100 text-slate-500">
+                          <span className="material-symbols-outlined text-2xl font-light">
+                            history
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">{apt.type} • {apt.date}</p>
+                        <div>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <h4 className="text-[16px] text-slate-900 font-bold tracking-tight capitalize">{apt.type}</h4>
+                            <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${
+                              apt.status === 'completed' ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'
+                            }`}>
+                              {apt.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+                            <span>{apt.doctor}</span>
+                            <span>•</span>
+                            <span>{apt.title}</span>
+                            <span>•</span>
+                            <span>{apt.date}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 mt-4 md:mt-0">
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setSelectedAppointment(apt); }}
-                        className="px-3 py-1.5 text-[11px] font-black text-slate-400 hover:text-slate-600 flex items-center gap-1 transition-colors uppercase tracking-widest"
-                      >
-                        <span className="material-symbols-outlined text-[18px]">description</span>
-                        Summary
-                      </button>
+                      <div className="flex items-center gap-3">
+                        <div className="hidden md:block text-right pr-4 border-r border-slate-100">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Action</p>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setSelectedAppointment(apt); }}
+                            className="mt-1 px-2 py-1 text-[10px] font-bold text-slate-600 hover:bg-slate-50 rounded transition-colors uppercase tracking-widest"
+                          >
+                            View Summary
+                          </button>
+                        </div>
+                        <div className="p-2 rounded-full transition-all bg-slate-50 text-slate-400 hover:bg-slate-200">
+                          <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -652,6 +666,15 @@ const PatientAppointmentsPage = () => {
             }}
           />
         )}
+        <RescheduleModal
+          isOpen={isRescheduleModalOpen}
+          onClose={() => setIsRescheduleModalOpen(false)}
+          appointment={appointmentToReschedule}
+          onReschedule={(newDate, newTime) => {
+            handleRescheduleAppointment(appointmentToReschedule.id, newDate, newTime);
+            setIsRescheduleModalOpen(false);
+          }}
+        />
       </AnimatePresence>
     </div>
   );

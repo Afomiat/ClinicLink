@@ -214,7 +214,7 @@ const PatientTestResults = () => {
           </div>
 
           {/* Stats Summary */}
-          <div className="bg-secondary-container rounded-xl p-sm text-on-secondary-container bg-[#6cf8bb]/10 border border-[#6cf8bb]/20">
+          <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
             <h4 className="font-bold text-sm text-secondary flex items-center gap-2">
               <span className="material-symbols-outlined text-[20px]">analytics</span>
               Insights
