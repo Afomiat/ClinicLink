@@ -7,7 +7,7 @@ import {
   FaPrint,
   FaFileMedicalAlt
 } from 'react-icons/fa';
-import styles from './viewPrescriptionModal.module.css';
+import styles from './ViewPrescriptionModal.module.css';
 
 const ViewPrescriptionModal = ({ prescription, onClose }) => {
   if (!prescription) return null;
