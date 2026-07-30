@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDarkMode } from "../../Pages/Dashboards/Docters/DarkModeContext";
 import { Outlet, NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../assets/logo.png';
+
 import NotificationCenter from '../../Pages/Dashboards/Patients/NotificationCenter';
 
 import {
@@ -147,9 +147,12 @@ const PatientLayout = () => {
       >
         {/* Logo Section */}
         <div className="px-6 mb-12 flex items-center gap-4 overflow-hidden group cursor-pointer" onClick={() => navigate('/patient')}>
-          <div className="w-12 h-12 bg-secondary-container/20 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 duration-500 shadow-sm border border-secondary/10">
-            <img src={logo} alt="ClinicLink Logo" className="w-8 h-8 object-contain" />
-          </div>
+          <img
+            src="/logo.svg"
+            alt="ClinicLink Logo"
+            className="w-12 h-12 flex-shrink-0 rounded-2xl transition-transform group-hover:scale-110 duration-500 shadow-sm"
+            draggable="false"
+          />
           <AnimatePresence mode="wait">
             {isSidebarOpen && (
               <motion.div 

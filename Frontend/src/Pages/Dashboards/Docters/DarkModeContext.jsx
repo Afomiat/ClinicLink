@@ -1,39 +1,15 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 
 const DarkModeContext = createContext();
 
+/**
+ * DarkModeProvider
+ *
+ * CSS variables (--bg-primary, --sidebar-bg, etc.) are pre-defined in
+ * index.html's inline <style> block so there is NO post-hydration layout shift.
+ * Dark-mode toggling is disabled; the provider exists only to supply the context.
+ */
 export const DarkModeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const root = document.documentElement;
-  
-    const lightModeVars = {
-      '--bg-primary': '#f8f9ff',
-      '--sidebar-bg': '#ffffff',
-      '--sidebar-text': '#64748b',
-      '--sidebar-text-active': '#0f172a',
-      '--white': '#ffffff',
-      '--accent': '#119c89',
-      '--text-color': '#0f172a',
-      '--bullet-color': '#119c89',
-      '--icon-color':'#119c89',
-      '--calanderday':'#000000',
-      '--active-text': '#000000',
-      '--active-nav-bag': '#f1f5f9',
-      '--card-bg': '#ffffff',
-    };
-  
-    const variables = lightModeVars;
-    Object.entries(variables).forEach(([key, value]) => {
-      root.style.setProperty(key, value);
-    });
-  
-    root.classList.remove('dark');
-    root.classList.remove('dark-mode');
-    localStorage.setItem('darkMode', 'false');
-  }, []);
-  
   return (
     <DarkModeContext.Provider value={{ 
       darkMode: false, 

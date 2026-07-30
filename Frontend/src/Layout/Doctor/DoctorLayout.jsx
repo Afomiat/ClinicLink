@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from "../../Pages/Dashboards/Docters/DarkModeContext";
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
-import logo from '../../assets/logo.png';
 // import DoctorNotificationCenter from '../DoctorNotificationCenter';
 
 import {
@@ -134,7 +133,7 @@ useEffect(() => {
         <div className={`${styles.sidebarHeader} ${darkMode ? styles.darkMode : ''}`}>
           {isSidebarOpen && (
           <div className={styles.logo}>
-            <img src={logo} alt="HealthPlus Logo" className={styles.logoImage} />
+            <img src="/logo.svg" alt="ClinicLink Logo" className={styles.logoImage} />
           </div>
 
           )}
