@@ -96,10 +96,10 @@ const PatientLayout = () => {
       activePaths: ['/patient/prescriptions'],
     },
     {
-      path: '/patient/Payment',
+      path: '/patient/payment',
       label: 'Payment',
       icon: 'payments',
-      activePaths: ['/patient/payment'],
+      activePaths: ['/patient/payment', '/patient/Payment'],
     },
     {
       path: '/patient/notifications',
@@ -111,9 +111,10 @@ const PatientLayout = () => {
   ];
 
   const isNonDashboardLinkActive = (path, activePaths) => {
+    const current = location.pathname.toLowerCase();
     return activePaths
-      ? activePaths.some((activePath) => location.pathname.startsWith(activePath))
-      : location.pathname.startsWith(path);
+      ? activePaths.some((activePath) => current.startsWith(activePath.toLowerCase()))
+      : current.startsWith(path.toLowerCase());
   };
 
   const isLinkActive = (path, activePaths, exact = false) => {
@@ -281,23 +282,10 @@ const PatientLayout = () => {
       >
         {/* ── Top Navigation Bar ── */}
         <header
-          className={`fixed top-0 right-0 h-20 border-b border-slate-100 bg-white/80 backdrop-blur-xl flex items-center justify-between px-8 z-40 transition-all duration-500 ${
+          className={`fixed top-0 right-0 h-20 border-b border-slate-100 bg-white/80 backdrop-blur-xl flex items-center justify-end px-8 z-40 transition-all duration-500 ${
             isSidebarOpen ? 'left-[280px]' : 'left-[88px]'
           }`}
         >
-          {/* Search Bar - Luxurious Style */}
-          <div className="relative w-96 max-w-full group">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl transition-colors group-focus-within:text-secondary">
-              search
-            </span>
-            <input
-              className="w-full pl-12 pr-4 py-3 bg-slate-50/50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-secondary/5 focus:bg-white focus:border-secondary/20 transition-all placeholder:text-slate-400 placeholder:font-medium"
-              placeholder="Search records, doctors, or results..."
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-6">

@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiDownload, FiCreditCard, FiSearch, FiFilter, 
   FiMoreVertical, FiArrowUpRight, FiCheckCircle,
-  FiClock, FiAlertCircle, FiPrinter
+  FiClock, FiAlertCircle, FiPrinter, FiActivity
 } from 'react-icons/fi';
 import jsPDF from 'jspdf';
+import { exportToPDF } from '../../../utils/exportUtils';
+import { PayAllBalanceModal, InvoiceOptionsModal } from './SharedModals';
 
 const PaymentPage = () => {
   const [payments, setPayments] = useState([]);
@@ -17,6 +19,8 @@ const PaymentPage = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('idle'); // idle, processing, success
+  const [showPayAllModal, setShowPayAllModal] = useState(false);
+  const [selectedOptionsInvoice, setSelectedOptionsInvoice] = useState(null);
 
   const handlePayment = () => {
     if (!paymentMethod) return;
@@ -163,6 +167,19 @@ const PaymentPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <button 
+            onClick={() => {
+              exportToPDF(
+                'Billing Statement & Invoice Ledger',
+                ['Invoice ID', 'Date', 'Service', 'Doctor/Dept', 'Amount ($)', 'Status'],
+                filteredPayments.map(p => [p.id, p.date, p.service, p.doctor, `$${p.amount.toFixed(2)}`, p.status]),
+                'Billing_Statement'
+              );
+            }}
+            className="flex items-center gap-2 px-5 py-3 bg-white text-slate-700 border border-slate-100 rounded-full shadow-sm text-xs font-black uppercase tracking-widest hover:bg-slate-50 transition-all cursor-pointer shrink-0"
+          >
+            <FiDownload size={14} /> Export Statement
+          </button>
         </div>
       </div>
 
@@ -171,8 +188,8 @@ const PaymentPage = () => {
         <div className="col-span-12 lg:col-span-3 space-y-md sticky top-24">
           <div className="bg-white rounded-xl p-sm border border-slate-100 shadow-sm">
             <div className="p-xs border-b border-slate-50 mb-sm flex items-center justify-between">
-              <h3 className="text-sm font-bold text-slate-900">Billing Filters</h3>
-              <button onClick={() => {setFilter('all'); setSearchTerm('')}} className="text-[11px] font-bold text-[#000000] hover:underline uppercase tracking-wider">Reset</button>
+              <h3 className="text-xs font-black font-manrope text-slate-900 uppercase tracking-widest">Billing Filters</h3>
+              <button onClick={() => {setFilter('all'); setSearchTerm('')}} className="text-[10px] font-black text-slate-900 hover:underline uppercase tracking-widest cursor-pointer">Reset</button>
             </div>
             
             <div className="space-y-sm p-xs">
@@ -181,11 +198,11 @@ const PaymentPage = () => {
                   <button
                     key={cat.value}
                     onClick={() => setFilter(cat.value)}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-sm font-bold ${
-                      filter === cat.value ? 'bg-[#000000]/10 text-[#000000] shadow-sm' : 'text-slate-500 hover:bg-slate-50'
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-xs font-black uppercase tracking-wider cursor-pointer ${
+                      filter === cat.value ? 'bg-secondary-container/20 text-secondary border border-secondary/10 shadow-sm font-extrabold' : 'text-slate-500 hover:bg-slate-50'
                     }`}
                   >
-                    <span className="material-symbols-outlined text-[20px]">{cat.icon}</span>
+                    <span className={`material-symbols-outlined text-[20px] ${filter === cat.value ? 'text-secondary' : 'text-slate-400'}`}>{cat.icon}</span>
                     {cat.label}
                   </button>
                 ))}
@@ -194,22 +211,30 @@ const PaymentPage = () => {
           </div>
 
           {/* Quick Stats Sidebar */}
-          <div className="bg-[#006c49]-container/20 rounded-xl p-sm border border-[#006c49]/10">
-            <h4 className="font-bold text-sm text-[#006c49] flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-              Billing Summary
-            </h4>
-            <div className="mt-4 space-y-4">
-              <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Outstanding Balance</p>
-                <p className="text-2xl font-black text-slate-900">$130.00</p>
+          <div className="widget-card p-6 relative overflow-hidden group">
+            <div className="relative z-10">
+              <div className="icon-box w-12 h-12 mb-4 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-slate-900 text-xl">account_balance_wallet</span>
               </div>
-              <div className="pt-3 border-t border-[#006c49]/5">
-                <button className="w-full py-2.5 bg-[#000000] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#000000]/90 transition-all shadow-lg shadow-[#000000]/20">
-                  Pay All Balance
-                </button>
+              <h4 className="font-extrabold text-base text-slate-900 font-manrope">
+                Billing Summary
+              </h4>
+              <div className="mt-4 space-y-4">
+                <div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Outstanding Balance</p>
+                  <p className="text-xl font-extrabold text-slate-900 mt-0.5">$130.00</p>
+                </div>
+                <div className="pt-3 border-t border-slate-200/50">
+                  <button 
+                    onClick={() => setShowPayAllModal(true)}
+                    className="text-xs font-black uppercase tracking-widest text-slate-900 hover:text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    PAY ALL BALANCE →
+                  </button>
+                </div>
               </div>
             </div>
+            <FiActivity className="absolute -bottom-6 -right-6 text-slate-400/20 text-8xl rotate-12 pointer-events-none" />
           </div>
         </div>
 
@@ -218,21 +243,21 @@ const PaymentPage = () => {
           {/* Top Summary Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="h-12 w-12 bg-[#000000]/5 rounded-xl flex items-center justify-center text-[#000000]">
+              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
                 <span className="material-symbols-outlined text-2xl">verified_user</span>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Insurance Status</p>
-                <p className="text-sm font-bold text-slate-700 italic">"Full Coverage - Aetna Platinum"</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Insurance Status</p>
+                <p className="text-sm font-bold text-slate-900 italic mt-0.5">"Full Coverage - Aetna Platinum"</p>
               </div>
             </div>
             <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="h-12 w-12 bg-[#006c49]/5 rounded-xl flex items-center justify-center text-[#006c49]">
+              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
                 <span className="material-symbols-outlined text-2xl">credit_card</span>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Primary Method</p>
-                <p className="text-sm font-bold text-slate-700">Visa ending in •••• 4410</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Primary Method</p>
+                <p className="text-sm font-bold text-slate-900 mt-0.5">Visa ending in •••• 4410</p>
               </div>
             </div>
           </div>
@@ -244,7 +269,7 @@ const PaymentPage = () => {
 
           {isLoading ? (
             <div className="p-20 flex flex-col items-center justify-center text-slate-300">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#000000] mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-secondary mb-4"></div>
               <p className="text-sm font-bold uppercase tracking-widest">Accessing Secure Ledger...</p>
             </div>
           ) : filteredPayments.length > 0 ? (
@@ -259,7 +284,7 @@ const PaymentPage = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className={`h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      p.status === 'completed' ? 'bg-[#006c49]/5 text-[#006c49]' : 
+                      p.status === 'completed' ? 'bg-secondary/10 text-secondary' : 
                       p.status === 'pending' ? 'bg-amber-500/5 text-amber-600' : 'bg-error/5 text-error'
                     }`}>
                       <span className="material-symbols-outlined text-2xl font-light">
@@ -270,7 +295,7 @@ const PaymentPage = () => {
                       <div className="flex items-center gap-2 mb-0.5">
                         <h4 className="text-[16px] text-slate-900 font-bold tracking-tight">{p.service}</h4>
                         <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                          p.status === 'completed' ? 'bg-[#006c49]/10 text-[#006c49]' : 
+                          p.status === 'completed' ? 'bg-secondary/10 text-secondary' : 
                           p.status === 'pending' ? 'bg-amber-500/10 text-amber-600' : 'bg-error/10 text-error'
                         }`}>
                           {p.status}
@@ -296,19 +321,22 @@ const PaymentPage = () => {
                       {p.status === 'completed' ? (
                         <button 
                           onClick={() => generateReceipt(p)}
-                          className="px-4 py-2 bg-slate-50 border border-slate-100 text-[11px] font-black text-slate-600 hover:bg-slate-100 rounded-xl transition-all uppercase tracking-widest flex items-center gap-2"
+                          className="px-4 py-2 bg-slate-50 border border-slate-100 text-[11px] font-black text-slate-600 hover:bg-slate-100 rounded-full transition-all uppercase tracking-widest flex items-center gap-2 cursor-pointer"
                         >
                           <FiDownload /> Receipt
                         </button>
                       ) : (
                         <button 
                           onClick={() => { setSelectedInvoice(p); setShowPayModal(true); }}
-                          className="px-5 py-2 bg-[#000000] text-white text-[11px] font-black rounded-xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[#000000]/20 hover:scale-105 active:scale-95"
+                          className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black rounded-full transition-all uppercase tracking-widest flex items-center gap-2 shadow-md hover:bg-slate-800 active:scale-95 cursor-pointer"
                         >
                           Pay Now <FiArrowUpRight />
                         </button>
                       )}
-                      <button className="p-2 hover:bg-slate-50 rounded-lg text-slate-300 transition-colors">
+                      <button 
+                        onClick={() => setSelectedOptionsInvoice(p)}
+                        className="p-2 hover:bg-slate-50 rounded-lg text-slate-400 hover:text-slate-900 transition-colors cursor-pointer"
+                      >
                         <FiMoreVertical />
                       </button>
                     </div>
@@ -403,9 +431,9 @@ const PaymentPage = () => {
                       <button 
                         disabled={!paymentMethod}
                         onClick={handlePayment}
-                        className={`w-full mt-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-xl active:scale-95 ${
+                        className={`w-full mt-8 py-4 rounded-full font-black text-xs uppercase tracking-widest transition-all shadow-lg active:scale-95 ${
                           paymentMethod 
-                            ? 'bg-[#000000] text-white shadow-[#000000]/30 hover:bg-[#000000]/90' 
+                            ? 'bg-secondary text-white hover:opacity-90' 
                             : 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none'
                         }`}
                       >
@@ -423,8 +451,8 @@ const PaymentPage = () => {
                     >
                       <div className="relative mb-6">
                         <div className="h-20 w-20 border-4 border-slate-100 rounded-full" />
-                        <div className="absolute top-0 left-0 h-20 w-20 border-4 border-[#000000] border-t-transparent rounded-full animate-spin" />
-                        <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#000000] text-3xl">lock</span>
+                        <div className="absolute top-0 left-0 h-20 w-20 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
+                        <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-secondary text-3xl">lock</span>
                       </div>
                       <h4 className="text-lg font-bold text-slate-900 mb-2">Processing Payment</h4>
                       <p className="text-sm text-slate-500 text-center px-8">Connecting to secure gateway. Please do not close this window.</p>
@@ -438,7 +466,7 @@ const PaymentPage = () => {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex-1 flex flex-col items-center justify-center py-8"
                     >
-                      <div className="h-20 w-20 bg-[#006c49]/10 text-[#006c49] rounded-full flex items-center justify-center mb-6">
+                      <div className="h-20 w-20 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mb-6">
                         <motion.span 
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
@@ -456,13 +484,13 @@ const PaymentPage = () => {
                       <div className="w-full space-y-3">
                         <button 
                           onClick={() => generateReceipt({ ...selectedInvoice, status: 'completed', paymentMethod: paymentMethod, transactionId: 'RECENT' })}
-                          className="w-full py-3.5 bg-slate-50 border border-slate-100 text-slate-700 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all flex items-center justify-center gap-2"
+                          className="w-full py-3.5 bg-slate-50 border border-slate-100 text-slate-700 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <FiDownload /> Download Receipt
                         </button>
                         <button 
                           onClick={resetModal}
-                          className="w-full py-3.5 bg-[#000000] text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[#000000]/90 transition-all shadow-lg shadow-[#000000]/20"
+                          className="w-full py-3.5 bg-secondary text-white rounded-full text-[11px] font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg active:scale-95 cursor-pointer"
                         >
                           Done
                         </button>
@@ -475,6 +503,28 @@ const PaymentPage = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {showPayAllModal && (
+        <PayAllBalanceModal
+          onClose={() => setShowPayAllModal(false)}
+          onConfirm={() => {
+            setPayments(prev => prev.map(p => ({ ...p, status: 'completed' })));
+            setShowPayAllModal(false);
+          }}
+        />
+      )}
+
+      {selectedOptionsInvoice && (
+        <InvoiceOptionsModal
+          invoice={selectedOptionsInvoice}
+          onClose={() => setSelectedOptionsInvoice(null)}
+          onDownload={(inv) => generateReceipt(inv)}
+          onPay={(inv) => {
+            setSelectedInvoice(inv);
+            setShowPayModal(true);
+          }}
+        />
+      )}
     </div>
   );
 };

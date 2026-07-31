@@ -174,21 +174,26 @@ const MedicalRecords = () => {
           </div>
 
           {/* Quick Insights */}
-          <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
-            <h4 className="font-bold text-sm text-secondary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">health_and_safety</span>
-              Health Snapshot
-            </h4>
-            <div className="mt-4 space-y-3">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-slate-500 uppercase">Critical Reports</span>
-                <span className="font-black text-error bg-error/10 px-2 py-0.5 rounded-full">{records.filter(r => r.isCritical).length}</span>
-              </div>
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-slate-500 uppercase">Recent Updates</span>
-                <span className="font-black text-primary bg-primary/10 px-2 py-0.5 rounded-full">2 New</span>
+          <div className="widget-card p-6 relative overflow-hidden group">
+            <div className="relative z-10">
+              <h4 className="font-extrabold text-base text-slate-900 font-manrope flex items-center gap-2">
+                <div className="icon-box w-8 h-8 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-[18px] text-slate-900">health_and_safety</span>
+                </div>
+                Health Snapshot
+              </h4>
+              <div className="mt-4 space-y-3">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-black text-slate-500 uppercase tracking-wider">Critical Reports</span>
+                  <span className="font-black text-red-600 bg-red-100 px-2.5 py-0.5 rounded-full">{records.filter(r => r.isCritical).length}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-black text-slate-500 uppercase tracking-wider">Recent Updates</span>
+                  <span className="font-black text-slate-900 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full">2 New</span>
+                </div>
               </div>
             </div>
+            <FiActivity className="absolute -bottom-6 -right-6 text-slate-400/20 text-8xl rotate-12 pointer-events-none" />
           </div>
         </div>
 

@@ -214,25 +214,30 @@ const PatientTestResults = () => {
           </div>
 
           {/* Stats Summary */}
-          <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
-            <h4 className="font-bold text-sm text-secondary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">analytics</span>
-              Insights
-            </h4>
-            <div className="mt-4 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-slate-500 uppercase">Abnormal</span>
-                <span className="text-sm font-black text-error bg-error/10 px-2 py-0.5 rounded-full">
-                  {testResults.filter(r => r.isAbnormal).length}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-slate-500 uppercase">Completed</span>
-                <span className="text-sm font-black text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">
-                  {testResults.filter(r => r.status === 'completed').length}
-                </span>
+          <div className="widget-card p-6 relative overflow-hidden group">
+            <div className="relative z-10">
+              <h4 className="font-extrabold text-base text-slate-900 font-manrope flex items-center gap-2">
+                <div className="icon-box w-8 h-8 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-[18px] text-slate-900">analytics</span>
+                </div>
+                Insights
+              </h4>
+              <div className="mt-4 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-black text-slate-500 uppercase tracking-wider">Abnormal</span>
+                  <span className="text-xs font-black text-red-600 bg-red-100 px-2.5 py-0.5 rounded-full">
+                    {testResults.filter(r => r.isAbnormal).length}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-black text-slate-500 uppercase tracking-wider">Completed</span>
+                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full">
+                    {testResults.filter(r => r.status === 'completed').length}
+                  </span>
+                </div>
               </div>
             </div>
+            <FiActivity className="absolute -bottom-6 -right-6 text-slate-400/20 text-8xl rotate-12 pointer-events-none" />
           </div>
         </div>
 

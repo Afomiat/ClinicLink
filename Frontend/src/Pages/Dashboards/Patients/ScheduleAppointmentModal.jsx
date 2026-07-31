@@ -156,8 +156,8 @@ const ScheduleAppointmentModal = ({
           }`}
         >
           <span className="text-sm font-black">{i}</span>
-          {hasSlots && !isSelected && <span className="absolute bottom-2 h-1 w-1 bg-primary rounded-full" />}
-          {isToday && !isSelected && <span className="absolute top-2 text-[8px] font-black uppercase text-primary">Today</span>}
+          {hasSlots && !isSelected && <span className="absolute bottom-2 h-1 w-1 bg-amber-500 rounded-full" />}
+          {isToday && !isSelected && <span className="absolute top-2 text-[8px] font-black uppercase text-amber-500">Today</span>}
         </motion.button>
       );
     }
@@ -195,7 +195,7 @@ const ScheduleAppointmentModal = ({
           <div className="w-full md:w-[320px] bg-slate-50 p-8 flex flex-col justify-between border-r border-slate-100">
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <div className="h-10 w-10 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm border border-slate-100">
+                <div className="h-10 w-10 bg-white rounded-2xl flex items-center justify-center text-amber-600 shadow-sm border border-slate-100">
                   <FiPlus size={20} />
                 </div>
                 <h2 className="text-xl font-black text-slate-900 tracking-tight">New Booking</h2>
@@ -219,11 +219,11 @@ const ScheduleAppointmentModal = ({
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
-                      <FiMapPin size={14} className="text-primary" />
+                      <FiMapPin size={14} className="text-amber-600" />
                       <span className="truncate">{doctor?.contact?.address || 'Medical Plaza, NY'}</span>
                     </div>
                     <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
-                      <FiDollarSign size={14} className="text-secondary" />
+                      <FiDollarSign size={14} className="text-amber-600" />
                       <span>Consultation: ETB 750.00</span>
                     </div>
                   </div>
@@ -248,9 +248,9 @@ const ScheduleAppointmentModal = ({
             </div>
 
             <div className="pt-8">
-              <div className="p-4 bg-primary/5 rounded-2xl flex items-start gap-3 border border-primary/10">
-                <FiShield size={18} className="text-primary mt-0.5" />
-                <p className="text-[10px] font-bold text-primary leading-relaxed opacity-80">
+              <div className="p-4 bg-amber-50 rounded-2xl flex items-start gap-3 border border-amber-100/60">
+                <FiInfo size={18} className="text-amber-600 mt-0.5 shrink-0" />
+                <p className="text-[10px] font-bold text-amber-600 leading-relaxed">
                   Your medical data is encrypted and secure. We follow strict HIPAA guidelines for patient privacy.
                 </p>
               </div>

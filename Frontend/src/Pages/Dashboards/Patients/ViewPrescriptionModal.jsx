@@ -1,13 +1,7 @@
 import React from 'react';
 import { 
-  FaPills, 
-  FaTimes, 
-  FaUserMd, 
-  FaCalendarAlt,
-  FaPrint,
-  FaFileMedicalAlt
-} from 'react-icons/fa';
-import styles from './ViewPrescriptionModal.module.css';
+  FiX, FiPrinter, FiCalendar, FiUser, FiFileText
+} from 'react-icons/fi';
 
 const ViewPrescriptionModal = ({ prescription, onClose }) => {
   if (!prescription) return null;
@@ -21,11 +15,11 @@ const ViewPrescriptionModal = ({ prescription, onClose }) => {
         <head>
           <title>Prescription: ${prescription.medication}</title>
           <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
             body {
-              font-family: 'Poppins', sans-serif;
+              font-family: 'Manrope', sans-serif;
               line-height: 1.6;
-              color: #2d3748;
+              color: #0f172a;
               padding: 30px;
               background-color: #f8fafc;
             }
@@ -33,204 +27,169 @@ const ViewPrescriptionModal = ({ prescription, onClose }) => {
               max-width: 800px;
               margin: 0 auto;
               background: white;
-              padding: 30px;
-              border-radius: 12px;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+              padding: 35px;
+              border-radius: 24px;
+              box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+              border: 1px solid #e2e8f0;
             }
             .header {
               display: flex;
               justify-content: space-between;
               align-items: center;
-              border-bottom: 2px solid #e2e8f0;
+              border-bottom: 2px solid #f1f5f9;
               padding-bottom: 20px;
               margin-bottom: 30px;
             }
-            .clinic-info {
-              text-align: right;
+            .rx-symbol {
+              font-size: 2rem;
+              font-weight: 800;
+              color: #0f172a;
             }
             .clinic-name {
-              font-size: 1.5rem;
-              font-weight: 600;
-              color: #3182ce;
-              margin-bottom: 5px;
-            }
-            .healthplus-logo {
-              font-size: 1.8rem;
-              font-weight: 700;
-              color: #3182ce;
-              margin-bottom: 5px;
+              font-size: 1.25rem;
+              font-weight: 800;
+              color: #0f172a;
+              text-align: right;
             }
             .section {
               margin-bottom: 25px;
+              background: #f8fafc;
+              padding: 20px;
+              border-radius: 16px;
+              border: 1px solid #f1f5f9;
             }
             .section-title {
-              font-size: 1.2rem;
-              font-weight: 500;
-              color: #3182ce;
-              margin-bottom: 15px;
-              padding-bottom: 5px;
-              border-bottom: 1px solid #e2e8f0;
+              font-size: 0.85rem;
+              font-weight: 800;
+              color: #0f172a;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              margin-bottom: 12px;
             }
             .patient-info {
               display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+              grid-template-columns: repeat(2, 1fr);
               gap: 15px;
-            }
-            .info-item {
-              margin-bottom: 10px;
             }
             .label {
-              font-weight: 500;
-              color: #4a5568;
+              font-weight: 800;
+              color: #94a3b8;
               display: block;
               margin-bottom: 3px;
-              font-size: 0.9rem;
+              font-size: 0.75rem;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
             }
             .value {
-              font-weight: 400;
-              color: #2d3748;
-            }
-            .medication {
-              background: #f8fafc;
-              border-radius: 8px;
-              padding: 20px;
-              margin-bottom: 20px;
-              border-left: 4px solid #3182ce;
-            }
-            .medication-name {
-              font-size: 1.1rem;
-              font-weight: 500;
-              color: #2d3748;
-              margin-bottom: 15px;
-            }
-            .medication-details {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-              gap: 15px;
+              font-weight: 700;
+              color: #0f172a;
+              font-size: 0.95rem;
             }
             .signature-area {
-              margin-top: 50px;
+              margin-top: 40px;
               padding-top: 20px;
-              border-top: 1px dashed #cbd5e0;
-              width: 300px;
+              border-top: 1px dashed #cbd5e1;
+              width: 250px;
             }
             .signature-line {
-              margin-top: 40px;
-              border-top: 1px solid #2d3748;
-              width: 200px;
+              margin-top: 30px;
+              border-top: 1.5px solid #0f172a;
+              width: 180px;
             }
             .footer-note {
               margin-top: 30px;
-              font-size: 0.8rem;
-              color: #718096;
+              font-size: 0.75rem;
+              color: #94a3b8;
               text-align: center;
-            }
-            .rx-symbol {
-              font-size: 1.5rem;
-              color: #3182ce;
-              margin-right: 10px;
+              font-weight: 600;
             }
             @media print {
-              body {
-                padding: 0;
-                background: white;
-              }
-              .prescription-container {
-                box-shadow: none;
-                padding: 20px;
-              }
+              body { padding: 0; background: white; }
+              .prescription-container { box-shadow: none; padding: 20px; border: none; }
             }
           </style>
         </head>
         <body>
           <div class="prescription-container">
             <div class="header">
-              <div>
-                <div style="display: flex; align-items: center;">
-                  <span class="rx-symbol">℞</span>
-                  <h2 style="margin: 0;">PRESCRIPTION</h2>
-                </div>
-                <div style="font-size: 0.9rem; color: #718096;">
-                  Date Printed: ${new Date().toLocaleString()}
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="rx-symbol">℞</span>
+                <div>
+                  <div style="font-weight: 800; font-size: 1.2rem; color: #0f172a;">PRESCRIPTION DETAILS</div>
+                  <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">HealthPlus Medical Systems</div>
                 </div>
               </div>
-              <div class="clinic-info">
-                <div class="healthplus-logo">HEALTHPLUS</div>
-                <div>Comprehensive Healthcare Solutions</div>
-                <div>456 Wellness Avenue</div>
-                <div>Medicity, ST 54321</div>
-                <div>Phone: (555) 987-6543</div>
-              </div>
+              <div class="clinic-name">ClinicLink Health</div>
             </div>
             
             <div class="section">
-              <div class="section-title">PATIENT INFORMATION</div>
+              <div class="section-title">Medication Information</div>
               <div class="patient-info">
-                <div class="info-item">
-                  <span class="label">Patient Name</span>
-                  <span class="value">${prescription.patientName || 'Sarah Johnson'}</span>
+                <div>
+                  <span class="label">Medication</span>
+                  <span class="value">${prescription.medication}</span>
                 </div>
-                <div class="info-item">
-                  <span class="label">Date of Birth</span>
-                  <span class="value">${prescription.dob || '01/01/1980'}</span>
+                <div>
+                  <span class="label">Dosage</span>
+                  <span class="value">${prescription.dosage}</span>
                 </div>
-              </div>
-            </div>
-            
-            <div class="section">
-              <div class="section-title">PRESCRIBED MEDICATION</div>
-              <div class="medication">
-                <div class="medication-name">${prescription.medication}</div>
-                <div class="medication-details">
-                  <div class="info-item">
-                    <span class="label">Dosage</span>
-                    <span class="value">${prescription.dosage}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="label">Instructions</span>
-                    <span class="value">${prescription.instructions}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="label">Quantity</span>
-                    <span class="value">${prescription.quantity || '30'}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="label">Refills</span>
-                    <span class="value">${prescription.refills || '0'}</span>
-                  </div>
+                <div>
+                  <span class="label">Status</span>
+                  <span class="value">${prescription.status}</span>
                 </div>
-              </div>
-            </div>
-            
-            <div class="section">
-              <div class="section-title">PRESCRIBING PHYSICIAN</div>
-              <div class="patient-info">
-                <div class="info-item">
-                  <span class="label">Name</span>
-                  <span class="value">Dr. ${prescription.doctor}</span>
-                </div>
-                <div class="info-item">
-                  <span class="label">Date Prescribed</span>
-                  <span class="value">${new Date(prescription.date).toLocaleDateString()}</span>
-                </div>
-                <div class="info-item">
+                <div>
                   <span class="label">HealthPlus ID</span>
                   <span class="value">HP-${Math.floor(1000 + Math.random() * 9000)}</span>
                 </div>
               </div>
             </div>
+
+            <div class="section">
+              <div class="section-title">Prescription Dates</div>
+              <div class="patient-info">
+                <div>
+                  <span class="label">Date Prescribed</span>
+                  <span class="value">${new Date(prescription.date).toLocaleDateString()}</span>
+                </div>
+                <div>
+                  <span class="label">Last Filled</span>
+                  <span class="value">${prescription.lastFilled ? new Date(prescription.lastFilled).toLocaleDateString() : 'Not filled yet'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">Prescribing Physician</div>
+              <div class="patient-info">
+                <div>
+                  <span class="label">Doctor</span>
+                  <span class="value">Dr. ${prescription.doctor}</span>
+                </div>
+                <div>
+                  <span class="label">Specialty</span>
+                  <span class="value">${prescription.specialty || 'HealthPlus General Practice'}</span>
+                </div>
+              </div>
+            </div>
+
+            ${prescription.instructions ? `
+              <div class="section">
+                <div class="section-title">Instructions</div>
+                <div class="value">${prescription.instructions}</div>
+              </div>
+            ` : ''}
             
             <div class="signature-area">
-              <div style="margin-bottom: 5px;">Physician Signature:</div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">Physician Signature:</div>
               <div class="signature-line"></div>
-              <div style="margin-top: 5px; font-size: 0.9rem; color: #718096;">
+              <div style="margin-top: 5px; font-size: 0.85rem; font-weight: 800; color: #0f172a;">
                 Dr. ${prescription.doctor}
               </div>
             </div>
             
             <div class="footer-note">
               This HealthPlus prescription is valid for fulfillment at any participating pharmacy.<br />
-              For questions, please contact HealthPlus at (555) 987-6543.
+              For questions, please contact HealthPlus Support.
             </div>
           </div>
         </body>
@@ -246,113 +205,124 @@ const ViewPrescriptionModal = ({ prescription, onClose }) => {
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.viewModal}>
-        <div className={styles.modalHeader}>
-          <h2>
-            <FaFileMedicalAlt className={styles.headerIcon} />
-            Prescription Details
-          </h2>
-          <button onClick={onClose} className={styles.closeButton}>
-            <FaTimes />
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 font-manrope">
+      <div 
+        className="bg-white rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden border border-slate-100 max-w-2xl w-full max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="icon-box w-12 h-12">
+              <span className="material-symbols-outlined text-slate-900 text-2xl">pill</span>
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-slate-900 font-manrope tracking-tight">Prescription Details</h2>
+              <p className="text-xs font-black uppercase tracking-widest text-slate-400 mt-0.5">Reference ID: HP-${Math.floor(1000 + Math.random() * 9000)}</p>
+            </div>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-all cursor-pointer"
+          >
+            <FiX size={18} />
           </button>
         </div>
 
-        <div className={styles.prescriptionDetail}>
-          {/* <div className={styles.healthplusHeader}>
-            <div className={styles.healthplusLogo}>HEALTHPLUS</div>
-            <div className={styles.healthplusTagline}>Your Trusted Healthcare Partner</div>
-          </div> */}
-
-          <div className={styles.detailSection}>
-            <h3 className={styles.sectionTitle}>
-              <FaPills className={styles.sectionIcon} />
+        {/* Content Body */}
+        <div className="space-y-4 overflow-y-auto pr-1 flex-1 scrollbar-hide">
+          {/* Medication Info Card */}
+          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-900 font-manrope flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined text-slate-900 text-lg">pill</span>
               Medication Information
             </h3>
-            <div className={styles.detailGrid}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Medication</span>
-                <span className={styles.detailValue}>{prescription.medication}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Medication</span>
+                <span className="text-sm font-extrabold text-slate-900">{prescription.medication}</span>
               </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Dosage</span>
-                <span className={styles.detailValue}>{prescription.dosage}</span>
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Dosage</span>
+                <span className="text-sm font-extrabold text-slate-900">{prescription.dosage}</span>
               </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Status</span>
-                <span className={`${styles.detailValue} ${styles.statusBadge} ${prescription.status === 'active' ? styles.active : styles.inactive}`}>
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Status</span>
+                <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-widest rounded-full">
                   {prescription.status}
                 </span>
               </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>HealthPlus ID</span>
-                <span className={styles.detailValue}>HP-${Math.floor(1000 + Math.random() * 9000)}</span>
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">HealthPlus ID</span>
+                <span className="text-sm font-extrabold text-slate-900">HP-${Math.floor(1000 + Math.random() * 9000)}</span>
               </div>
             </div>
           </div>
 
-          <div className={styles.detailSection}>
-            <h3 className={styles.sectionTitle}>
-              <FaCalendarAlt className={styles.sectionIcon} />
+          {/* Prescription Dates Card */}
+          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-900 font-manrope flex items-center gap-2 mb-4">
+              <FiCalendar className="text-slate-900" size={16} />
               Prescription Dates
             </h3>
-            <div className={styles.detailGrid}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Date Prescribed</span>
-                <span className={styles.detailValue}>
-                  {new Date(prescription.date).toLocaleDateString()}
-                </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Date Prescribed</span>
+                <span className="text-sm font-extrabold text-slate-900">{new Date(prescription.date).toLocaleDateString()}</span>
               </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Last Filled</span>
-                <span className={styles.detailValue}>
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Last Filled</span>
+                <span className="text-sm font-extrabold text-slate-900">
                   {prescription.lastFilled ? new Date(prescription.lastFilled).toLocaleDateString() : 'Not filled yet'}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className={styles.detailSection}>
-            <h3 className={styles.sectionTitle}>
-              <FaUserMd className={styles.sectionIcon} />
+          {/* Prescribing Doctor Card */}
+          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-900 font-manrope flex items-center gap-2 mb-4">
+              <FiUser className="text-slate-900" size={16} />
               Prescribing Doctor
             </h3>
-            <div className={styles.detailGrid}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Doctor</span>
-                <span className={styles.detailValue}>Dr. {prescription.doctor}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Doctor</span>
+                <span className="text-sm font-extrabold text-slate-900">Dr. {prescription.doctor}</span>
               </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Specialty</span>
-                <span className={styles.detailValue}>{prescription.specialty || 'HealthPlus General Practice'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.detailSection}>
-            <h3 className={styles.sectionTitle}>Instructions</h3>
-            <div className={styles.instructions}>
-              {prescription.instructions}
-              <div className={styles.healthplusNote}>
-                <strong>HealthPlus Note:</strong> Please follow these instructions carefully. Contact HealthPlus if you have any questions.
+              <div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Specialty</span>
+                <span className="text-sm font-extrabold text-slate-900">{prescription.specialty || 'HealthPlus General Practice'}</span>
               </div>
             </div>
           </div>
 
-          <div className={styles.modalActions}>
-            <button 
-              onClick={handlePrint}
-              className={styles.printButton}
-            >
-              <FaPrint /> Print Prescription
-            </button>
-            <button 
-              onClick={onClose}
-              className={styles.closeDetailButton}
-            >
-              Close
-            </button>
-          </div>
+          {/* Instructions if available */}
+          {prescription.instructions && (
+            <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60">
+              <h3 className="text-xs font-black uppercase tracking-widest text-slate-900 font-manrope flex items-center gap-2 mb-2">
+                <FiFileText className="text-slate-900" size={16} />
+                Instructions
+              </h3>
+              <p className="text-xs font-medium text-slate-600 leading-relaxed">{prescription.instructions}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Actions */}
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 mt-6">
+          <button 
+            onClick={onClose}
+            className="border border-slate-200 bg-white text-slate-700 rounded-full px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-slate-50 transition-colors cursor-pointer"
+          >
+            Close
+          </button>
+          <button 
+            onClick={handlePrint}
+            className="bg-slate-900 text-white rounded-full px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer"
+          >
+            <FiPrinter size={16} /> Print Prescription
+          </button>
         </div>
       </div>
     </div>

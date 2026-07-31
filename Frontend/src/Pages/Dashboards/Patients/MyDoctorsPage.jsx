@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScheduleAppointmentModal from './ScheduleAppointmentModal';
 import DoctorDetailModal from './DoctorDetailModal';
 import RescheduleModal from './RescheduleModal';
+import { FollowUpRequestsModal } from './SharedModals';
 
 const MyDoctorsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,7 @@ const MyDoctorsPage = () => {
   const [activeTab, setActiveTab] = useState('myDoctors');
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [appointmentToReschedule, setAppointmentToReschedule] = useState(null);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [allDoctors, setAllDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -176,7 +178,7 @@ const MyDoctorsPage = () => {
           </div>
           <button 
             onClick={() => setActiveTab(activeTab === 'myDoctors' ? 'allDoctors' : 'myDoctors')}
-            className="flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-full text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-xl active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl active:scale-95 cursor-pointer"
           >
             <FiPlus />
             {activeTab === 'myDoctors' ? 'Discover Doctors' : 'My Favorites'}
@@ -189,10 +191,10 @@ const MyDoctorsPage = () => {
         <div className="col-span-12 lg:col-span-3 space-y-md sticky top-24">
           <div className="bg-white rounded-2xl p-sm border border-slate-100 shadow-[0px_4px_20px_rgba(15,23,42,0.05)]">
             <div className="p-xs border-b border-slate-50 mb-sm flex items-center justify-between">
-              <h3 className="text-sm font-black font-manrope text-slate-900 uppercase tracking-widest">Specialties</h3>
+              <h3 className="text-xs font-black font-manrope text-slate-900 uppercase tracking-widest">Specialties</h3>
               <button 
                 onClick={() => setSelectedSpecialty('all')}
-                className="text-[10px] font-black text-secondary hover:underline uppercase tracking-[0.2em]"
+                className="text-[10px] font-black text-slate-900 hover:underline uppercase tracking-widest cursor-pointer"
               >
                 Reset
               </button>
@@ -202,8 +204,8 @@ const MyDoctorsPage = () => {
               {specialties.map(spec => (
                 <label 
                   key={spec.id} 
-                  className={`flex items-center gap-3 py-2.5 px-3 rounded-xl cursor-pointer transition-all ${
-                    selectedSpecialty === spec.id ? 'bg-primary/5 text-primary' : 'hover:bg-slate-50 text-slate-600'
+                  className={`flex items-center gap-3 py-2.5 px-3 rounded-2xl cursor-pointer transition-all ${
+                    selectedSpecialty === spec.id ? 'bg-white text-slate-900 font-extrabold shadow-sm' : 'hover:bg-white/50 text-slate-600 font-medium'
                   }`}
                 >
                   <input 
@@ -212,14 +214,14 @@ const MyDoctorsPage = () => {
                     onChange={() => setSelectedSpecialty(spec.id)}
                     className="sr-only"
                   />
-                  <span className={`flex items-center justify-center h-5 w-5 ${selectedSpecialty === spec.id ? 'text-primary' : 'text-slate-400'}`}>
+                  <span className={`flex items-center justify-center h-5 w-5 ${selectedSpecialty === spec.id ? 'text-slate-900' : 'text-slate-400'}`}>
                     {spec.icon}
                   </span>
                   <span className="text-[13px] font-bold font-manrope tracking-tight">
                     {spec.label}
                   </span>
                   {selectedSpecialty === spec.id && (
-                    <motion.div layoutId="activeSpecialty" className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
+                    <motion.div layoutId="activeSpecialty" className="ml-auto h-1.5 w-1.5 rounded-full bg-slate-900" />
                   )}
                 </label>
               ))}
@@ -227,20 +229,23 @@ const MyDoctorsPage = () => {
           </div>
 
           {/* Quick Stats Card */}
-          <div className="bg-primary/5 rounded-2xl p-6 border border-primary/10 relative overflow-hidden group">
+          <div className="widget-card p-6 relative overflow-hidden group">
             <div className="relative z-10">
-              <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-primary mb-4 shadow-sm group-hover:scale-110 transition-transform">
-                <FiClock />
+              <div className="icon-box w-12 h-12 mb-4 group-hover:scale-110 transition-transform">
+                <FiClock size={20} className="text-slate-900" />
               </div>
-              <h4 className="text-sm font-bold text-slate-900">Quick Follow-up</h4>
-              <p className="text-xs text-slate-500 mt-2 font-medium leading-relaxed">
+              <h4 className="text-base font-extrabold text-slate-900 font-manrope">Quick Follow-up</h4>
+              <p className="text-sm text-slate-500 mt-2 font-medium leading-relaxed">
                 You have 2 doctors waiting for your follow-up results.
               </p>
-              <button className="mt-4 text-xs font-black text-primary uppercase tracking-widest hover:underline">
-                View Requests →
+              <button 
+                onClick={() => setShowFollowUpModal(true)}
+                className="mt-4 text-xs font-black text-slate-900 uppercase tracking-widest hover:text-slate-700 cursor-pointer flex items-center gap-1.5"
+              >
+                VIEW REQUESTS →
               </button>
             </div>
-            <FiActivity className="absolute -bottom-6 -right-6 text-primary/10 text-8xl rotate-12" />
+            <FiActivity className="absolute -bottom-6 -right-6 text-slate-400/20 text-8xl rotate-12" />
           </div>
         </div>
 
@@ -261,7 +266,7 @@ const MyDoctorsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group relative overflow-hidden flex flex-col h-full"
+                    className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group relative overflow-hidden flex flex-col h-full cursor-pointer"
                   >
                     {/* Status Badge */}
                     <div className="absolute top-6 right-6">
@@ -340,7 +345,7 @@ const MyDoctorsPage = () => {
                             e.stopPropagation();
                             handleBookAppointment(doc);
                           }}
-                          className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#000000] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-black/20 active:scale-95"
+                          className="flex-1 flex items-center justify-center gap-2 py-3 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95 cursor-pointer"
                         >
                           <FiCalendar size={14} />
                           Book
@@ -418,6 +423,11 @@ const MyDoctorsPage = () => {
             isOpen={isRescheduleModalOpen}
             onClose={() => setIsRescheduleModalOpen(false)}
             onReschedule={handleReschedule}
+          />
+        )}
+        {showFollowUpModal && (
+          <FollowUpRequestsModal
+            onClose={() => setShowFollowUpModal(false)}
           />
         )}
       </AnimatePresence>

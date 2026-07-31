@@ -3,7 +3,8 @@ import {
   FiSearch, FiDownload, FiPlus,
   FiExternalLink, FiClock, FiActivity, FiMapPin, FiPhone,
   FiArrowRight, FiInfo, FiDroplet, FiCalendar, FiShield,
-  FiChevronRight, FiFilter, FiCheckCircle
+  FiChevronRight, FiFilter, FiCheckCircle, FiTrendingUp,
+  FiAlertCircle, FiRefreshCw
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -11,8 +12,10 @@ import {
   Tooltip as ReTooltip, ResponsiveContainer
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { exportToPDF } from '../../../utils/exportUtils';
 import ViewPrescriptionModal from './ViewPrescriptionModal';
 import RefillModal from './RefillModal'; 
+import { ChangePharmacyModal, InsuranceDetailsModal, DrugInteractionModal } from './SharedModals';
 
 const PatientPrescriptionsPage = () => {
   const navigate = useNavigate();
@@ -27,34 +30,63 @@ const PatientPrescriptionsPage = () => {
   const prescriptionsPerPage = 6;
   const [showRefillModal, setShowRefillModal] = useState(false);
   const [refillPrescriptions, setRefillPrescriptions] = useState([]);
+  const [showPharmacyModal, setShowPharmacyModal] = useState(false);
+  const [showInsuranceModal, setShowInsuranceModal] = useState(false);
+  const [showInteractionModal, setShowInteractionModal] = useState(false);
 
-  // Filters
+  // Filters & Graph mode
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [chartMetric, setChartMetric] = useState('pills'); // 'pills' | 'adherence'
+  const [timeRange, setTimeRange] = useState('6M'); // '3M' | '6M' | '1Y'
 
-  // Analytics
+  // Analytics State
   const [analytics, setAnalytics] = useState({
     total: 0,
     active: 0,
     refillNeeded: 0,
-    adherenceScore: 94
+    adherenceScore: 96
   });
 
-  const medicationVolumeData = [
+  // Interactive Chart Data
+  const medicationData3M = [
+    { name: 'Apr', pills: 58, adherence: 95 },
+    { name: 'May', pills: 48, adherence: 94 },
+    { name: 'Jun', pills: 65, adherence: 98 },
+  ];
+
+  const medicationData6M = [
     { name: 'Jan', pills: 40, adherence: 88 },
     { name: 'Feb', pills: 52, adherence: 92 },
     { name: 'Mar', pills: 45, adherence: 90 },
     { name: 'Apr', pills: 58, adherence: 95 },
     { name: 'May', pills: 48, adherence: 94 },
-    { name: 'Jun', pills: 65, adherence: 97 },
+    { name: 'Jun', pills: 65, adherence: 98 },
   ];
+
+  const medicationData1Y = [
+    { name: 'Jul', pills: 42, adherence: 85 },
+    { name: 'Aug', pills: 44, adherence: 89 },
+    { name: 'Sep', pills: 49, adherence: 91 },
+    { name: 'Oct', pills: 51, adherence: 93 },
+    { name: 'Nov', pills: 46, adherence: 90 },
+    { name: 'Dec', pills: 55, adherence: 96 },
+    { name: 'Jan', pills: 40, adherence: 88 },
+    { name: 'Feb', pills: 52, adherence: 92 },
+    { name: 'Mar', pills: 45, adherence: 90 },
+    { name: 'Apr', pills: 58, adherence: 95 },
+    { name: 'May', pills: 48, adherence: 94 },
+    { name: 'Jun', pills: 65, adherence: 98 },
+  ];
+
+  const chartData = timeRange === '3M' ? medicationData3M : timeRange === '1Y' ? medicationData1Y : medicationData6M;
 
   // Fetch data
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         const mockData = [
           {
@@ -63,10 +95,10 @@ const PatientPrescriptionsPage = () => {
             dosage: '40mg',
             form: 'Tablet',
             frequency: 'Once daily',
-            instructions: 'Take at bedtime',
+            instructions: 'Take at bedtime with water',
             prescribedBy: 'Dr. Sarah Johnson',
             specialty: 'Cardiology',
-            date: 'May 28, 2023',
+            date: 'May 28, 2024',
             pharmacy: 'CVS Pharmacy #1452',
             status: 'active',
             refills: 2,
@@ -78,10 +110,10 @@ const PatientPrescriptionsPage = () => {
             dosage: '500mg',
             form: 'Tablet',
             frequency: 'Twice daily',
-            instructions: 'Take with meals',
+            instructions: 'Take with morning & evening meals',
             prescribedBy: 'Dr. Michael Chen',
             specialty: 'Endocrinology',
-            date: 'May 28, 2023',
+            date: 'May 28, 2024',
             pharmacy: 'CVS Pharmacy #1452',
             status: 'active',
             refills: 1,
@@ -96,7 +128,7 @@ const PatientPrescriptionsPage = () => {
             instructions: 'Take in the morning',
             prescribedBy: 'Dr. Sarah Johnson',
             specialty: 'Cardiology',
-            date: 'Mar 10, 2023',
+            date: 'Mar 10, 2024',
             pharmacy: 'Walgreens #3241',
             status: 'expired',
             refills: 0,
@@ -108,10 +140,10 @@ const PatientPrescriptionsPage = () => {
             dosage: '90mcg',
             form: 'Inhaler',
             frequency: 'As needed',
-            instructions: 'Use for asthma symptoms',
+            instructions: 'Use for acute asthma symptoms',
             prescribedBy: 'Dr. Emily Wong',
-            specialty: 'Pediatrics',
-            date: 'Jun 25, 2023',
+            specialty: 'Pulmonology',
+            date: 'Jun 25, 2024',
             pharmacy: 'CVS Pharmacy #1452',
             status: 'active',
             refills: 5,
@@ -123,10 +155,10 @@ const PatientPrescriptionsPage = () => {
             dosage: '20mg',
             form: 'Capsule',
             frequency: 'Once daily',
-            instructions: 'Take before breakfast',
+            instructions: 'Take 30 mins before breakfast',
             prescribedBy: 'Dr. Sarah Johnson',
-            specialty: 'Cardiology',
-            date: 'Jul 08, 2023',
+            specialty: 'Gastroenterology',
+            date: 'Jul 08, 2024',
             pharmacy: 'CVS Pharmacy #1452',
             status: 'active',
             refills: 1,
@@ -138,10 +170,10 @@ const PatientPrescriptionsPage = () => {
             dosage: '50mg',
             form: 'Tablet',
             frequency: 'Once daily',
-            instructions: 'Take in the evening',
+            instructions: 'Take in the evening after dinner',
             prescribedBy: 'Dr. David Foster',
             specialty: 'Psychiatry',
-            date: 'Aug 12, 2023',
+            date: 'Aug 12, 2024',
             pharmacy: 'Main St. Pharmacy',
             status: 'active',
             refills: 3,
@@ -156,8 +188,8 @@ const PatientPrescriptionsPage = () => {
         setAnalytics({
           total: mockData.length,
           active,
-          refillNeeded: mockData.filter(p => p.status === 'active' && p.refills === 0).length,
-          adherenceScore: 94
+          refillNeeded: mockData.filter(p => p.status === 'active' && p.refills <= 1).length,
+          adherenceScore: 96
         });
       } catch (error) {
         console.error('Error fetching prescriptions:', error);
@@ -202,177 +234,213 @@ const PatientPrescriptionsPage = () => {
     setShowRefillModal(true);
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50/50 p-6 lg:p-12 font-manrope">
-      <div className="max-w-[1400px] mx-auto space-y-12">
-        
-        {/* Header Section - Refined */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-1"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-10 w-10 bg-secondary-container/20 rounded-2xl flex items-center justify-center text-secondary shadow-lg border border-secondary/10">
-                <FiActivity size={20} />
-              </div>
-              <h1 className="text-4xl font-black text-slate-900 tracking-tight">Prescription Hub</h1>
-            </div>
-            <p className="text-slate-500 font-bold text-sm uppercase tracking-[0.2em] opacity-60">
-              Managing {analytics.active} active medications for Sarah Johnson
-            </p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-4 bg-white p-2 rounded-[2rem] shadow-sm border border-slate-100"
-          >
-            <button className="flex items-center gap-2 px-6 py-3 text-slate-500 hover:text-slate-900 font-black text-[10px] uppercase tracking-widest transition-all">
-              <FiDownload size={14} /> Export Data
-            </button>
-            <button className="flex items-center gap-2 px-8 py-3 bg-[#000000] text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest shadow-xl shadow-[#000000]/20 hover:bg-[#000000]/90 transition-all active:scale-95">
-              <FiPlus size={14} /> New Entry
-            </button>
-          </motion.div>
+  // Custom Chart Tooltip
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl text-xs font-manrope">
+          <p className="font-bold text-amber-400 mb-1">{label}</p>
+          <p className="font-medium">{chartMetric === 'pills' ? `Pills: ${payload[0].value}` : `Adherence: ${payload[0].value}%`}</p>
         </div>
+      );
+    }
+    return null;
+  };
 
-        {/* Analytics Section - Elegant & Compact */}
-        <div className="grid grid-cols-12 gap-7">
-          {/* Main Analytics Chart Card */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="col-span-12 lg:col-span-8 bg-white rounded-3xl p-6 shadow-[0px_20px_50px_rgba(15,23,42,0.04)] border border-slate-100 relative overflow-hidden"
-          >
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-xl font-black text-slate-900">Health Adherence</h3>
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">6-Month Trend Analysis</p>
-                </div>
-                <div className="flex bg-slate-50 p-0.5 rounded-xl border border-slate-100">
-                  <button className="px-3 py-1.5 bg-white rounded-lg shadow-sm text-[9px] font-black text-slate-900 uppercase tracking-widest">Pills</button>
-                  <button className="px-3 py-1.5 text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-colors">Adherence</button>
-                </div>
-              </div>
-              
-              <div className="h-[120px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={medicationVolumeData}>
-                    <defs>
-                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#0f172a" stopOpacity={0.05}/>
-                        <stop offset="95%" stopColor="#0f172a" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="#f1f5f9" />
-                    <XAxis 
-                      dataKey="name" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
-                      dy={10}
-                    />
-                    <YAxis hide />
-                    <ReTooltip 
-                      contentStyle={{ 
-                        borderRadius: '24px', 
-                        border: 'none', 
-                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                        padding: '16px',
-                        background: '#fff'
-                      }}
-                    />
-                    <Area type="monotone" dataKey="pills" stroke="#0f172a" strokeWidth={5} fillOpacity={1} fill="url(#chartGradient)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+  return (
+    <div className="px-8 py-8 pb-16 min-h-screen bg-slate-50/50 font-manrope">
+      <div className="max-w-[1280px] mx-auto space-y-8">
+        
+        {/* Page Header (Matching Appointments & Dashboard style) */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-extrabold text-slate-900 font-manrope">Prescription Hub</h2>
+            <p className="text-sm text-slate-500 mt-1">Manage active medications, dosages, and pharmacy refill requests.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-secondary-container/20 text-secondary px-4 py-2 rounded-full text-xs font-bold border border-secondary/10">
+              <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+              {analytics.active} Active Medications
             </div>
-            {/* Subtle background decoration */}
-            <div className="absolute -bottom-24 -right-24 h-64 w-64 bg-slate-50 rounded-full blur-3xl opacity-50" />
-          </motion.div>
-
-          {/* Side Stats */}
-          <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-secondary-container/20 rounded-2xl p-4 border border-secondary/10 relative overflow-hidden group h-fit"
+            <button 
+              onClick={() => {
+                exportToPDF(
+                  'Patient Prescription List',
+                  ['RX ID', 'Name', 'Dosage', 'Frequency', 'Doctor', 'Refills', 'Status'],
+                  filteredPrescriptions.map(p => [p.id, p.name, p.dosage, p.frequency, p.prescribedBy, `${p.refills}/${p.maxRefills}`, p.status]),
+                  'Prescriptions_List'
+                );
+              }}
+              className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 border border-slate-200/80 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer shadow-sm"
             >
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:rotate-12 transition-transform duration-1000 text-secondary">
-                <FiActivity size={100} />
-              </div>
-              <div className="relative z-10 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-6 w-6 bg-secondary/10 rounded-lg flex items-center justify-center border border-secondary/10 backdrop-blur-md">
-                      <FiShield size={12} className="text-secondary" />
-                    </div>
-                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">Overall Score</span>
-                  </div>
-                  <h2 className="text-4xl font-black tracking-tighter mb-2 text-slate-900">{analytics.adherenceScore}%</h2>
-                  <p className="text-xs font-bold text-slate-500 leading-relaxed max-w-[180px]">Excellent adherence levels recorded this month.</p>
-                </div>
-                <div className="pt-4 mt-4 border-t border-slate-100">
-                  <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-secondary">
-                    <span className="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse" />
-                    +2.4% vs Last Period
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-3 border border-slate-100 shadow-sm flex items-center gap-3 h-fit"
-            >
-              <div className="h-10 w-10 bg-error/10 rounded-xl flex items-center justify-center text-error shrink-0">
-                <FiClock size={20} />
-              </div>
-              <div className="flex-1">
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Next Dose</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-xl font-black text-slate-900 tracking-tight">08:00 AM</h4>
-                    <p className="text-[10px] font-bold text-slate-500">Atorvastatin • 40mg</p>
-                  </div>
-                  <FiChevronRight size={18} className="text-slate-200" />
-                </div>
-              </div>
-            </motion.div>
+              <FiDownload size={14} /> Export List
+            </button>
           </div>
         </div>
 
-        {/* Medication Grid - Luxurious & Compact Cards */}
-        <div className="space-y-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Prescription List</h3>
-              <span className="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[10px] font-black">{filteredPrescriptions ? filteredPrescriptions.length : 0} Total</span>
+        {/* Analytics Graph & Stats Row */}
+        <div className="grid grid-cols-12 gap-5">
+          {/* Real Recharts Chart Card */}
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 font-manrope">Medication Adherence Trend</h3>
+                <p className="text-xs text-slate-400">Monthly dosage compliance analytics</p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-bold">
+                  <button 
+                    onClick={() => setChartMetric('pills')}
+                    className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+                      chartMetric === 'pills' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-500 hover:text-slate-900'
+                    }`}
+                  >
+                    Pills
+                  </button>
+                  <button 
+                    onClick={() => setChartMetric('adherence')}
+                    className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+                      chartMetric === 'adherence' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-500 hover:text-slate-900'
+                    }`}
+                  >
+                    Adherence %
+                  </button>
+                </div>
+
+                <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-bold">
+                  {['3M', '6M', '1Y'].map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setTimeRange(t)}
+                      className={`px-2.5 py-1.5 rounded-md transition-all cursor-pointer ${
+                        timeRange === t ? 'bg-slate-900 text-white font-black' : 'text-slate-400 hover:text-slate-900'
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-slate-900 transition-colors" />
+
+            {/* Recharts Area Chart */}
+            <div className="h-[180px] w-full pt-1">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="pillsGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#0f172a" stopOpacity={0.25}/>
+                      <stop offset="95%" stopColor="#0f172a" stopOpacity={0.0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#64748b', fontSize: 11, fontWeight: 700 }}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
+                  />
+                  <ReTooltip content={<CustomTooltip />} />
+                  <Area 
+                    type="monotone" 
+                    dataKey={chartMetric} 
+                    stroke="#0f172a" 
+                    strokeWidth={3} 
+                    fillOpacity={1} 
+                    fill="url(#pillsGrad)" 
+                    activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff' }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Side Cards: Next Dose & Refill Alert */}
+          <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
+            {/* Next Dose */}
+            <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between flex-1">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">schedule</span>
+                  Next Scheduled Dose
+                </div>
+                <span className="text-xs font-bold text-secondary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary/10">08:00 PM</span>
+              </div>
+              <div className="my-2">
+                <h4 className="text-base font-extrabold text-slate-900">Atorvastatin • 40mg</h4>
+                <p className="text-xs text-slate-500">Take at bedtime with water</p>
+              </div>
+              <button 
+                onClick={() => {
+                  if (prescriptions.length > 0) {
+                    setSelectedPrescription(prescriptions[0]);
+                    setShowViewModal(true);
+                  }
+                }}
+                className="text-xs font-bold text-slate-900 hover:text-slate-700 flex items-center gap-1 cursor-pointer pt-2 border-t border-slate-50"
+              >
+                View Details & Instructions →
+              </button>
+            </div>
+
+            {/* Refill Notice */}
+            <div className="bg-secondary-container/15 rounded-2xl p-5 border border-secondary/10 shadow-sm flex flex-col justify-between flex-1">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">error_outline</span>
+                  Refill Needed
+                </div>
+                <span className="text-[10px] font-extrabold text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">Urgent</span>
+              </div>
+              <p className="text-xs text-slate-600 mb-3 font-medium">Metformin (500mg) has only 1 refill left.</p>
+              <button 
+                onClick={() => {
+                  const target = prescriptions.find(p => p.name === 'Metformin') || prescriptions[0];
+                  if (target) handleRefillRequest(target);
+                }}
+                className="w-full py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95"
+              >
+                <FiRefreshCw size={12} /> Request Refill
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Prescription List Section */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-bold text-slate-900 font-manrope">Prescription List</h3>
+              <span className="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">{filteredPrescriptions.length} Total</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Search */}
+              <div className="relative">
+                <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                 <input 
                   type="text"
-                  placeholder="Filter by name or doctor..."
+                  placeholder="Search medication or doctor..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 pr-6 py-3.5 bg-white border border-slate-100 rounded-2xl text-[13px] font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-slate-100 w-72 shadow-sm transition-all"
+                  className="pl-9 pr-4 py-2 bg-white border border-slate-200/80 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 w-56 shadow-sm"
                 />
               </div>
-              <div className="flex bg-white p-1 rounded-2xl border border-slate-100 shadow-sm">
+
+              {/* Status Filter Tabs */}
+              <div className="flex bg-white p-0.5 rounded-xl border border-slate-200/80 shadow-sm text-xs font-bold">
                 {['all', 'active', 'expired'].map((status) => (
                   <button
                     key={status}
                     onClick={() => setStatusFilter(status)}
-                    className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                      statusFilter === status ? 'bg-[#000000] text-white shadow-xl' : 'text-slate-400 hover:text-slate-900'
+                    className={`px-3 py-1.5 rounded-lg transition-all capitalize cursor-pointer ${
+                      statusFilter === status ? 'bg-slate-900 text-white shadow-sm font-extrabold' : 'text-slate-500 hover:text-slate-900'
                     }`}
                   >
                     {status}
@@ -382,82 +450,64 @@ const PatientPrescriptionsPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <AnimatePresence mode="popLayout">
               {currentPrescriptions.map((rx) => (
                 <motion.div
                   key={rx.id}
                   layout
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  whileHover={{ y: -8 }}
-                  className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[200px]"
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4"
                 >
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div className="flex items-start justify-between">
-                      <div className={`h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-inner ${
-                        rx.status === 'active' ? 'bg-slate-50 text-slate-900' : 'bg-slate-50 text-slate-200'
-                      }`}>
-                        {rx.form === 'Tablet' ? <FiActivity size={24} /> : <FiDroplet size={24} />}
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-900">
+                        <span className="material-symbols-outlined text-[20px]">
+                          {rx.form === 'Inhaler' ? 'air' : 'pill'}
+                        </span>
                       </div>
-                      <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] ${
-                        rx.status === 'active' ? 'bg-warning/10 text-secondary' : 'bg-error/10 text-error'
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        rx.status === 'active' 
+                          ? 'bg-secondary/10 text-secondary border border-secondary/20'
+                          : 'bg-rose-50 text-rose-600 border border-rose-100'
                       }`}>
-                        {rx.status}
-                      </div>
+                        {rx.status === 'active' ? (rx.refills <= 1 ? 'Refill Soon' : 'Active') : 'Expired'}
+                      </span>
                     </div>
 
                     <div>
-                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">{rx.id}</p>
-                      <h4 className="text-xl font-black text-slate-900 group-hover:text-primary transition-colors truncate">{rx.name}</h4>
-                      <p className="text-[13px] font-bold text-slate-500 mt-1">{rx.dosage} • {rx.frequency}</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{rx.id}</p>
+                      <h4 className="text-lg font-extrabold text-slate-900">{rx.name}</h4>
+                      <p className="text-xs font-semibold text-slate-500">{rx.dosage} • {rx.form} • {rx.frequency}</p>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-50 space-y-3">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
-                          <img src={`https://ui-avatars.com/api/?name=${rx.prescribedBy}&background=f8fafc&color=0f172a&bold=true`} alt="Doctor" />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{rx.specialty}</p>
-                          <p className="text-sm font-black text-slate-800">{rx.prescribedBy}</p>
-                        </div>
-                      </div>
+                    <p className="text-xs text-slate-400 italic">"{rx.instructions}"</p>
 
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-end">
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Refills Remaining</p>
-                          <p className="text-xs font-black text-slate-900">{rx.refills} of {rx.maxRefills}</p>
-                        </div>
-                        <div className="h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full transition-all duration-1000 ${rx.refills <= 1 ? 'bg-error' : 'bg-warning'}`} 
-                            style={{ width: `${(rx.refills / rx.maxRefills) * 100}%` }} 
-                          />
-                        </div>
-                      </div>
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                      <span>{rx.prescribedBy}</span>
+                      <span className="font-bold text-slate-900">{rx.refills}/{rx.maxRefills} Refills Left</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-4">
+                  <div className="flex items-center gap-2 pt-2">
                     <button 
                       onClick={() => {
                         setSelectedPrescription(rx);
                         setShowViewModal(true);
                       }} 
-                      className="flex-1 py-2 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                      className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
                     >
                       Details
                     </button>
                     {rx.status === 'active' && (
                       <button 
                         onClick={() => handleRefillRequest(rx)} 
-                        className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-md active:scale-95 ${
-                          rx.refills === 0 ? 'bg-error text-white shadow-rose-100 hover:bg-error' : 'bg-[#000000] text-white shadow-slate-100 hover:bg-[#000000]/90'
-                        }`}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95 flex items-center justify-center gap-1 bg-slate-900 text-white hover:bg-slate-800"
                       >
-                        {rx.refills === 0 ? 'Urgent' : 'Refill'}
+                        <FiRefreshCw size={12} /> Refill
                       </button>
                     )}
                   </div>
@@ -467,61 +517,61 @@ const PatientPrescriptionsPage = () => {
           </div>
         </div>
 
-        {/* Footer Info Cards - Sleek */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <div className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 shadow-inner">
-                <FiMapPin size={20} />
+        {/* Footer Info Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-sm mb-1">
+                <span className="material-symbols-outlined text-secondary text-[20px]">local_pharmacy</span>
+                Preferred Pharmacy
               </div>
-              <div>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Preferred Pharmacy</p>
-                <h4 className="text-lg font-black text-slate-900 mb-0.5">CVS Healthcare Plaza</h4>
-                <p className="text-[11px] font-bold text-slate-500 leading-relaxed">1234 Healthcare Plaza, Suite 400, New York, NY 10012</p>
-              </div>
+              <h4 className="text-base font-extrabold text-slate-900">CVS Healthcare Plaza</h4>
+              <p className="text-xs text-slate-500 mt-0.5">1234 Healthcare Plaza, Suite 400, NY</p>
             </div>
-            <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-              <div className="flex items-center gap-2 text-xs font-black text-slate-900">
-                <FiPhone size={14} className="text-slate-400" /> (555) 012-3456
-              </div>
-              <button className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">Change</button>
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <div className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 shadow-inner">
-                <FiShield size={20} />
-              </div>
-              <div>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Insurance Sync</p>
-                <h4 className="text-lg font-black text-slate-900 mb-0.5">Aetna Platinum Plus</h4>
-                <p className="text-[11px] font-bold text-slate-500 leading-relaxed">Coverage Active until Dec 2026. All prescriptions synced.</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-              <div className="flex items-center gap-2 text-xs font-black text-secondary">
-                <FiCheckCircle size={14} /> Fully Covered
-              </div>
-              <button className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">Details</button>
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -5 }} className="bg-secondary-container/20 rounded-3xl p-6 border border-secondary/10 flex flex-col justify-between gap-4 group">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-8 w-8 bg-white rounded-lg flex items-center justify-center border border-secondary/10 shadow-sm">
-                <FiInfo size={16} className="text-secondary" />
-              </div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Medical Advisory</p>
-            </div>
-            <p className="text-[15px] font-black leading-snug mb-4 text-slate-900">"Taking Sertraline with food significantly improves absorption and reduces stomach discomfort."</p>
-            <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-secondary hover:text-slate-900 transition-colors group">
-              Drug Interaction Database <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+            <button 
+              onClick={() => setShowPharmacyModal(true)}
+              className="text-xs font-bold text-secondary hover:underline mt-4 cursor-pointer text-left"
+            >
+              Change Pharmacy →
             </button>
-          </motion.div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-sm mb-1">
+                <span className="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+                Insurance Coverage
+              </div>
+              <h4 className="text-base font-extrabold text-slate-900">Aetna Platinum Plus</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Coverage Active • All prescriptions 100% synced</p>
+            </div>
+            <button 
+              onClick={() => setShowInsuranceModal(true)}
+              className="text-xs font-bold text-secondary hover:underline mt-4 cursor-pointer text-left"
+            >
+              View Coverage Details →
+            </button>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-sm mb-1">
+                <span className="material-symbols-outlined text-secondary text-[20px]">info</span>
+                Safety Advisory
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">"Taking Sertraline with food significantly improves absorption and reduces stomach discomfort."</p>
+            </div>
+            <button 
+              onClick={() => setShowInteractionModal(true)}
+              className="text-xs font-bold text-slate-900 hover:text-slate-700 mt-4 cursor-pointer text-left"
+            >
+              Check Drug Interactions →
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Modals */}
       <AnimatePresence>
         {showViewModal && selectedPrescription && (
           <ViewPrescriptionModal
@@ -534,6 +584,22 @@ const PatientPrescriptionsPage = () => {
             isOpen={showRefillModal}
             onClose={() => setShowRefillModal(false)}
             prescriptions={refillPrescriptions}
+          />
+        )}
+        {showPharmacyModal && (
+          <ChangePharmacyModal
+            onClose={() => setShowPharmacyModal(false)}
+          />
+        )}
+        {showInsuranceModal && (
+          <InsuranceDetailsModal
+            onClose={() => setShowInsuranceModal(false)}
+          />
+        )}
+        {showInteractionModal && (
+          <DrugInteractionModal
+            onClose={() => setShowInteractionModal(false)}
+            prescriptions={prescriptions}
           />
         )}
       </AnimatePresence>

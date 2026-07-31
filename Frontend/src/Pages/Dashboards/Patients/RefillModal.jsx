@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   FiX, FiActivity, FiCheck, FiUser, FiSend, 
   FiChevronLeft, FiChevronRight, FiClock, FiAlertCircle,
-  FiCheckCircle, FiShield, FiArrowRight
+  FiCheckCircle, FiShield, FiArrowRight, FiInfo
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -50,11 +50,11 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
           className="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px] font-manrope"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Sidebar - Context Panel */}
+          {/* Sidebar - Context Panel (Matching Reschedule Modal) */}
           <div className="w-full md:w-[320px] bg-slate-50 p-8 flex flex-col justify-between border-r border-slate-100">
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <div className="h-10 w-10 bg-white rounded-2xl flex items-center justify-center text-purple-600 shadow-sm border border-slate-100">
+                <div className="h-10 w-10 bg-white rounded-2xl flex items-center justify-center text-amber-600 shadow-sm border border-slate-100">
                   <FiActivity size={20} />
                 </div>
                 <h2 className="text-xl font-black text-slate-900 tracking-tight">Refill Hub</h2>
@@ -71,7 +71,7 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                   {selectedPrescription ? (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                        <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
                           <FiActivity size={20} />
                         </div>
                         <div>
@@ -81,11 +81,11 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
-                          <FiUser size={14} className="text-purple-500" />
+                          <FiUser size={14} className="text-amber-600" />
                           <span>Dr. {selectedPrescription.doctor}</span>
                         </div>
                         <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 bg-slate-50/50 p-2 rounded-xl">
-                          <FiAlertCircle size={14} className="text-amber-500" />
+                          <FiAlertCircle size={14} className="text-amber-600" />
                           <span>Expires: {new Date(selectedPrescription.date).toLocaleDateString()}</span>
                         </div>
                       </div>
@@ -117,9 +117,9 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
             </div>
 
             <div className="pt-8">
-              <div className="p-4 bg-purple-50 rounded-2xl flex items-start gap-3 border border-purple-100">
-                <FiShield size={18} className="text-purple-600 mt-0.5" />
-                <p className="text-[10px] font-bold text-purple-600 leading-relaxed">
+              <div className="p-4 bg-amber-50 rounded-2xl flex items-start gap-3 border border-amber-100/60">
+                <FiInfo size={18} className="text-amber-600 mt-0.5 shrink-0" />
+                <p className="text-[10px] font-bold text-amber-600 leading-relaxed">
                   Refill requests are reviewed by your doctor. You'll be notified once approved or if a follow-up is needed.
                 </p>
               </div>
@@ -185,7 +185,7 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                       >
                         <div>
                           <h3 className="text-3xl font-black text-slate-900 mb-2">Request Details</h3>
-                          <div className="flex items-center gap-2 text-purple-600 font-black text-[10px] uppercase tracking-widest">
+                          <div className="flex items-center gap-2 text-amber-600 font-black text-[10px] uppercase tracking-widest">
                             <FiActivity size={14} />
                             Refilling {selectedPrescription.medication}
                           </div>
@@ -218,7 +218,7 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                               value={message}
                               onChange={(e) => setMessage(e.target.value)}
                               placeholder="Message to doctor (optional)..."
-                              className="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold text-slate-600 focus:ring-4 focus:ring-purple-500/5 outline-none h-32 resize-none transition-all shadow-inner"
+                              className="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold text-slate-600 focus:ring-4 focus:ring-amber-500/10 outline-none h-32 resize-none transition-all shadow-inner"
                             />
                           </div>
                         </div>
@@ -254,7 +254,7 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center space-y-8"
                 >
-                  <div className="h-24 w-24 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                  <div className="h-24 w-24 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
                     <FiCheckCircle size={48} />
                   </div>
                   <div>
@@ -269,7 +269,7 @@ const RefillModal = ({ isOpen, onClose, prescriptions = [] }) => {
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-slate-200/50">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Urgency</p>
-                      <p className="text-xs font-black text-purple-600 uppercase">{urgency}</p>
+                      <p className="text-xs font-black text-amber-600 uppercase">{urgency}</p>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Est. Completion</p>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { exportToPDF } from '../../../utils/exportUtils';
 import { 
   FiCalendar, FiClock, FiSearch, FiFilter, FiX, FiPlus, 
   FiChevronLeft, FiChevronRight, FiUser, FiAlertCircle, 
-  FiCheckCircle, FiLoader, FiXCircle
+  FiCheckCircle, FiLoader, FiXCircle, FiActivity, FiDownload
 } from 'react-icons/fi';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,16 +17,16 @@ import AppointmentActionModal from './AppointmentActionModal';
 import ScheduleAppointmentModal from './ScheduleAppointmentModal';
 import AppointmentViewModal from './AppointmentViewModal';
 import RescheduleModal from './RescheduleModal';
-
-
+import { ContactSupportModal } from './SharedModals';
 
 const PatientAppointmentsPage = () => {
+  const location = useLocation();
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [currentView, setCurrentView] = useState('list');
+  const [currentView, setCurrentView] = useState(location.state?.view || 'list');
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,6 +35,9 @@ const PatientAppointmentsPage = () => {
   const [currentActionAppointment, setCurrentActionAppointment] = useState(null);
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [appointmentToReschedule, setAppointmentToReschedule] = useState(null);
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [calCurrentMonth, setCalCurrentMonth] = useState(new Date());
+  const [selectedCalDate, setSelectedCalDate] = useState(new Date());
 
   const [filters, setFilters] = useState({
     status: 'all',
@@ -51,36 +56,51 @@ const PatientAppointmentsPage = () => {
   });
 
   useEffect(() => {
+    if (location.state?.view) {
+      setCurrentView(location.state.view);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        const getFutureDate = (daysAhead) => {
+          const d = new Date();
+          d.setDate(d.getDate() + daysAhead);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        };
+
         setTimeout(() => {
           const mockAppointments = [
             {
               id: 'APT-NOW-1',
               title: 'General Health Checkup',
-              date: new Date().toISOString().split('T')[0],
+              date: getFutureDate(0),
               time: '10:00 AM',
               doctor: 'Dr. Sarah Mitchell',
               status: 'confirmed',
               type: 'General Practice',
               notes: 'Quarterly review of overall health and wellness.',
-              color: '#dcfce7' // Lighter green
+              color: '#dcfce7'
             },
             {
               id: 'APT-NOW-2',
               title: 'Dental Cleaning',
-              date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
+              date: getFutureDate(1),
               time: '02:30 PM',
               doctor: 'Dr. Emily Chen',
               status: 'pending',
               type: 'Dentistry',
               notes: 'Routine cleaning and fluoride treatment.',
-              color: '#fef3c7' // Lighter amber
+              color: '#fef3c7'
             },
             {
               id: 'APT-MAY-3',
               title: 'Dermatology Exam',
-              date: '2026-05-05',
+              date: getFutureDate(3),
               time: '11:00 AM',
               doctor: 'Dr. Alan Vance',
               status: 'confirmed',
@@ -91,7 +111,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT-MAY-4',
               title: 'Physical Therapy',
-              date: '2026-05-08',
+              date: getFutureDate(6),
               time: '03:45 PM',
               doctor: 'Dr. Robert Blake',
               status: 'confirmed',
@@ -102,7 +122,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT-MAY-5',
               title: 'Eye Examination',
-              date: '2026-05-12',
+              date: getFutureDate(9),
               time: '01:00 PM',
               doctor: 'Dr. Lisa Wong',
               status: 'confirmed',
@@ -113,7 +133,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT001',
               title: 'Cardiology Follow-up',
-              date: '2026-05-15',
+              date: getFutureDate(12),
               time: '09:30 AM',
               doctor: 'Dr. Sarah Mitchell',
               status: 'confirmed',
@@ -124,7 +144,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT-MAY-6',
               title: 'Dietary Consultation',
-              date: '2026-05-20',
+              date: getFutureDate(17),
               time: '10:30 AM',
               doctor: 'Dr. Maria Garcia',
               status: 'pending',
@@ -135,7 +155,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT-MAY-7',
               title: 'Psychiatry Session',
-              date: '2026-05-22',
+              date: getFutureDate(19),
               time: '04:00 PM',
               doctor: 'Dr. David Foster',
               status: 'confirmed',
@@ -146,7 +166,7 @@ const PatientAppointmentsPage = () => {
             {
               id: 'APT002',
               title: 'Neurology Consultation',
-              date: '2026-05-28',
+              date: getFutureDate(25),
               time: '02:15 PM',
               doctor: 'Dr. James Chen',
               status: 'pending',
@@ -344,7 +364,12 @@ const PatientAppointmentsPage = () => {
     setSelectedAppointment(null);
   };
 
-  const isUpcoming = (dateStr) => new Date(dateStr) >= new Date().setHours(0,0,0,0);
+  const isUpcoming = (dateStr) => {
+    // String comparison avoids timezone offset bugs where new Date('2026-07-31') becomes July 30th 8PM
+    const d = new Date();
+    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return dateStr >= todayStr;
+  };
   const upcomingAppointments = filteredAppointments.filter(apt => isUpcoming(apt.date) && apt.status !== 'cancelled');
   const pastAppointments = filteredAppointments.filter(apt => !isUpcoming(apt.date) || apt.status === 'cancelled');
 
@@ -379,8 +404,21 @@ const PatientAppointmentsPage = () => {
             </button>
           </div>
           <button 
+            onClick={() => {
+              exportToPDF(
+                'Patient Appointments Schedule',
+                ['ID', 'Title', 'Date', 'Time', 'Doctor', 'Specialty', 'Status'],
+                filteredAppointments.map(a => [a.id, a.title, a.date, a.time, a.doctor, a.type, a.status]),
+                'Appointments_Schedule'
+              );
+            }}
+            className="flex items-center gap-2 px-5 py-3 bg-white text-slate-700 border border-slate-200/80 rounded-full text-xs font-bold hover:bg-slate-50 transition-all shadow-sm cursor-pointer"
+          >
+            <FiDownload size={14} /> Export Schedule
+          </button>
+          <button 
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95 cursor-pointer"
           >
             <FiPlus size={16} />
             New Appointment
@@ -453,11 +491,23 @@ const PatientAppointmentsPage = () => {
               </div>
             </div>
             {/* Promo/Support Card */}
-            <div className="bg-secondary-container/20 rounded-xl p-sm border border-secondary/10">
-              <span className="material-symbols-outlined text-secondary">help_outline</span>
-              <h4 className="font-label-md mt-2 text-secondary">Need Help?</h4>
-              <p className="text-label-sm mt-1 text-slate-500">Our support team is available 24/7 for emergency scheduling assistance.</p>
-              <button className="mt-md w-full bg-white text-slate-900 py-2 rounded-lg font-label-md hover:bg-slate-50 transition-colors shadow-sm">Contact Support</button>
+            <div className="widget-card p-6 relative overflow-hidden group">
+              <div className="relative z-10">
+                <div className="icon-box w-12 h-12 mb-4 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-slate-900 text-xl">help_outline</span>
+                </div>
+                <h4 className="font-extrabold text-slate-900 font-manrope text-base">Need Help?</h4>
+                <p className="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                  Our support team is available 24/7 for emergency scheduling assistance.
+                </p>
+                <button 
+                  onClick={() => setShowSupportModal(true)}
+                  className="mt-4 text-xs font-black text-slate-900 uppercase tracking-widest hover:text-slate-700 cursor-pointer flex items-center gap-1.5"
+                >
+                  CONTACT SUPPORT →
+                </button>
+              </div>
+              <FiActivity className="absolute -bottom-6 -right-6 text-slate-400/20 text-8xl rotate-12" />
             </div>
           </div>
 
@@ -594,52 +644,269 @@ const PatientAppointmentsPage = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl p-md border border-slate-100 shadow-[0px_4px_20px_rgba(15,23,42,0.05)]">
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            initialView="timeGridWeek"
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            }}
-            events={calendarEvents}
-            eventClick={(info) => {
-              const apt = appointments.find(a => a.id === info.event.id);
-              setSelectedAppointment(apt);
-            }}
-            eventContent={(eventInfo) => {
-              const isMonthView = eventInfo.view.type === 'dayGridMonth';
-              return (
-                <div 
-                  className={`flex flex-col overflow-hidden h-full border-l-[6px] transition-all ${
-                    isMonthView ? 'gap-0.5 px-2 py-1 rounded-r-lg' : 'gap-1.5 px-4 py-3 rounded-r-2xl'
-                  }`}
-                  style={{ 
-                    backgroundColor: eventInfo.event.backgroundColor, 
-                    borderColor: eventInfo.event.borderColor || eventInfo.event.backgroundColor 
-                  }}
-                >
-                  <div className={`flex items-center justify-between ${isMonthView ? 'mb-0' : 'mb-1.5'}`}>
-                    <p className={`${isMonthView ? 'text-[10px]' : 'text-[13px]'} font-extrabold leading-tight text-slate-900 truncate`}>
-                      {eventInfo.event.title.split(' with ')[0]}
-                    </p>
-                    <p className={`${isMonthView ? 'text-[8px]' : 'text-[11px]'} font-black text-slate-600/60 uppercase`}>
-                      {eventInfo.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                  </div>
-                  <div className={`flex items-center opacity-90 ${isMonthView ? 'gap-1' : 'gap-2.5'}`}>
-                    <span className={`material-symbols-outlined text-slate-500 ${isMonthView ? 'text-[11px]' : 'text-[14px]'}`}>person</span>
-                    <p className={`${isMonthView ? 'text-[9px]' : 'text-[12px]'} font-bold text-slate-700 truncate`}>
-                      {eventInfo.event.title.split(' with ')[1]}
-                    </p>
-                  </div>
+        /* ── Ultra-Luxurious & Cute Custom Interactive Calendar View ── */
+        <div className="grid grid-cols-12 gap-6 items-start font-manrope">
+          {/* Main Calendar Grid Card (Col 8) */}
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-[2.5rem] p-6 md:p-8 border border-slate-100 shadow-[0px_20px_60px_-15px_rgba(15,23,42,0.05)] relative overflow-hidden space-y-6">
+            {/* Subtle SVG Pulse Pattern */}
+            <svg className="absolute -bottom-10 -right-10 w-48 h-48 stroke-slate-100 fill-none opacity-40 pointer-events-none">
+              <path d="M 0,50 L 50,50 L 60,10 L 70,90 L 80,30 L 90,70 L 100,50 L 200,50" strokeWidth="2" />
+            </svg>
+
+            {/* Calendar Controls Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black shadow-md">
+                  <FiCalendar size={20} />
                 </div>
-              );
-            }}
-            eventClassNames="!rounded-lg !border-none !shadow-sm hover:!shadow-md transition-all cursor-pointer !overflow-hidden"
-            height="700px"
-          />
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 tracking-tight">
+                    {calCurrentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                  </h3>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interactive Appointment Grid</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => {
+                    const today = new Date();
+                    setCalCurrentMonth(today);
+                    setSelectedCalDate(today);
+                  }}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all cursor-pointer"
+                >
+                  Today
+                </button>
+                <div className="flex gap-1.5 bg-slate-50 p-1 rounded-2xl border border-slate-100">
+                  <button 
+                    onClick={() => setCalCurrentMonth(new Date(calCurrentMonth.getFullYear(), calCurrentMonth.getMonth() - 1, 1))}
+                    className="h-9 w-9 flex items-center justify-center rounded-xl bg-white text-slate-700 hover:bg-slate-900 hover:text-white transition-all shadow-sm cursor-pointer"
+                  >
+                    <FiChevronLeft size={18} />
+                  </button>
+                  <button 
+                    onClick={() => setCalCurrentMonth(new Date(calCurrentMonth.getFullYear(), calCurrentMonth.getMonth() + 1, 1))}
+                    className="h-9 w-9 flex items-center justify-center rounded-xl bg-white text-slate-700 hover:bg-slate-900 hover:text-white transition-all shadow-sm cursor-pointer"
+                  >
+                    <FiChevronRight size={18} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Status Legend Pills */}
+            <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500">
+              <span className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-sm" />
+                Confirmed Visit
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shadow-sm" />
+                Pending Request
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                Past / Completed
+              </span>
+            </div>
+
+            {/* Month Day Headers */}
+            <div className="grid grid-cols-7 gap-2 text-center">
+              {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => (
+                <div key={day} className="py-2 text-[10px] font-black text-slate-400 tracking-widest">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Month Days Grid */}
+            <div className="grid grid-cols-7 gap-2">
+              {(() => {
+                const year = calCurrentMonth.getFullYear();
+                const month = calCurrentMonth.getMonth();
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const days = [];
+
+                // Empty padding slots
+                for (let i = 0; i < firstDay; i++) {
+                  days.push(<div key={`empty-${i}`} className="min-h-[90px] rounded-2xl bg-slate-50/40 opacity-30 border border-slate-100/40" />);
+                }
+
+                // Days of month
+                for (let i = 1; i <= daysInMonth; i++) {
+                  const cellDate = new Date(year, month, i);
+                  const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                  const isToday = cellDate.toDateString() === new Date().toDateString();
+                  const isSelected = selectedCalDate && cellDate.toDateString() === selectedCalDate.toDateString();
+
+                  // Filter appointments for this date
+                  const dayAppointments = appointments.filter(a => a.date === dateStr);
+
+                  days.push(
+                    <motion.div
+                      key={i}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setSelectedCalDate(cellDate)}
+                      className={`min-h-[100px] p-2.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative group ${
+                        isSelected 
+                          ? 'bg-secondary text-white border-secondary shadow-lg shadow-secondary/20 z-10' 
+                          : isToday 
+                          ? 'bg-secondary-container/20 border-secondary/20 text-slate-900' 
+                          : 'bg-white border-slate-100/90 text-slate-700 hover:border-slate-300 hover:shadow-md'
+                      }`}
+                    >
+                      {/* Top Row: Day Number & Today indicator */}
+                      <div className="flex items-center justify-between">
+                        <span className={`text-xs font-black h-6 w-6 rounded-full flex items-center justify-center ${
+                          isSelected ? 'bg-white text-secondary font-black' : isToday ? 'bg-secondary text-white font-extrabold' : 'text-slate-900'
+                        }`}>
+                          {i}
+                        </span>
+                        {isToday && !isSelected && (
+                          <span className="text-[8px] font-black uppercase text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-md">Today</span>
+                        )}
+                      </div>
+
+                      {/* Cute Event Badges */}
+                      <div className="space-y-1 mt-1.5">
+                        {dayAppointments.slice(0, 2).map((apt) => (
+                          <div 
+                            key={apt.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAppointment(apt);
+                            }}
+                            className={`px-2 py-1 rounded-xl text-[10px] font-bold truncate flex items-center gap-1.5 transition-transform hover:scale-105 ${
+                              isSelected 
+                                ? 'bg-slate-800 text-slate-200 border border-slate-700' 
+                                : apt.status === 'confirmed' 
+                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-100' 
+                                : apt.status === 'pending'
+                                ? 'bg-amber-50 text-amber-800 border border-amber-100'
+                                : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+                            }`}
+                          >
+                            <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                              apt.status === 'confirmed' ? 'bg-emerald-500' : apt.status === 'pending' ? 'bg-amber-500' : 'bg-slate-400'
+                            }`} />
+                            <span className="truncate">{apt.title}</span>
+                          </div>
+                        ))}
+
+                        {dayAppointments.length > 2 && (
+                          <p className={`text-[9px] font-black px-1 ${isSelected ? 'text-amber-400' : 'text-slate-400'}`}>
+                            +{dayAppointments.length - 2} more
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                }
+
+                return days;
+              })()}
+            </div>
+          </div>
+
+          {/* Right Inspection Schedule Panel (Col 4) */}
+          <div className="col-span-12 lg:col-span-4 space-y-5">
+            <div className="bg-white rounded-[2.5rem] p-6 md:p-8 border border-slate-100 shadow-[0px_20px_60px_-15px_rgba(15,23,42,0.05)] relative overflow-hidden font-manrope">
+              {/* Card Header */}
+              <div className="flex items-center gap-3 pb-5 border-b border-slate-100 mb-5">
+                <div className="h-10 w-10 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center font-black border border-amber-100">
+                  <FiClock size={20} />
+                </div>
+                <div>
+                  <h4 className="text-base font-black text-slate-900">
+                    {selectedCalDate ? selectedCalDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : 'Selected Date'}
+                  </h4>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Day Schedule Breakdown</p>
+                </div>
+              </div>
+
+              {/* Day Appointments List */}
+              {(() => {
+                const dateStr = selectedCalDate ? `${selectedCalDate.getFullYear()}-${String(selectedCalDate.getMonth() + 1).padStart(2, '0')}-${String(selectedCalDate.getDate()).padStart(2, '0')}` : '';
+                const selectedDayApts = appointments.filter(a => a.date === dateStr);
+
+                if (selectedDayApts.length === 0) {
+                  return (
+                    <div className="py-10 text-center space-y-3">
+                      <div className="h-16 w-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto">
+                        <FiCalendar size={28} />
+                      </div>
+                      <p className="text-xs font-bold text-slate-400">No visits scheduled for this date.</p>
+                      <button 
+                        onClick={() => setShowAddModal(true)}
+                        className="px-5 py-2.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all cursor-pointer shadow-md active:scale-95 inline-flex items-center gap-1.5"
+                      >
+                        <FiPlus size={14} /> Schedule Visit
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="space-y-4">
+                    {selectedDayApts.map((apt) => (
+                      <div 
+                        key={apt.id}
+                        onClick={() => setSelectedAppointment(apt)}
+                        className="p-4 bg-slate-50/70 hover:bg-slate-100/80 rounded-3xl border border-slate-100 transition-all cursor-pointer space-y-3 group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                            apt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                          }`}>
+                            {apt.status}
+                          </span>
+                          <span className="text-xs font-black text-slate-900 bg-white px-2.5 py-1 rounded-xl shadow-sm border border-slate-100">
+                            {apt.time}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h5 className="text-base font-black text-slate-900 group-hover:text-amber-600 transition-colors">{apt.title}</h5>
+                          <p className="text-xs font-bold text-slate-500 mt-0.5">{apt.doctor} • {apt.type}</p>
+                        </div>
+
+                        {apt.notes && (
+                          <p className="text-[11px] font-semibold text-slate-400 italic bg-white p-2.5 rounded-xl border border-slate-100/60 line-clamp-2">
+                            "{apt.notes}"
+                          </p>
+                        )}
+
+                        <div className="flex items-center gap-2 pt-2 border-t border-slate-200/50">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setAppointmentToReschedule(apt);
+                              setIsRescheduleModalOpen(true);
+                            }}
+                            className="flex-1 py-2 bg-white hover:bg-slate-900 hover:text-white text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border border-slate-200/60 shadow-sm"
+                          >
+                            Reschedule
+                          </button>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAppointment(apt);
+                            }}
+                            className="py-2 px-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-sm"
+                          >
+                            Details →
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
         </div>
       )}
 
@@ -675,6 +942,11 @@ const PatientAppointmentsPage = () => {
             setIsRescheduleModalOpen(false);
           }}
         />
+        {showSupportModal && (
+          <ContactSupportModal
+            onClose={() => setShowSupportModal(false)}
+          />
+        )}
       </AnimatePresence>
     </div>
   );

@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  FiX, FiCalendar, FiUser, FiActivity, FiCheckCircle, 
-  FiClock, FiAlertCircle, FiPrinter, FiDownload, FiFileText
+  FiX, FiPrinter, FiFileText
 } from 'react-icons/fi';
 
 const ViewTestResultModal = ({ result, onClose, onPrint }) => {
@@ -17,111 +16,101 @@ const ViewTestResultModal = ({ result, onClose, onPrint }) => {
     });
   };
 
-  const statusColors = {
-    completed: result.isAbnormal ? 'bg-error/10 text-error' : 'bg-secondary/10 text-secondary',
-    pending: 'bg-amber-500/10 text-amber-600'
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 font-inter">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 font-manrope">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
       />
       
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100"
+        className="relative w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl p-8 overflow-hidden border border-slate-100 max-h-[90vh] flex flex-col z-10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white rounded-xl shadow-sm">
-              <span className="material-symbols-outlined text-secondary text-xl">biotech</span>
+        <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="icon-box w-12 h-12">
+              <span className="material-symbols-outlined text-slate-900 text-2xl">biotech</span>
             </div>
-            <h2 className="text-[17px] font-bold text-slate-900 font-manrope">Test Result Details</h2>
+            <div>
+              <h2 className="text-2xl font-black text-slate-900 font-manrope tracking-tight">Test Result Details</h2>
+              <p className="text-xs font-black uppercase tracking-widest text-slate-400 mt-0.5">{result.category || 'Laboratory Analysis'}</p>
+            </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 hover:bg-white rounded-full transition-all text-slate-400 hover:text-slate-600 hover:shadow-sm"
+            className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-all cursor-pointer"
           >
-            <FiX size={20} />
+            <FiX size={18} />
           </button>
         </div>
 
-        <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto scrollbar-hide">
+        <div className="space-y-5 overflow-y-auto pr-1 flex-1 scrollbar-hide">
           {/* Result Title & Status */}
-          <div className="flex items-start justify-between gap-4">
+          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60 flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-xl font-bold text-slate-900 mb-1 leading-tight">{result.testName}</h3>
-              <p className="text-[13px] text-slate-500 font-medium uppercase tracking-wider">{result.category} • {result.id}</p>
+              <h3 className="text-xl font-extrabold text-slate-900 leading-tight mb-1">{result.testName || result.shortName}</h3>
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">{result.category} • {result.id}</p>
             </div>
-            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider whitespace-nowrap ${statusColors[result.status]}`}>
-              {result.isAbnormal ? 'Abnormal' : result.status}
+            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap ${
+              result.isAbnormal ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-800'
+            }`}>
+              {result.isAbnormal ? 'Abnormal' : result.statusLabel || result.status || 'Completed'}
             </span>
           </div>
 
           {/* Details Grid */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
               { label: 'Date', value: formatDate(result.date), icon: 'event' },
-              { label: 'Laboratory', value: result.labName, icon: 'science' },
-              { label: 'Physician', value: result.doctor, icon: 'medical_services' },
-              { label: 'Department', value: result.category, icon: 'category' }
+              { label: 'Laboratory', value: result.labName || 'ClinicLink Diagnostics', icon: 'science' },
+              { label: 'Physician', value: result.doctor || 'Dr. Robert Chen', icon: 'medical_services' },
+              { label: 'Department', value: result.category || 'Pathology', icon: 'category' }
             ].map((item, i) => (
-              <div key={i} className="p-3.5 rounded-2xl bg-slate-50/50 border border-slate-100/50 flex items-center gap-3 group hover:bg-white hover:shadow-md transition-all">
-                <div className="p-2 bg-white rounded-xl text-slate-300 group-hover:text-secondary transition-colors shadow-sm">
-                  <span className="material-symbols-outlined text-lg">{item.icon}</span>
+              <div key={i} className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 flex items-center gap-3">
+                <div className="icon-box w-10 h-10 shrink-0">
+                  <span className="material-symbols-outlined text-lg text-slate-900">{item.icon}</span>
                 </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{item.label}</p>
-                  <p className="text-[13px] font-semibold text-slate-700 truncate max-w-[120px]">{item.value}</p>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{item.label}</p>
+                  <p className="text-xs font-extrabold text-slate-900 truncate">{item.value}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Clinical Findings */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <FiFileText className="text-slate-400" />
-              <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Clinical Findings</h4>
-            </div>
-            <div className={`p-4 rounded-2xl border ${result.isAbnormal ? 'bg-error/[0.02] border-error/10' : 'bg-slate-50 border-slate-100/50'}`}>
-              <p className={`text-[13px] leading-relaxed font-medium ${result.isAbnormal ? 'text-error' : 'text-slate-600'}`}>
-                {result.results}
-              </p>
-            </div>
-          </div>
-
-          {/* Verification Note */}
-          <div className="p-4 bg-slate-50/50 rounded-2xl flex items-start gap-3 border border-slate-50">
-            <span className="material-symbols-outlined text-slate-300 text-lg">verified</span>
-            <p className="text-[11px] text-slate-400 font-medium leading-relaxed italic">
-              These results have been electronically verified and signed by the laboratory specialist on {formatDate(result.date)}.
+          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/60">
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 font-manrope flex items-center gap-2 mb-2">
+              <FiFileText className="text-slate-900" size={16} />
+              Clinical Findings & Value
+            </h4>
+            <p className="text-xs font-medium text-slate-600 leading-relaxed">
+              {result.results || `Value recorded: ${result.value || 'Normal'}. Electronically signed and verified.`}
             </p>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-5 bg-slate-50/50 border-t border-slate-50 flex items-center justify-between gap-3">
-          <button 
-            onClick={() => onPrint && onPrint(result)}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white text-slate-600 border border-slate-200 text-[13px] font-bold rounded-2xl shadow-sm hover:bg-slate-50 transition-all active:scale-95"
-          >
-            <FiPrinter size={16} /> Print PDF
-          </button>
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 mt-6">
           <button 
             onClick={onClose}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white text-[13px] font-bold rounded-2xl shadow-lg transition-all active:scale-95 ${result.isAbnormal ? 'bg-error hover:bg-error/90' : 'bg-slate-900 hover:bg-slate-800'}`}
+            className="border border-slate-200 bg-white text-slate-700 rounded-full px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-slate-50 transition-colors cursor-pointer"
           >
-            Done
+            Close
+          </button>
+          <button 
+            onClick={() => onPrint && onPrint(result)}
+            className="bg-slate-900 text-white rounded-full px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer"
+          >
+            <FiPrinter size={16} /> Print PDF
           </button>
         </div>
       </motion.div>
